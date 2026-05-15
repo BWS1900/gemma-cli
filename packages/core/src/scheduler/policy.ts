@@ -119,6 +119,17 @@ export async function updatePolicy(
   messageBus: MessageBus,
   toolInvocation?: AnyToolInvocation,
 ): Promise<void> {
+  const currentMode = context.config.getApprovalMode();
+
+  // If in Plan Mode, map 'Proceed Always' (Allow for this session) to 'Proceed Once' (Allow once)
+  // to prevent transitioning to AUTO_EDIT mode and updating policy.
+  if (
+    currentMode === ApprovalMode.PLAN &&
+    outcome === ToolConfirmationOutcome.ProceedAlways
+  ) {
+    outcome = ToolConfirmationOutcome.ProceedOnce;
+  }
+
   // Mode Transitions (AUTO_EDIT)
   if (isAutoEditTransition(tool, outcome)) {
     context.config.setApprovalMode(ApprovalMode.AUTO_EDIT);
@@ -128,7 +139,6 @@ export async function updatePolicy(
   // Determine persist scope if we are persisting.
   let persistScope: 'workspace' | 'user' | undefined;
   let modes: ApprovalMode[] | undefined;
-  const currentMode = context.config.getApprovalMode();
 
   // If this is an 'Always Allow' selection, we restrict it to the current mode
   // and more permissive modes.
