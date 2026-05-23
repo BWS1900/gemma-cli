@@ -6,6 +6,14 @@
 [![License](https://img.shields.io/github/license/BWS1900/gemma-cli)](https://github.com/BWS1900/gemma-cli/blob/main/LICENSE)
 [![View Code Wiki](https://assets.codewiki.google/readme-badge/static.svg)](https://codewiki.google/github.com/BWS1900/gemma-cli?utm_source=badge&utm_medium=github&utm_campaign=github.com/BWS1900/gemma-cli)
 
+THIS IS AN OPEN SOURCE FORK OF THE GEMINI-CLI COMPATIBLE WITH ANY OPEN AI COMPATIBLE API KEY AND IS IN NO WAY AFFILIATED OR ENDORSED BY GOOGLE
+
+THIS IS NOT AN OFFICIAL GOOGLE PRODUCT AND YOU UNDERSTAND THATANY USE IS AT YOUR OWN RISK
+
+
+
+
+
 ![Gemma CLI Screenshot](/docs/assets/gemma-screenshot.png)
 
 Gemma CLI is an open-source AI agent that brings the power of Gemini directly
