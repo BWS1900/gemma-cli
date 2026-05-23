@@ -45,5 +45,23 @@ export async function validateAuthMethod(
     return null;
   }
 
+  if (authMethod === AuthType.USE_OPENAI) {
+    const key =
+      process.env['OPENAI_API_KEY'] ||
+      process.env['LOCAL_API_KEY'];
+    if (!key) {
+      return (
+        'When using OpenAI, you must specify the OPENAI_API_KEY environment variable.\n' +
+        'Update your environment and try again (no reload needed if using .env)!'
+      );
+    }
+    return null;
+  }
+
+  if (authMethod === AuthType.USE_LOCAL) {
+    // Local models do not require an API key
+    return null;
+  }
+
   return 'Invalid auth method selected.';
 }

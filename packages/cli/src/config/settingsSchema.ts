@@ -1074,7 +1074,7 @@ const SETTINGS_SCHEMA = {
         category: 'Model',
         requiresRestart: false,
         default: undefined as string | undefined,
-        description: 'The Gemini model to use for conversations.',
+        description: 'The model to use for conversations (e.g., gpt-4o, llama3).',
         showInDialog: true,
       },
       maxSessionTurns: {
@@ -1139,6 +1139,41 @@ const SETTINGS_SCHEMA = {
         showInDialog: true,
       },
     },
+  },
+
+  provider: {
+    type: 'enum',
+    label: 'LLM Provider',
+    category: 'Model',
+    requiresRestart: true,
+    default: 'gemini',
+    description: 'The LLM provider to use for content generation.',
+    showInDialog: true,
+    options: [
+      { value: 'gemini', label: 'Gemini (Google)' },
+      { value: 'openai', label: 'OpenAI' },
+      { value: 'local', label: 'Local Model (e.g., Ollama)' },
+    ],
+  },
+  llmApiKey: {
+    type: 'string',
+    label: 'LLM API Key',
+    category: 'Model',
+    requiresRestart: true,
+    default: undefined as string | undefined,
+    description:
+      'API key for the LLM provider (OpenAI key, or local API key).',
+    showInDialog: true,
+  },
+  llmBaseUrl: {
+    type: 'string',
+    label: 'LLM Base URL',
+    category: 'Model',
+    requiresRestart: true,
+    default: undefined as string | undefined,
+    description:
+      'Base URL for the LLM API endpoint (e.g., http://localhost:11434/v1 for Ollama).',
+    showInDialog: true,
   },
 
   modelConfigs: {

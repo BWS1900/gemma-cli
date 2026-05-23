@@ -16,7 +16,7 @@ import {
   debugLogger,
 } from '@google/gemini-cli-core';
 import { type LoadedSettings } from '../config/settings.js';
-import { performInitialAuth } from './auth.js';
+import { performInitialAuth, resolveAuthType } from './auth.js';
 import { validateTheme } from './theme.js';
 import type { AccountSuspensionInfo } from '../ui/contexts/UIStateContext.js';
 
@@ -40,9 +40,15 @@ export async function initializeApp(
   settings: LoadedSettings,
 ): Promise<InitializationResult> {
   const authHandle = startupProfiler.start('authenticate');
+  const authType = resolveAuthType(
+    settings.merged.provider,
+    settings.merged.security.auth.selectedType,
+  );
   const { authError, accountSuspensionInfo } = await performInitialAuth(
     config,
-    settings.merged.security.auth.selectedType,
+    authType,
+    settings.merged.llmApiKey,
+    settings.merged.llmBaseUrl,
   );
   authHandle?.end();
   const themeError = validateTheme(settings);

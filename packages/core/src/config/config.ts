@@ -615,7 +615,6 @@ export interface ConfigParameters {
   userMemory?: string | HierarchicalMemory;
   geminiMdFileCount?: number;
   geminiMdFilePaths?: string[];
-  approvalMode?: ApprovalMode;
   showMemoryUsage?: boolean;
   contextFileName?: string | string[];
   accessibility?: AccessibilitySettings;
@@ -674,6 +673,7 @@ export interface ConfigParameters {
   shellExecutionConfig?: ShellExecutionConfig;
   extensionManagement?: boolean;
   extensionRegistryURI?: string;
+  enableExtensionReloading?: boolean;
   truncateToolOutputThreshold?: number;
   eventEmitter?: EventEmitter;
   useWriteTodos?: boolean;
@@ -717,7 +717,6 @@ export interface ConfigParameters {
   experimentalGemma?: boolean;
   experimentalContextManagementConfig?: string;
   experimentalAgentHistoryTruncation?: boolean;
-  experimentalAgentHistoryTruncationThreshold?: number;
   experimentalAgentHistoryRetainedMessages?: number;
   experimentalAgentHistorySummarization?: boolean;
   memoryBoundaryMarkers?: string[];
@@ -744,6 +743,7 @@ export interface ConfigParameters {
   };
   vertexAiRouting?: VertexAiRoutingConfig;
   logRagSnippets?: boolean;
+  provider?: string;
 }
 
 export class Config implements McpContext, AgentLoopContext {
@@ -761,6 +761,7 @@ export class Config implements McpContext, AgentLoopContext {
   private readonly acknowledgedAgentsService: AcknowledgedAgentsService;
   private skillManager!: SkillManager;
   private _sessionId: string;
+  private readonly _provider: string | undefined;
   private readonly clientName: string | undefined;
   private _clientVersion: string;
 
@@ -984,10 +985,11 @@ export class Config implements McpContext, AgentLoopContext {
   private approvedPlanPath: string | undefined;
 
   constructor(params: ConfigParameters) {
-    this._sessionId = params.sessionId;
-    this.clientName = params.clientName;
-    this._clientVersion = params.clientVersion ?? 'unknown';
-    this.approvedPlanPath = undefined;
+   this._sessionId = params.sessionId;
+   this.clientName = params.clientName;
+   this._clientVersion = params.clientVersion ?? 'unknown';
+   this._provider = params.provider;
+   this.approvedPlanPath = undefined;
 
     this.embeddingModel =
       params.embeddingModel ?? DEFAULT_GEMINI_EMBEDDING_MODEL;
@@ -2993,6 +2995,10 @@ export class Config implements McpContext, AgentLoopContext {
 
   getProxy(): string | undefined {
     return this.proxy;
+  }
+
+  getProvider(): string | undefined {
+    return this._provider;
   }
 
   getWorkingDir(): string {

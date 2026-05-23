@@ -65,6 +65,8 @@ export enum AuthType {
   LEGACY_CLOUD_SHELL = 'cloud-shell',
   COMPUTE_ADC = 'compute-default-credentials',
   GATEWAY = 'gateway',
+  USE_OPENAI = 'openai',
+  USE_LOCAL = 'local',
 }
 
 /**
@@ -93,6 +95,14 @@ export function getAuthTypeFromEnv(): AuthType | undefined {
     process.env['GEMINI_CLI_USE_COMPUTE_ADC'] === 'true'
   ) {
     return AuthType.COMPUTE_ADC;
+  }
+  // Check for OpenAI API key
+  if (process.env['OPENAI_API_KEY']) {
+    return AuthType.USE_OPENAI;
+  }
+  // Check for local model indicator (no API key required)
+  if (process.env['LOCAL_API_KEY']) {
+    return AuthType.USE_LOCAL;
   }
   return undefined;
 }
@@ -164,6 +174,14 @@ export async function createContentGeneratorConfig(
     process.env['GOOGLE_CLOUD_PROJECT_ID'] ||
     undefined;
   const googleCloudLocation = process.env['GOOGLE_CLOUD_LOCATION'] || undefined;
+  const openaiApiKey =
+    apiKey ||
+    process.env['OPENAI_API_KEY'] ||
+    undefined;
+  const localApiKey =
+    apiKey ||
+    process.env['LOCAL_API_KEY'] ||
+    undefined;
 
   if (authType === AuthType.USE_GEMINI && geminiApiKey) {
     contentGeneratorConfig.apiKey = geminiApiKey;
@@ -178,6 +196,31 @@ export async function createContentGeneratorConfig(
   ) {
     contentGeneratorConfig.apiKey = googleApiKey;
     contentGeneratorConfig.vertexai = true;
+
+    return contentGeneratorConfig;
+  }
+
+  if (authType === AuthType.USE_OPENAI) {
+    contentGeneratorConfig.apiKey = openaiApiKey || '';
+    contentGeneratorConfig.vertexai = false;
+    // For OpenAI, we might want to set a default baseUrl if none provided
+    if (!contentGeneratorConfig.baseUrl) {
+      contentGeneratorConfig.baseUrl = 'https://api.openai.com/v1';
+    }
+
+    return contentGeneratorConfig;
+  }
+
+  if (authType === AuthType.USE_LOCAL) {
+    // For local models, we don't require an API key, but we can use one if provided.
+    // We'll set the apiKey to the localApiKey if provided, otherwise empty string.
+    contentGeneratorConfig.apiKey = localApiKey || '';
+    contentGeneratorConfig.vertexai = false;
+    // For local models, we might want to set a default baseUrl if none provided
+    if (!contentGeneratorConfig.baseUrl) {
+      // Default to Ollama's default endpoint (OpenAI-compatible)
+      contentGeneratorConfig.baseUrl = 'http://localhost:11434/v1';
+    }
 
     return contentGeneratorConfig;
   }
@@ -297,7 +340,9 @@ export async function createContentGenerator(
     if (
       config.authType === AuthType.USE_GEMINI ||
       config.authType === AuthType.USE_VERTEX_AI ||
-      config.authType === AuthType.GATEWAY
+      config.authType === AuthType.GATEWAY ||
+      config.authType === AuthType.USE_OPENAI ||
+      config.authType === AuthType.USE_LOCAL
     ) {
       let headers: Record<string, string> = { ...baseHeaders };
       if (config.customHeaders) {
@@ -358,6 +403,25 @@ export async function createContentGenerator(
           ? new HttpProxyAgent(proxyUrl)
           : new HttpsProxyAgent(proxyUrl)
         : undefined;
+
+      // Handle OpenAI client
+      if (config.authType === AuthType.USE_OPENAI) {
+        const { OpenAIClient } = await import('./llm/openaiClient.js');
+        const openaiClient = new OpenAIClient(
+          baseUrl || 'https://api.openai.com/v1',
+          config.apiKey || '',
+        );
+        return new LoggingContentGenerator(openaiClient, gcConfig);
+      }
+
+      // Handle Local client
+      if (config.authType === AuthType.USE_LOCAL) {
+        const { LocalClient } = await import('./llm/localClient.js');
+        const localClient = new LocalClient(
+          baseUrl || 'http://localhost:11434/v1',
+        );
+        return new LoggingContentGenerator(localClient, gcConfig);
+      }
 
       const googleGenAI = new GoogleGenAI({
         apiKey:

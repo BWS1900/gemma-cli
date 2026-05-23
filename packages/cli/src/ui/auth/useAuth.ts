@@ -17,6 +17,7 @@ import {
 import { getErrorMessage } from '@google/gemini-cli-core';
 import { AuthState } from '../types.js';
 import { validateAuthMethod } from '../../config/auth.js';
+import { resolveAuthType } from '../../core/auth.js';
 
 export async function validateAuthMethodWithSettings(
   authType: AuthType,
@@ -91,7 +92,12 @@ export const useAuthCommand = (
         return;
       }
 
-      const authType = settings.merged.security.auth.selectedType;
+      const authType = resolveAuthType(
+        settings.merged.provider,
+        settings.merged.security.auth.selectedType,
+      );
+      const llmApiKey = settings.merged.llmApiKey;
+      const llmBaseUrl = settings.merged.llmBaseUrl;
       if (!authType) {
         if (process.env['GEMINI_API_KEY']) {
           onAuthError(
@@ -135,7 +141,7 @@ export const useAuthCommand = (
       }
 
       try {
-        await config.refreshAuth(authType);
+        await config.refreshAuth(authType, llmApiKey, llmBaseUrl);
 
         debugLogger.log(`Authenticated via "${authType}".`);
         setAuthError(null);
