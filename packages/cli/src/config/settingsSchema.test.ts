@@ -504,7 +504,7 @@ describe('SettingsSchema', () => {
       expect(autoStartServer.requiresRestart).toBe(true);
       expect(autoStartServer.showInDialog).toBe(true);
       expect(autoStartServer.description).toBe(
-        'Automatically start the LiteRT-LM server when Gemini CLI starts and the Gemma router is enabled.',
+        'Automatically start the LiteRT-LM server when Gemma CLI starts and the Gemma router is enabled.',
       );
 
       const binaryPath = gemmaModelRouter.properties.binaryPath;
@@ -515,7 +515,7 @@ describe('SettingsSchema', () => {
       expect(binaryPath.requiresRestart).toBe(true);
       expect(binaryPath.showInDialog).toBe(false);
       expect(binaryPath.description).toBe(
-        'Custom path to the LiteRT-LM binary. Leave empty to use the default location (~/.gemini/bin/litert/).',
+        'Custom path to the LiteRT-LM binary. Leave empty to use the default location (~/.gemma/bin/litert/).',
       );
 
       const classifier = gemmaModelRouter.properties.classifier;

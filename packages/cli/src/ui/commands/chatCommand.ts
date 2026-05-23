@@ -127,7 +127,7 @@ const saveCommand: SlashCommand = {
       }
     }
 
-    const chat = context.services.agentContext?.geminiClient?.getChat();
+    const chat = context.services.agentContext?.gemmaClient?.getChat();
     if (!chat) {
       return {
         type: 'message',
@@ -301,7 +301,7 @@ const shareCommand: SlashCommand = {
       };
     }
 
-    const chat = context.services.agentContext?.geminiClient?.getChat();
+    const chat = context.services.agentContext?.gemmaClient?.getChat();
     if (!chat) {
       return {
         type: 'message',

@@ -12,7 +12,7 @@ import { useCallback, useReducer, useRef, useEffect } from 'react';
 import type {
   AnsiOutput,
   Config,
-  GeminiClient,
+  GemmaClient,
   CompletionBehavior,
 } from '@google/gemini-cli-core';
 import {
@@ -42,7 +42,7 @@ const RESTORE_VISIBILITY_DELAY_MS = 300;
 const MAX_OUTPUT_LENGTH = 10000;
 
 function addShellCommandToGeminiHistory(
-  geminiClient: GeminiClient,
+  gemmaClient: GemmaClient,
   rawQuery: string,
   resultText: string,
 ) {
@@ -58,7 +58,7 @@ function addShellCommandToGeminiHistory(
     .replace(/\x60/g, '\\\x60');
 
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  geminiClient.addHistory({
+  gemmaClient.addHistory({
     role: 'user',
     parts: [
       {
@@ -80,7 +80,7 @@ export const useExecutionLifecycle = (
   onExec: (command: Promise<void>) => void,
   onDebugMessage: (message: string) => void,
   config: Config,
-  geminiClient: GeminiClient,
+  gemmaClient: GemmaClient,
   setShellInputFocused: (value: boolean) => void,
   terminalWidth?: number,
   terminalHeight?: number,
@@ -619,7 +619,7 @@ export const useExecutionLifecycle = (
             );
           }
 
-          addShellCommandToGeminiHistory(geminiClient, rawQuery, mainContent);
+          addShellCommandToGeminiHistory(gemmaClient, rawQuery, mainContent);
         } catch (err) {
           setPendingHistoryItem(null);
           const errorMessage = err instanceof Error ? err.message : String(err);
@@ -660,7 +660,7 @@ export const useExecutionLifecycle = (
       addItemToHistory,
       setPendingHistoryItem,
       onExec,
-      geminiClient,
+      gemmaClient,
       setShellInputFocused,
       terminalHeight,
       terminalWidth,

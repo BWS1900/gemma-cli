@@ -13,7 +13,7 @@ import {
   GeminiEventType,
   type ToolCallRequestInfo,
   type ServerGeminiStreamEvent,
-  type GeminiClient,
+  type GemmaClient,
   type Content,
   scheduleAgentTools,
   getAuthTypeFromEnv,
@@ -36,7 +36,7 @@ import type { SkillReference } from './skills.js';
 import type { GeminiCliAgent } from './agent.js';
 
 /**
- * Represents an interactive conversation session with a Gemini CLI agent.
+ * Represents an interactive conversation session with a Gemma CLI agent.
  *
  * A session manages the conversation lifecycle: initialization, sending messages
  * via streaming, handling tool calls, and maintaining conversation history.
@@ -50,7 +50,7 @@ export class GeminiCliSession {
   private readonly tools: Array<Tool<any>>;
   private readonly skillRefs: SkillReference[];
   private readonly instructions: SystemInstructions | undefined;
-  private client: GeminiClient | undefined;
+  private client: GemmaClient | undefined;
   private initialized = false;
 
   constructor(
@@ -165,7 +165,7 @@ export class GeminiCliSession {
       registry.registerTool(sdkTool);
     }
 
-    this.client = loopContext2.geminiClient;
+    this.client = loopContext2.gemmaClient;
 
     if (this.resumedData) {
       const history: Content[] = this.resumedData.conversation.messages.map(
@@ -222,7 +222,7 @@ export class GeminiCliSession {
     const fs = new SdkAgentFilesystem(this.config);
     const shell = new SdkAgentShell(this.config);
 
-    let request: Parameters<GeminiClient['sendMessageStream']>[0] = [
+    let request: Parameters<GemmaClient['sendMessageStream']>[0] = [
       { text: prompt },
     ];
 
@@ -309,7 +309,7 @@ export class GeminiCliSession {
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       request = functionResponses as unknown as Parameters<
-        GeminiClient['sendMessageStream']
+        GemmaClient['sendMessageStream']
       >[0];
     }
   }

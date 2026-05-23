@@ -36,7 +36,7 @@ vi.mock('../../config/auth.js', () => ({
 describe('useAuth', () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    delete process.env['GEMINI_API_KEY'];
+    delete process.env['GEMMA_API_KEY'];
     delete process.env['GEMINI_DEFAULT_AUTH_TYPE'];
   });
 
@@ -175,13 +175,13 @@ describe('useAuth', () => {
     });
 
     it('should set error if no auth type is selected but env key exists', async () => {
-      process.env['GEMINI_API_KEY'] = 'env-key';
+      process.env['GEMMA_API_KEY'] = 'env-key';
       const { result } = await renderHook(() =>
         useAuthCommand(createSettings(undefined), mockConfig),
       );
 
       expect(result.current.authError).toContain(
-        'Existing API key detected (GEMINI_API_KEY)',
+        'Existing API key detected (GEMMA_API_KEY)',
       );
       expect(result.current.authState).toBe(AuthState.Updating);
     });
@@ -233,7 +233,7 @@ describe('useAuth', () => {
     });
 
     it('should authenticate if USE_GEMINI and env key is found', async () => {
-      process.env['GEMINI_API_KEY'] = 'env-key';
+      process.env['GEMMA_API_KEY'] = 'env-key';
 
       const { result } = await renderHook(() =>
         useAuthCommand(createSettings(AuthType.USE_GEMINI), mockConfig),
@@ -249,7 +249,7 @@ describe('useAuth', () => {
     });
 
     it('should prioritize env key over stored key when both are present', async () => {
-      process.env['GEMINI_API_KEY'] = 'env-key';
+      process.env['GEMMA_API_KEY'] = 'env-key';
 
       const { result } = await renderHook(() =>
         useAuthCommand(createSettings(AuthType.USE_GEMINI), mockConfig),

@@ -204,7 +204,7 @@ export class ToolExecutor {
     if (this.config.isContextManagementEnabled()) {
       const distiller = new ToolOutputDistillationService(
         this.config,
-        this.context.geminiClient,
+        this.context.gemmaClient,
         this.context.promptId,
       );
       return distiller.distill(call.request.name, call.request.callId, content);

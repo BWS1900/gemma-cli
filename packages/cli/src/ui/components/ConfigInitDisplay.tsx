@@ -12,7 +12,7 @@ import {
   type McpClient,
   MCPServerStatus,
 } from '@google/gemini-cli-core';
-import { GeminiSpinner } from './GeminiSpinner.js';
+import { GemmaSpinner } from './GemmaSpinner.js';
 import { theme } from '../semantic-colors.js';
 
 export const ConfigInitDisplay = ({
@@ -68,7 +68,7 @@ export const ConfigInitDisplay = ({
   return (
     <Box marginTop={1}>
       <Text>
-        <GeminiSpinner /> <Text color={theme.text.primary}>{message}</Text>
+        <GemmaSpinner /> <Text color={theme.text.primary}>{message}</Text>
       </Text>
     </Box>
   );

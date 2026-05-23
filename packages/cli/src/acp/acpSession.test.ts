@@ -19,7 +19,7 @@ import { Session } from './acpSession.js';
 import type * as acp from '@agentclientprotocol/sdk';
 import {
   ReadManyFilesTool,
-  type GeminiChat,
+  type GemmaChat,
   type Config,
   type MessageBus,
   type GitService,
@@ -82,7 +82,7 @@ async function* createMockStream(
 }
 
 describe('Session', () => {
-  let mockChat: Mocked<GeminiChat>;
+  let mockChat: Mocked<GemmaChat>;
   let mockConfig: Mocked<Config>;
   let mockConnection: Mocked<acp.AgentSideConnection>;
   let session: Session;
@@ -103,7 +103,7 @@ describe('Session', () => {
       addHistory: vi.fn(),
       recordCompletedToolCalls: vi.fn(),
       getHistory: vi.fn().mockReturnValue([]),
-    } as unknown as Mocked<GeminiChat>;
+    } as unknown as Mocked<GemmaChat>;
     mockTool = {
       kind: 'read',
       build: vi.fn().mockReturnValue({
@@ -154,7 +154,7 @@ describe('Session', () => {
       waitForMcpInit: vi.fn(),
       getDisableAlwaysAllow: vi.fn().mockReturnValue(false),
       getMaxSessionTurns: vi.fn().mockReturnValue(-1),
-      geminiClient: {
+      gemmaClient: {
         sendMessageStream: mockSendMessageStream,
         getChat: vi.fn().mockReturnValue(mockChat),
       },
@@ -249,7 +249,7 @@ describe('Session', () => {
     expect(result).toMatchObject({ stopReason: 'end_turn' });
   });
 
-  it('should pass current session information directly onto geminiClient.sendMessageStream', async () => {
+  it('should pass current session information directly onto gemmaClient.sendMessageStream', async () => {
     const stream = createMockStream([
       {
         type: GeminiEventType.Content,

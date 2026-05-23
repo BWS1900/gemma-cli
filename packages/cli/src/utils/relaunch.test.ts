@@ -146,7 +146,7 @@ describe('relaunchAppInChildProcess', () => {
     vi.clearAllMocks();
     mocks.writeToStderr.mockClear();
 
-    vi.stubEnv('GEMINI_CLI_NO_RELAUNCH', '');
+    vi.stubEnv('GEMMA_CLI_NO_RELAUNCH', '');
     vi.stubEnv('IS_BINARY', '');
     vi.stubEnv('NODE_OPTIONS', '');
 
@@ -176,9 +176,9 @@ describe('relaunchAppInChildProcess', () => {
     stdinResumeSpy.mockRestore();
   });
 
-  describe('when GEMINI_CLI_NO_RELAUNCH is set', () => {
+  describe('when GEMMA_CLI_NO_RELAUNCH is set', () => {
     it('should return early without spawning a child process', async () => {
-      vi.stubEnv('GEMINI_CLI_NO_RELAUNCH', 'true');
+      vi.stubEnv('GEMMA_CLI_NO_RELAUNCH', 'true');
 
       await relaunchAppInChildProcess(['--test'], ['--verbose']);
 
@@ -187,9 +187,9 @@ describe('relaunchAppInChildProcess', () => {
     });
   });
 
-  describe('when GEMINI_CLI_NO_RELAUNCH is not set', () => {
+  describe('when GEMMA_CLI_NO_RELAUNCH is not set', () => {
     beforeEach(() => {
-      vi.stubEnv('GEMINI_CLI_NO_RELAUNCH', '');
+      vi.stubEnv('GEMMA_CLI_NO_RELAUNCH', '');
     });
 
     it('should construct correct spawn arguments and use command line for node arguments in standard Node mode', async () => {
@@ -232,7 +232,7 @@ describe('relaunchAppInChildProcess', () => {
         ],
         expect.objectContaining({
           env: expect.objectContaining({
-            GEMINI_CLI_NO_RELAUNCH: 'true',
+            GEMMA_CLI_NO_RELAUNCH: 'true',
           }),
         }),
       );
@@ -272,7 +272,7 @@ describe('relaunchAppInChildProcess', () => {
         ['/usr/bin/node', 'command', '--verbose'],
         expect.objectContaining({
           env: expect.objectContaining({
-            GEMINI_CLI_NO_RELAUNCH: 'true',
+            GEMMA_CLI_NO_RELAUNCH: 'true',
             NODE_OPTIONS: '--max-old-space-size=8192',
           }),
         }),

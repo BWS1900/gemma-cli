@@ -23,7 +23,7 @@ import type { ToolRegistry } from './tool-registry.js';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
-import { GeminiClient } from '../core/client.js';
+import { GemmaClient } from '../core/client.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
 import { ensureCorrectFileContent } from '../utils/editCorrector.js';
 import { StandardFileSystemService } from '../services/fileSystemService.js';
@@ -47,7 +47,7 @@ vi.mock('../ide/ide-client.js', () => ({
   },
 }));
 
-let mockGeminiClientInstance: Mocked<GeminiClient>;
+let mockGemmaClientInstance: Mocked<GemmaClient>;
 let mockBaseLlmClientInstance: Mocked<BaseLlmClient>;
 const mockEnsureCorrectFileContent = vi.fn<typeof ensureCorrectFileContent>();
 
@@ -57,7 +57,7 @@ const mockConfigInternal = {
   getTargetDir: () => rootDir,
   getApprovalMode: vi.fn(() => ApprovalMode.DEFAULT),
   setApprovalMode: vi.fn(),
-  getGeminiClient: vi.fn(),
+  getGemmaClient: vi.fn(),
   getBaseLlmClient: vi.fn(),
   getFileSystemService: () => fsService,
   getIdeMode: vi.fn(() => false),
@@ -112,10 +112,10 @@ describe('Line Ending Preservation', () => {
       fs.mkdirSync(rootDir, { recursive: true });
     }
 
-    mockGeminiClientInstance = new (vi.mocked(GeminiClient))(
+    mockGemmaClientInstance = new (vi.mocked(GemmaClient))(
       mockConfig,
-    ) as Mocked<GeminiClient>;
-    vi.mocked(GeminiClient).mockImplementation(() => mockGeminiClientInstance);
+    ) as Mocked<GemmaClient>;
+    vi.mocked(GemmaClient).mockImplementation(() => mockGemmaClientInstance);
 
     mockBaseLlmClientInstance = {
       generateJson: vi.fn(),
@@ -125,8 +125,8 @@ describe('Line Ending Preservation', () => {
       mockEnsureCorrectFileContent,
     );
 
-    mockConfigInternal.getGeminiClient.mockReturnValue(
-      mockGeminiClientInstance,
+    mockConfigInternal.getGemmaClient.mockReturnValue(
+      mockGemmaClientInstance,
     );
     mockConfigInternal.getBaseLlmClient.mockReturnValue(
       mockBaseLlmClientInstance,

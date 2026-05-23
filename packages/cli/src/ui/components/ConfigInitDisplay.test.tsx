@@ -26,9 +26,9 @@ import {
 } from '@google/gemini-cli-core';
 import { Text } from 'ink';
 
-// Mock GeminiSpinner
-vi.mock('./GeminiSpinner.js', () => ({
-  GeminiSpinner: () => <Text>Spinner</Text>,
+// Mock GemmaSpinner
+vi.mock('./GemmaSpinner.js', () => ({
+  GemmaSpinner: () => <Text>Spinner</Text>,
 }));
 
 describe('ConfigInitDisplay', () => {

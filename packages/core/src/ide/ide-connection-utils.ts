@@ -63,7 +63,7 @@ export function validateWorkspacePath(
   if (!isWithinWorkspace) {
     return {
       isValid: false,
-      error: `Directory mismatch. Gemini CLI is running in a different location than the open workspace in the IDE. Please run the CLI from one of the following directories: ${ideWorkspacePaths.join(
+      error: `Directory mismatch. Gemma CLI is running in a different location than the open workspace in the IDE. Please run the CLI from one of the following directories: ${ideWorkspacePaths.join(
         ', ',
       )}`,
     };
@@ -72,7 +72,7 @@ export function validateWorkspacePath(
 }
 
 export function getPortFromEnv(): string | undefined {
-  const port = process.env['GEMINI_CLI_IDE_SERVER_PORT'];
+  const port = process.env['GEMMA_CLI_IDE_SERVER_PORT'];
   if (!port) {
     return undefined;
   }
@@ -80,12 +80,12 @@ export function getPortFromEnv(): string | undefined {
 }
 
 export function getStdioConfigFromEnv(): StdioConfig | undefined {
-  const command = process.env['GEMINI_CLI_IDE_SERVER_STDIO_COMMAND'];
+  const command = process.env['GEMMA_CLI_IDE_SERVER_STDIO_COMMAND'];
   if (!command) {
     return undefined;
   }
 
-  const argsStr = process.env['GEMINI_CLI_IDE_SERVER_STDIO_ARGS'];
+  const argsStr = process.env['GEMMA_CLI_IDE_SERVER_STDIO_ARGS'];
   let args: string[] = [];
   if (argsStr) {
     try {
@@ -96,11 +96,11 @@ export function getStdioConfigFromEnv(): StdioConfig | undefined {
         args = parsedArgs;
       } else {
         logger.error(
-          'GEMINI_CLI_IDE_SERVER_STDIO_ARGS must be a JSON array string.',
+          'GEMMA_CLI_IDE_SERVER_STDIO_ARGS must be a JSON array string.',
         );
       }
     } catch (e) {
-      logger.error('Failed to parse GEMINI_CLI_IDE_SERVER_STDIO_ARGS:', e);
+      logger.error('Failed to parse GEMMA_CLI_IDE_SERVER_STDIO_ARGS:', e);
     }
   }
 

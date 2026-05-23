@@ -9,7 +9,7 @@ import * as os from 'node:os';
 import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import {
-  GEMINI_DIR,
+  GEMMA_DIR,
   homedir,
   GOOGLE_ACCOUNTS_FILENAME,
   isSubpath,
@@ -54,9 +54,9 @@ export class Storage {
   static getGlobalGeminiDir(): string {
     const homeDir = homedir();
     if (!homeDir) {
-      return path.join(os.tmpdir(), GEMINI_DIR);
+      return path.join(os.tmpdir(), GEMMA_DIR);
     }
-    return path.join(homeDir, GEMINI_DIR);
+    return path.join(homeDir, GEMMA_DIR);
   }
 
   static getGlobalAgentsDir(): string {
@@ -88,8 +88,8 @@ export class Storage {
   }
 
   static getTrustedFoldersPath(): string {
-    if (process.env['GEMINI_CLI_TRUSTED_FOLDERS_PATH']) {
-      return process.env['GEMINI_CLI_TRUSTED_FOLDERS_PATH'];
+    if (process.env['GEMMA_CLI_TRUSTED_FOLDERS_PATH']) {
+      return process.env['GEMMA_CLI_TRUSTED_FOLDERS_PATH'];
     }
     return path.join(Storage.getGlobalGeminiDir(), TRUSTED_FOLDERS_FILENAME);
   }
@@ -141,8 +141,8 @@ export class Storage {
   }
 
   static getSystemSettingsPath(): string {
-    if (process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH']) {
-      return process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'];
+    if (process.env['GEMMA_CLI_SYSTEM_SETTINGS_PATH']) {
+      return process.env['GEMMA_CLI_SYSTEM_SETTINGS_PATH'];
     }
     return path.join(Storage.getSystemConfigDir(), 'settings.json');
   }
@@ -160,7 +160,7 @@ export class Storage {
   }
 
   getGeminiDir(): string {
-    return path.join(this.targetDir, GEMINI_DIR);
+    return path.join(this.targetDir, GEMMA_DIR);
   }
 
   /**

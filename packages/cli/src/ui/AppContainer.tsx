@@ -233,7 +233,7 @@ export const AppContainer = (props: AppContainerProps) => {
     useContext(InkAppContext);
   const recordingFilenameRef = useRef<string | null>(null);
   const historyManager = useHistory({
-    chatRecordingService: config.getGeminiClient()?.getChatRecordingService(),
+    chatRecordingService: config.getGemmaClient()?.getChatRecordingService(),
   });
 
   useMemoryMonitor(historyManager);
@@ -496,9 +496,9 @@ export const AppContainer = (props: AppContainerProps) => {
 
       if (result) {
         const additionalContext = result.getAdditionalContext();
-        const geminiClient = config.getGeminiClient();
-        if (additionalContext && geminiClient) {
-          await geminiClient.addHistory({
+        const gemmaClient = config.getGemmaClient();
+        if (additionalContext && gemmaClient) {
+          await gemmaClient.addHistory({
             role: 'user',
             parts: [
               { text: `<hook_context>${additionalContext}</hook_context>` },
@@ -770,13 +770,13 @@ export const AppContainer = (props: AppContainerProps) => {
     settings.merged.security.auth.selectedType !== AuthType.USE_GEMINI;
 
   // Session browser and resume functionality
-  const isGeminiClientInitialized = config.getGeminiClient()?.isInitialized();
+  const isGemmaClientInitialized = config.getGemmaClient()?.isInitialized();
 
   const { loadHistoryForResume, isResuming } = useSessionResume({
     config,
     historyManager,
     refreshStatic,
-    isGeminiClientInitialized,
+    isGemmaClientInitialized,
     setQuittingMessages,
     resumedSessionData,
     isAuthenticating,
@@ -840,7 +840,7 @@ export const AppContainer = (props: AppContainerProps) => {
         ) {
           writeToStdout(`
 ----------------------------------------------------------------
-Logging in with Google... Restarting Gemini CLI to continue.
+Logging in with Google... Restarting Gemma CLI to continue.
 ----------------------------------------------------------------
           `);
           await relaunchApp();
@@ -1189,7 +1189,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       })
     : // eslint-disable-next-line react-hooks/rules-of-hooks
       useGeminiStream(
-        config.getGeminiClient(),
+        config.getGemmaClient(),
         historyManager.history,
         historyManager.addItem,
         config,
@@ -1583,7 +1583,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
   // Initial prompt handling
   const initialPrompt = useMemo(() => config.getQuestion(), [config]);
   const initialPromptSubmitted = useRef(false);
-  const geminiClient = config.getGeminiClient();
+  const gemmaClient = config.getGemmaClient();
 
   useEffect(() => {
     if (
@@ -1595,7 +1595,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       !isThemeDialogOpen &&
       !isEditorDialogOpen &&
       !showPrivacyNotice &&
-      geminiClient?.isInitialized?.()
+      gemmaClient?.isInitialized?.()
     ) {
       void handleFinalSubmit(initialPrompt);
       initialPromptSubmitted.current = true;
@@ -1609,7 +1609,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
     isThemeDialogOpen,
     isEditorDialogOpen,
     showPrivacyNotice,
-    geminiClient,
+    gemmaClient,
   ]);
 
   const [idePromptAnswered, setIdePromptAnswered] = useState(false);
@@ -2093,7 +2093,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       lastTitleRef.current = paddedTitle;
       stdout.write(`\x1b]0;${paddedTitle}\x07`);
     }
-    // Note: We don't need to reset the window title on exit because Gemini CLI is already doing that elsewhere
+    // Note: We don't need to reset the window title on exit because Gemma CLI is already doing that elsewhere
   }, [
     streamingState,
     thought,

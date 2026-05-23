@@ -7,7 +7,7 @@
 import {
   type AgentLoopContext,
   Scheduler,
-  type GeminiClient,
+  type GemmaClient,
   GeminiEventType,
   ToolConfirmationOutcome,
   ApprovalMode,
@@ -76,7 +76,7 @@ export class Task {
   contextId: string;
   scheduler: Scheduler;
   config: Config;
-  geminiClient: GeminiClient;
+  gemmaClient: GemmaClient;
   pendingToolConfirmationDetails: Map<string, ToolCallConfirmationDetails>;
   pendingCorrelationIds: Map<string, string> = new Map();
   taskState: TaskState;
@@ -123,7 +123,7 @@ export class Task {
     this.scheduler = this.setupEventDrivenScheduler();
 
     const loopContext: AgentLoopContext = this.config;
-    this.geminiClient = loopContext.geminiClient;
+    this.gemmaClient = loopContext.gemmaClient;
     this.pendingToolConfirmationDetails = new Map();
     this.taskState = 'submitted';
     this.eventBus = eventBus;
@@ -716,7 +716,7 @@ export class Task {
           await processRestorableToolCalls(
             restorableToolCalls,
             gitService,
-            this.geminiClient,
+            this.gemmaClient,
           );
 
         if (errors.length > 0) {
@@ -1098,7 +1098,7 @@ export class Task {
         parts = [response];
       }
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.geminiClient.addHistory({
+      this.gemmaClient.addHistory({
         role: 'user',
         parts,
       });
@@ -1137,7 +1137,7 @@ export class Task {
     // Set task state to working as we are about to call LLM
     this.setTaskStateAndPublishUpdate('working', stateChange);
     this.currentAgentMessageId = uuidv4();
-    yield* this.geminiClient.sendMessageStream(
+    yield* this.gemmaClient.sendMessageStream(
       llmParts,
       aborted,
       completedToolCalls[0]?.request.prompt_id ?? '',
@@ -1179,7 +1179,7 @@ export class Task {
       };
       // Set task state to working as we are about to call LLM
       this.setTaskStateAndPublishUpdate('working', stateChange);
-      yield* this.geminiClient.sendMessageStream(
+      yield* this.gemmaClient.sendMessageStream(
         llmParts,
         aborted,
         this.currentPromptId,

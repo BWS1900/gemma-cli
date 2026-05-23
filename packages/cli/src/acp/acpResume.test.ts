@@ -84,7 +84,7 @@ describe('GeminiAgent Session Resume', () => {
       initialize: vi.fn().mockResolvedValue(undefined),
       getFileSystemService: vi.fn(),
       setFileSystemService: vi.fn(),
-      getGeminiClient: vi.fn().mockReturnValue({
+      getGemmaClient: vi.fn().mockReturnValue({
         initialize: vi.fn().mockResolvedValue(undefined),
         resumeChat: vi.fn().mockResolvedValue(undefined),
         getChat: vi.fn().mockReturnValue({}),
@@ -110,7 +110,7 @@ describe('GeminiAgent Session Resume', () => {
       isPlanEnabled: vi.fn().mockReturnValue(true),
       getModel: vi.fn().mockReturnValue('gemini-pro'),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(false),
-      getGemini31LaunchedSync: vi.fn().mockReturnValue(false),
+      getGemma31LaunchedSync: vi.fn().mockReturnValue(false),
       getCheckpointingEnabled: vi.fn().mockReturnValue(false),
       toolRegistry: {
         getTool: vi.fn().mockReturnValue({ kind: 'read' }),
@@ -236,7 +236,7 @@ describe('GeminiAgent Session Resume', () => {
     });
 
     // Verify resumeChat received the correct arguments
-    expect(mockConfig.getGeminiClient().resumeChat).toHaveBeenCalledWith(
+    expect(mockConfig.getGemmaClient().resumeChat).toHaveBeenCalledWith(
       mockClientHistory,
       expect.objectContaining({
         conversation: sessionData,

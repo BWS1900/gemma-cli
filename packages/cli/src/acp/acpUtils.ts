@@ -264,9 +264,9 @@ export function buildAvailableModels(
 } {
   const preferredModel = config.getModel() || GEMINI_MODEL_ALIAS_AUTO;
   const shouldShowPreviewModels = config.getHasAccessToPreviewModel();
-  const useGemini31 = config.getGemini31LaunchedSync?.() ?? false;
+  const useGemini31 = config.getGemma31LaunchedSync?.() ?? false;
   const useGemini31FlashLite =
-    config.getGemini31FlashLiteLaunchedSync?.() ?? false;
+    config.getGemma31FlashLiteLaunchedSync?.() ?? false;
   const selectedAuthType = settings.merged.security.auth.selectedType;
   const useCustomToolModel =
     useGemini31 && selectedAuthType === AuthType.USE_GEMINI;

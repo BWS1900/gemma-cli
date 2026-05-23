@@ -36,9 +36,9 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
       resizePty: vi.fn(),
       subscribe: vi.fn(() => vi.fn()),
       getLogFilePath: vi.fn(
-        (pid) => `~/.gemini/tmp/background-processes/background-${pid}.log`,
+        (pid) => `~/.gemma/tmp/background-processes/background-${pid}.log`,
       ),
-      getLogDir: vi.fn(() => '~/.gemini/tmp/background-processes'),
+      getLogDir: vi.fn(() => '~/.gemma/tmp/background-processes'),
     },
   };
 });

@@ -99,7 +99,7 @@ describe('rewindCommand', () => {
     mockContext = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: {
+          gemmaClient: {
             getChatRecordingService: mockGetChatRecordingService,
             setHistory: mockSetHistory,
             sendMessageStream: mockSendMessageStream,
@@ -297,7 +297,7 @@ describe('rewindCommand', () => {
     const context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: undefined,
+          gemmaClient: undefined,
           get config() {
             return this;
           },
@@ -318,7 +318,7 @@ describe('rewindCommand', () => {
     const context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: { getChatRecordingService: () => undefined },
+          gemmaClient: { getChatRecordingService: () => undefined },
           get config() {
             return this;
           },

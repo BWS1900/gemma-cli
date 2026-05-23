@@ -216,8 +216,8 @@ ${formattedHistory}
         useCustomToolModel,
         hasAccessToPreview,
       ] = await Promise.all([
-        config.getGemini31Launched(),
-        config.getGemini31FlashLiteLaunched(),
+        config.getGemma31Launched(),
+        config.getGemma31FlashLiteLaunched(),
         config.getUseCustomToolModel(),
         config.getHasAccessToPreviewModel?.() ?? true,
       ]);

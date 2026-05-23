@@ -20,7 +20,7 @@ import {
   MCPDiscoveryState,
   makeFakeConfig,
   coreEvents,
-  type GeminiClient,
+  type GemmaClient,
 } from '@google/gemini-cli-core';
 
 const {
@@ -579,8 +579,8 @@ describe('useSlashCommandProcessor', () => {
       const mockClient = {
         setHistory: vi.fn(),
         stripThoughtsFromHistory: vi.fn(),
-      } as unknown as GeminiClient;
-      vi.spyOn(mockConfig, 'getGeminiClient').mockReturnValue(mockClient);
+      } as unknown as GemmaClient;
+      vi.spyOn(mockConfig, 'getGemmaClient').mockReturnValue(mockClient);
 
       const command = createTestCommand({
         name: 'load',
@@ -656,8 +656,8 @@ describe('useSlashCommandProcessor', () => {
         getChatRecordingService: vi.fn().mockReturnValue({
           deleteCurrentSessionAsync: mockDeleteCurrentSessionAsync,
         }),
-      } as unknown as GeminiClient;
-      vi.spyOn(mockConfig, 'getGeminiClient').mockReturnValue(mockClient);
+      } as unknown as GemmaClient;
+      vi.spyOn(mockConfig, 'getGemmaClient').mockReturnValue(mockClient);
 
       const quitAction = vi.fn().mockResolvedValue({
         type: 'quit',
@@ -690,8 +690,8 @@ describe('useSlashCommandProcessor', () => {
         getChatRecordingService: vi.fn().mockReturnValue({
           deleteCurrentSessionAsync: mockDeleteCurrentSessionAsync,
         }),
-      } as unknown as GeminiClient;
-      vi.spyOn(mockConfig, 'getGeminiClient').mockReturnValue(mockClient);
+      } as unknown as GemmaClient;
+      vi.spyOn(mockConfig, 'getGemmaClient').mockReturnValue(mockClient);
 
       const quitAction = vi.fn().mockResolvedValue({
         type: 'quit',
@@ -722,8 +722,8 @@ describe('useSlashCommandProcessor', () => {
             .fn()
             .mockRejectedValue(new Error('Deletion failed')),
         }),
-      } as unknown as GeminiClient;
-      vi.spyOn(mockConfig, 'getGeminiClient').mockReturnValue(mockClient);
+      } as unknown as GemmaClient;
+      vi.spyOn(mockConfig, 'getGemmaClient').mockReturnValue(mockClient);
 
       const quitAction = vi.fn().mockResolvedValue({
         type: 'quit',

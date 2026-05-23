@@ -364,9 +364,9 @@ async function handleSetup(argv: SetupArgs): Promise<number> {
     });
 
     log(chalk.green('  ✓ Settings updated'));
-    log(chalk.dim('    User (~/.gemini/settings.json): autoStartServer'));
+    log(chalk.dim('    User (~/.gemma/settings.json): autoStartServer'));
     log(
-      chalk.dim('    Workspace (.gemini/settings.json): enabled, classifier'),
+      chalk.dim('    Workspace (.gemma/settings.json): enabled, classifier'),
     );
     settingsUpdated = true;
   } catch (error) {
@@ -376,7 +376,7 @@ async function handleSetup(argv: SetupArgs): Promise<number> {
       ),
     );
     logError(
-      '  You can manually add the configuration to ~/.gemini/settings.json',
+      '  You can manually add the configuration to ~/.gemma/settings.json',
     );
   }
 

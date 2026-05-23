@@ -35,7 +35,7 @@ vi.mock('../agent/task.js', () => {
         .fn()
         .mockReturnValue({ model: 'gemini-pro' }),
     };
-    geminiClient = {
+    gemmaClient = {
       initialize: vi.fn().mockResolvedValue(undefined),
     };
     constructor(id: string, contextId: string) {

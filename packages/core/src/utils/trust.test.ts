@@ -45,7 +45,7 @@ describe('Trust Utility (Core)', () => {
     vi.mocked(headless.isHeadlessMode).mockReturnValue(false);
     ideContextStore.clear();
     resetTrustedFoldersForTesting();
-    delete process.env['GEMINI_CLI_TRUST_WORKSPACE'];
+    delete process.env['GEMMA_CLI_TRUST_WORKSPACE'];
   });
 
   afterEach(() => {
@@ -100,7 +100,7 @@ describe('Trust Utility (Core)', () => {
 
     expect(folders.isPathTrusted(path.resolve('/project/file.txt'))).toBe(true);
     expect(
-      folders.isPathTrusted(path.resolve('/project/.gemini/config.yaml')),
+      folders.isPathTrusted(path.resolve('/project/.gemma/config.yaml')),
     ).toBe(true);
   });
 

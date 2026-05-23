@@ -121,7 +121,7 @@ describe('bugCommand', () => {
             getContentGeneratorConfig: () => ({ authType: 'oauth-personal' }),
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: {
+          gemmaClient: {
             getChat: () => ({
               getHistory: () => [],
             }),
@@ -170,7 +170,7 @@ describe('bugCommand', () => {
             },
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: {
+          gemmaClient: {
             getChat: () => ({
               getHistory: () => history,
             }),
@@ -216,7 +216,7 @@ describe('bugCommand', () => {
             getContentGeneratorConfig: () => ({ authType: 'vertex-ai' }),
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: {
+          gemmaClient: {
             getChat: () => ({
               getHistory: () => [],
             }),
@@ -261,7 +261,7 @@ describe('bugCommand', () => {
             storage: tempDir ? { getProjectTempDir: () => tempDir } : undefined,
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: { getChat: () => ({ getHistory: () => [] }) },
+          gemmaClient: { getChat: () => ({ getHistory: () => [] }) },
         },
       },
     });

@@ -49,8 +49,8 @@ describe('IdeIntegrationNudge', () => {
         return;
       }
     });
-    vi.stubEnv('GEMINI_CLI_IDE_SERVER_PORT', '');
-    vi.stubEnv('GEMINI_CLI_IDE_WORKSPACE_PATH', '');
+    vi.stubEnv('GEMMA_CLI_IDE_SERVER_PORT', '');
+    vi.stubEnv('GEMMA_CLI_IDE_WORKSPACE_PATH', '');
   });
 
   it('renders correctly with default options', async () => {
@@ -59,7 +59,7 @@ describe('IdeIntegrationNudge', () => {
     );
     const frame = lastFrame();
 
-    expect(frame).toContain('Do you want to connect VS Code to Gemini CLI?');
+    expect(frame).toContain('Do you want to connect VS Code to Gemma CLI?');
     expect(frame).toContain('Yes');
     expect(frame).toContain('No (esc)');
     expect(frame).toContain("No, don't ask again");
@@ -161,8 +161,8 @@ describe('IdeIntegrationNudge', () => {
   });
 
   it('displays correct text and handles selection when extension is pre-installed', async () => {
-    vi.stubEnv('GEMINI_CLI_IDE_SERVER_PORT', '1234');
-    vi.stubEnv('GEMINI_CLI_IDE_WORKSPACE_PATH', '/tmp');
+    vi.stubEnv('GEMMA_CLI_IDE_SERVER_PORT', '1234');
+    vi.stubEnv('GEMMA_CLI_IDE_WORKSPACE_PATH', '/tmp');
 
     const onComplete = vi.fn();
     const { lastFrame, stdin, waitUntilReady, unmount } =

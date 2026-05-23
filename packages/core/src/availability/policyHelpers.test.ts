@@ -29,10 +29,10 @@ const createMockConfig = (overrides: Partial<Config> = {}): Config => {
   const config = {
     getUserTier: () => undefined,
     getModel: () => 'gemini-2.5-pro',
-    getGemini31LaunchedSync: () => false,
-    getGemini31FlashLiteLaunchedSync: () => false,
+    getGemma31LaunchedSync: () => false,
+    getGemma31FlashLiteLaunchedSync: () => false,
     getUseCustomToolModelSync: () => {
-      const useGemini31 = config.getGemini31LaunchedSync();
+      const useGemini31 = config.getGemma31LaunchedSync();
       const authType = config.getContentGeneratorConfig().authType;
       return useGemini31 && authType === AuthType.USE_GEMINI;
     },
@@ -156,7 +156,7 @@ describe('policyHelpers', () => {
     it('returns Gemini 3.1 Pro chain when launched and auto-gemini-3 requested', () => {
       const config = createMockConfig({
         getModel: () => 'auto-gemini-3',
-        getGemini31LaunchedSync: () => true,
+        getGemma31LaunchedSync: () => true,
       });
       const chain = resolvePolicyChain(config);
       expect(chain[0]?.model).toBe(PREVIEW_GEMINI_3_1_MODEL);
@@ -166,7 +166,7 @@ describe('policyHelpers', () => {
     it('returns Gemini 3.1 Pro Custom Tools chain when launched, auth is Gemini, and auto-gemini-3 requested', () => {
       const config = createMockConfig({
         getModel: () => 'auto-gemini-3',
-        getGemini31LaunchedSync: () => true,
+        getGemma31LaunchedSync: () => true,
         getContentGeneratorConfig: () => ({ authType: AuthType.USE_GEMINI }),
       });
       const chain = resolvePolicyChain(config);
@@ -226,8 +226,8 @@ describe('policyHelpers', () => {
             createMockConfig({
               getExperimentalDynamicModelConfiguration: () => dynamic,
               getModel: () => model,
-              getGemini31LaunchedSync: () => useGemini31 ?? false,
-              getGemini31FlashLiteLaunchedSync: () => false,
+              getGemma31LaunchedSync: () => useGemini31 ?? false,
+              getGemma31FlashLiteLaunchedSync: () => false,
               getHasAccessToPreviewModel: () => hasAccess ?? true,
               getContentGeneratorConfig: () => ({ authType }),
               getReleaseChannel: () => 'preview',

@@ -51,9 +51,9 @@ export function resolvePolicyChain(
   const configuredModel = normalizeModelId(config.getModel());
 
   let chain: ModelPolicyChain | undefined;
-  const useGemini31 = config.getGemini31LaunchedSync?.() ?? false;
+  const useGemini31 = config.getGemma31LaunchedSync?.() ?? false;
   const useGemini31FlashLite =
-    config.getGemini31FlashLiteLaunchedSync?.() ?? false;
+    config.getGemma31FlashLiteLaunchedSync?.() ?? false;
   const useCustomToolModel = config.getUseCustomToolModelSync?.() ?? false;
   const hasAccessToPreview = config.getHasAccessToPreviewModel?.() ?? false;
 

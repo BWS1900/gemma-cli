@@ -15,7 +15,7 @@ import type { Config } from '../config/config.js';
 import type { AgentDefinition } from '../agents/types.js';
 import { CodebaseInvestigatorAgent } from '../agents/codebase-investigator.js';
 import { AGENT_TOOL_NAME } from '../tools/tool-names.js';
-import { GEMINI_DIR } from '../utils/paths.js';
+import { GEMMA_DIR } from '../utils/paths.js';
 import { debugLogger } from '../utils/debugLogger.js';
 import {
   PREVIEW_GEMINI_MODEL,
@@ -103,7 +103,7 @@ describe('Core System Prompt (prompts.ts)', () => {
           .mockReturnValue('/tmp/project-temp/memory'),
         getProjectTempTrackerDir: vi
           .fn()
-          .mockReturnValue('/mock/.gemini/tmp/session/tracker'),
+          .mockReturnValue('/mock/.gemma/tmp/session/tracker'),
       },
       isInteractive: vi.fn().mockReturnValue(true),
       isInteractiveShellEnabled: vi.fn().mockReturnValue(true),
@@ -296,7 +296,7 @@ describe('Core System Prompt (prompts.ts)', () => {
   it('should use chatty system prompt for preview model', () => {
     vi.mocked(mockConfig.getActiveModel).mockReturnValue(PREVIEW_GEMINI_MODEL);
     const prompt = getCoreSystemPrompt(mockConfig);
-    expect(prompt).toContain('You are Gemini CLI, an interactive CLI agent'); // Check for core content
+    expect(prompt).toContain('You are Gemma CLI, an interactive CLI agent'); // Check for core content
     expect(prompt).toContain('- **User Hints:**');
     expect(prompt).toContain('No Chitchat:');
     expect(prompt).toMatchSnapshot();
@@ -307,7 +307,7 @@ describe('Core System Prompt (prompts.ts)', () => {
       PREVIEW_GEMINI_FLASH_MODEL,
     );
     const prompt = getCoreSystemPrompt(mockConfig);
-    expect(prompt).toContain('You are Gemini CLI, an interactive CLI agent'); // Check for core content
+    expect(prompt).toContain('You are Gemma CLI, an interactive CLI agent'); // Check for core content
     expect(prompt).toContain('No Chitchat:');
     expect(prompt).toMatchSnapshot();
   });
@@ -332,7 +332,7 @@ describe('Core System Prompt (prompts.ts)', () => {
     vi.mocked(mockConfig.getActiveModel).mockReturnValue(PREVIEW_GEMINI_MODEL);
     const prompt = getCoreSystemPrompt(mockConfig, userMemory);
     expect(prompt).not.toContain('---\n\n'); // Separator should not be present
-    expect(prompt).toContain('You are Gemini CLI, an interactive CLI agent'); // Check for core content
+    expect(prompt).toContain('You are Gemma CLI, an interactive CLI agent'); // Check for core content
     expect(prompt).toContain('No Chitchat:');
     expect(prompt).toMatchSnapshot(); // Use snapshot for base prompt structure
   });
@@ -346,7 +346,7 @@ describe('Core System Prompt (prompts.ts)', () => {
     expect(prompt).toContain('# Contextual Instructions (GEMINI.md)');
     expect(prompt).toContain('<loaded_context>');
     expect(prompt).toContain(memory);
-    expect(prompt).toContain('You are Gemini CLI, an interactive CLI agent'); // Ensure base prompt follows
+    expect(prompt).toContain('You are Gemma CLI, an interactive CLI agent'); // Ensure base prompt follows
     expect(prompt).toMatchSnapshot(); // Snapshot the combined prompt
   });
 
@@ -385,7 +385,7 @@ describe('Core System Prompt (prompts.ts)', () => {
     ['sandbox-exec', '# macOS Seatbelt', ['# Sandbox', '# Outside of Sandbox']],
     [
       undefined,
-      'You are Gemini CLI, an interactive CLI agent',
+      'You are Gemma CLI, an interactive CLI agent',
       ['# Sandbox', '# macOS Seatbelt'],
     ],
   ])(
@@ -779,7 +779,7 @@ describe('Core System Prompt (prompts.ts)', () => {
     it.each(['true', '1'])(
       'should read from default path when GEMINI_SYSTEM_MD is "%s"',
       (value) => {
-        const defaultPath = path.resolve(path.join(GEMINI_DIR, 'system.md'));
+        const defaultPath = path.resolve(path.join(GEMMA_DIR, 'system.md'));
         vi.stubEnv('GEMINI_SYSTEM_MD', value);
         vi.mocked(fs.existsSync).mockReturnValue(true);
         vi.mocked(fs.readFileSync).mockReturnValue('custom system prompt');
@@ -832,7 +832,7 @@ describe('Core System Prompt (prompts.ts)', () => {
     it.each(['true', '1'])(
       'should write to default path when GEMINI_WRITE_SYSTEM_MD is "%s"',
       (value) => {
-        const defaultPath = path.resolve(path.join(GEMINI_DIR, 'system.md'));
+        const defaultPath = path.resolve(path.join(GEMMA_DIR, 'system.md'));
         vi.stubEnv('GEMINI_WRITE_SYSTEM_MD', value);
         getCoreSystemPrompt(mockConfig);
         expect(fs.writeFileSync).toHaveBeenCalledWith(

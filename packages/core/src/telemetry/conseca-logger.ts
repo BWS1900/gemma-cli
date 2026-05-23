@@ -94,7 +94,7 @@ export function logConsecaVerdict(
           value: safeJsonStringify(event.policy),
         },
         {
-          gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_NAME,
+          gemini_cli_key: EventMetadataKey.GEMMA_CLI_TOOL_CALL_NAME,
           value: safeJsonStringify(event.tool_call),
         },
         {

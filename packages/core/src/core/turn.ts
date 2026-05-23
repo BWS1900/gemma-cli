@@ -26,7 +26,7 @@ import {
   UnauthorizedError,
   toFriendlyError,
 } from '../utils/errors.js';
-import { InvalidStreamError, type GeminiChat } from './geminiChat.js';
+import { InvalidStreamError, type GemmaChat } from './gemmaChat.js';
 import { parseThought, type ThoughtSummary } from '../utils/thoughtUtils.js';
 import type { ModelConfigKey } from '../services/modelConfigService.js';
 import { getCitations } from '../utils/generateContentResponseUtilities.js';
@@ -193,7 +193,7 @@ export interface ChatCompressionInfo {
   compressionStatus: CompressionStatus;
 }
 
-export type ServerGeminiChatCompressedEvent = {
+export type ServerGemmaChatCompressedEvent = {
   type: GeminiEventType.ChatCompressed;
   value: ChatCompressionInfo | null;
 };
@@ -218,7 +218,7 @@ export type ServerGeminiCitationEvent = {
 
 // The original union type, now composed of the individual types
 export type ServerGeminiStreamEvent =
-  | ServerGeminiChatCompressedEvent
+  | ServerGemmaChatCompressedEvent
   | ServerGeminiCitationEvent
   | ServerGeminiContentEvent
   | ServerGeminiErrorEvent
@@ -249,7 +249,7 @@ export class Turn {
   private hasLoggedRagTrace = false;
 
   constructor(
-    private readonly chat: GeminiChat,
+    private readonly chat: GemmaChat,
     private readonly prompt_id: string,
   ) {}
 

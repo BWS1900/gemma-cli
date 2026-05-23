@@ -57,7 +57,7 @@ async function finishAddingDirectories(
   }
 
   if (added.length > 0) {
-    const gemini = config.geminiClient;
+    const gemini = config.gemmaClient;
     if (gemini) {
       await gemini.addDirectoryContext();
 

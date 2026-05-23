@@ -104,7 +104,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
         this.name = 'FatalSandboxError';
       }
     },
-    GEMINI_DIR: '.gemini',
+    GEMMA_DIR: '.gemma',
     homedir: mockedHomedir,
   };
 });
@@ -187,7 +187,7 @@ describe('sandbox', () => {
       vi.stubEnv('SEATBELT_PROFILE', 'custom-test');
       vi.mocked(fs.existsSync).mockImplementation((p) =>
         String(p).includes(
-          path.join(homedir(), '.gemini', 'sandbox-macos-custom-test.sb'),
+          path.join(homedir(), '.gemma', 'sandbox-macos-custom-test.sb'),
         ),
       );
       const config: SandboxConfig = createMockSandboxConfig({
@@ -225,7 +225,7 @@ describe('sandbox', () => {
       const profileArg = spawnArgs?.[spawnArgs.indexOf('-f') + 1];
       expect(profileArg).toEqual(
         expect.stringContaining(
-          path.join(homedir(), '.gemini', 'sandbox-macos-custom-test.sb'),
+          path.join(homedir(), '.gemma', 'sandbox-macos-custom-test.sb'),
         ),
       );
     });
@@ -236,8 +236,8 @@ describe('sandbox', () => {
       vi.mocked(fs.existsSync).mockImplementation((p) => {
         const s = String(p);
         return (
-          s.includes(path.join('.gemini', 'sandbox-macos-custom-test.sb')) &&
-          !s.includes(path.join(homedir(), '.gemini'))
+          s.includes(path.join('.gemma', 'sandbox-macos-custom-test.sb')) &&
+          !s.includes(path.join(homedir(), '.gemma'))
         );
       });
       const config: SandboxConfig = createMockSandboxConfig({
@@ -275,7 +275,7 @@ describe('sandbox', () => {
       const profileArg = spawnArgs?.[spawnArgs.indexOf('-f') + 1];
       expect(profileArg).toEqual(
         expect.stringContaining(
-          path.join('.gemini', 'sandbox-macos-custom-test.sb'),
+          path.join('.gemma', 'sandbox-macos-custom-test.sb'),
         ),
       );
       expect(profileArg).not.toContain(homedir());
@@ -372,7 +372,7 @@ describe('sandbox', () => {
         command: 'docker',
         image: 'gemini-cli-sandbox',
       });
-      process.env['GEMINI_CLI_INTEGRATION_TEST'] = 'true';
+      process.env['GEMMA_CLI_INTEGRATION_TEST'] = 'true';
 
       interface MockProcessWithStdout extends EventEmitter {
         stdout: EventEmitter;
@@ -577,7 +577,7 @@ describe('sandbox', () => {
           '--volume',
           '/host/path:/container/path:ro',
           '--volume',
-          expect.stringMatching(/[\\/]home[\\/]user[\\/]\.gemini/),
+          expect.stringMatching(/[\\/]home[\\/]user[\\/]\.gemma/),
         ]),
         expect.any(Object),
       );

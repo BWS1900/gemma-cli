@@ -66,8 +66,8 @@ describe('<ModelDialog />', () => {
     getModel: () => string;
     getHasAccessToPreviewModel: () => boolean;
     getIdeMode: () => boolean;
-    getGemini31LaunchedSync: () => boolean;
-    getGemini31FlashLiteLaunchedSync: () => boolean;
+    getGemma31LaunchedSync: () => boolean;
+    getGemma31FlashLiteLaunchedSync: () => boolean;
     getProModelNoAccess: () => Promise<boolean>;
     getProModelNoAccessSync: () => boolean;
     getExperimentalGemma: () => boolean;
@@ -87,8 +87,8 @@ describe('<ModelDialog />', () => {
     getModel: mockGetModel,
     getHasAccessToPreviewModel: mockGetHasAccessToPreviewModel,
     getIdeMode: () => false,
-    getGemini31LaunchedSync: mockGetGemini31LaunchedSync,
-    getGemini31FlashLiteLaunchedSync: mockGetGemini31FlashLiteLaunchedSync,
+    getGemma31LaunchedSync: mockGetGemini31LaunchedSync,
+    getGemma31FlashLiteLaunchedSync: mockGetGemini31FlashLiteLaunchedSync,
     getProModelNoAccess: mockGetProModelNoAccess,
     getProModelNoAccessSync: mockGetProModelNoAccessSync,
     getExperimentalGemma: () => false,

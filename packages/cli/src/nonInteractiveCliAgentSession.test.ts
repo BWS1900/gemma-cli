@@ -108,7 +108,7 @@ describe('runNonInteractive', () => {
   let consoleErrorSpy: MockInstance;
   let processStdoutSpy: MockInstance;
   let processStderrSpy: MockInstance;
-  let mockGeminiClient: {
+  let mockGemmaClient: {
     sendMessageStream: Mock;
     resumeChat: Mock;
     getChatRecordingService: Mock;
@@ -160,7 +160,7 @@ describe('runNonInteractive', () => {
       getFunctionDeclarations: vi.fn().mockReturnValue([]),
     } as unknown as ToolRegistry;
 
-    mockGeminiClient = {
+    mockGemmaClient = {
       sendMessageStream: vi.fn(),
       resumeChat: vi.fn().mockResolvedValue(undefined),
       getChatRecordingService: vi.fn(() => ({
@@ -180,13 +180,13 @@ describe('runNonInteractive', () => {
         unsubscribe: vi.fn(),
         publish: vi.fn(),
       }),
-      getGeminiClient: vi.fn().mockReturnValue(mockGeminiClient),
+      getGemmaClient: vi.fn().mockReturnValue(mockGemmaClient),
       getToolRegistry: vi.fn().mockReturnValue(mockToolRegistry),
       getMaxSessionTurns: vi.fn().mockReturnValue(10),
       getSessionId: vi.fn().mockReturnValue('test-session-id'),
       getProjectRoot: vi.fn().mockReturnValue('/test/project'),
       storage: {
-        getProjectTempDir: vi.fn().mockReturnValue('/test/project/.gemini/tmp'),
+        getProjectTempDir: vi.fn().mockReturnValue('/test/project/.gemma/tmp'),
       },
       getIdeMode: vi.fn().mockReturnValue(false),
 
@@ -253,7 +253,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -264,7 +264,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-1',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Test input' }],
       expect.any(AbortSignal),
       'prompt-id-1',
@@ -286,7 +286,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -324,15 +324,15 @@ describe('runNonInteractive', () => {
     streamSpy.mockRestore();
   });
 
-  it('should register activity logger when GEMINI_CLI_ACTIVITY_LOG_TARGET is set', async () => {
-    vi.stubEnv('GEMINI_CLI_ACTIVITY_LOG_TARGET', '/tmp/test.jsonl');
+  it('should register activity logger when GEMMA_CLI_ACTIVITY_LOG_TARGET is set', async () => {
+    vi.stubEnv('GEMMA_CLI_ACTIVITY_LOG_TARGET', '/tmp/test.jsonl');
     const events: ServerGeminiStreamEvent[] = [
       {
         type: GeminiEventType.Finished,
         value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -347,15 +347,15 @@ describe('runNonInteractive', () => {
     vi.unstubAllEnvs();
   });
 
-  it('should not register activity logger when GEMINI_CLI_ACTIVITY_LOG_TARGET is not set', async () => {
-    vi.stubEnv('GEMINI_CLI_ACTIVITY_LOG_TARGET', '');
+  it('should not register activity logger when GEMMA_CLI_ACTIVITY_LOG_TARGET is not set', async () => {
+    vi.stubEnv('GEMMA_CLI_ACTIVITY_LOG_TARGET', '');
     const events: ServerGeminiStreamEvent[] = [
       {
         type: GeminiEventType.Finished,
         value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -413,7 +413,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -424,12 +424,12 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-2',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(2);
     expect(mockSchedulerSchedule).toHaveBeenCalledWith(
       [expect.objectContaining({ name: 'testTool' })],
       expect.any(AbortSignal),
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenNthCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenNthCalledWith(
       2,
       [{ text: 'Tool response' }],
       expect.any(AbortSignal),
@@ -490,7 +490,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(modelTurn1))
       .mockReturnValueOnce(createStreamFromEvents(modelTurn2))
       .mockReturnValueOnce(createStreamFromEvents(modelTurn3));
@@ -563,7 +563,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents([toolCallEvent]))
       .mockReturnValueOnce(createStreamFromEvents(finalResponse));
 
@@ -578,8 +578,8 @@ describe('runNonInteractive', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Error executing tool errorTool: Execution failed',
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenNthCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenNthCalledWith(
       2,
       [
         {
@@ -601,7 +601,7 @@ describe('runNonInteractive', () => {
 
   it('should exit with error if sendMessageStream throws initially', async () => {
     const apiError = new Error('API connection failed');
-    mockGeminiClient.sendMessageStream.mockImplementation(() => {
+    mockGemmaClient.sendMessageStream.mockImplementation(() => {
       throw apiError;
     });
 
@@ -657,7 +657,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents([toolCallEvent]))
       .mockReturnValueOnce(createStreamFromEvents(finalResponse));
 
@@ -672,7 +672,7 @@ describe('runNonInteractive', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Error executing tool nonexistentTool: Tool "nonexistentTool" not found in registry.',
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(2);
     expect(getWrittenOutput()).toBe("Sorry, I can't find that tool.\n");
   });
 
@@ -717,7 +717,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -730,7 +730,7 @@ describe('runNonInteractive', () => {
     });
 
     // 5. Assert that sendMessageStream was called with the PROCESSED parts, not the raw input
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       processedParts,
       expect.any(AbortSignal),
       'prompt-id-7',
@@ -750,7 +750,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
@@ -765,7 +765,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-1',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Test input' }],
       expect.any(AbortSignal),
       'prompt-id-1',
@@ -838,7 +838,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -854,7 +854,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-tool-only',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(2);
     expect(mockSchedulerSchedule).toHaveBeenCalledWith(
       [expect.objectContaining({ name: 'testTool' })],
       expect.any(AbortSignal),
@@ -901,7 +901,7 @@ describe('runNonInteractive', () => {
       },
     ]);
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(
         createStreamFromEvents([
           { type: GeminiEventType.Content, value: 'Let me check that...' },
@@ -955,7 +955,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 1 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
@@ -970,7 +970,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-empty',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Empty response test' }],
       expect.any(AbortSignal),
       'prompt-id-empty',
@@ -996,7 +996,7 @@ describe('runNonInteractive', () => {
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
     const testError = new Error('Invalid input provided');
 
-    mockGeminiClient.sendMessageStream.mockImplementation(() => {
+    mockGemmaClient.sendMessageStream.mockImplementation(() => {
       throw testError;
     });
 
@@ -1038,7 +1038,7 @@ describe('runNonInteractive', () => {
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
     const fatalError = new FatalInputError('Invalid command syntax provided');
 
-    mockGeminiClient.sendMessageStream.mockImplementation(() => {
+    mockGemmaClient.sendMessageStream.mockImplementation(() => {
       throw fatalError;
     });
 
@@ -1094,7 +1094,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1106,7 +1106,7 @@ describe('runNonInteractive', () => {
     });
 
     // Ensure the prompt sent to the model is from the command, not the raw input
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Prompt from command' }],
       expect.any(AbortSignal),
       'prompt-id-slash',
@@ -1134,7 +1134,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1151,7 +1151,7 @@ describe('runNonInteractive', () => {
       mockConfig,
       mockSettings,
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Slash command output' }],
       expect.any(AbortSignal),
       'prompt-id-slash',
@@ -1194,7 +1194,7 @@ describe('runNonInteractive', () => {
       { type: GeminiEventType.Content, value: 'Thinking...' },
     ];
     // Create a stream that responds to abortion
-    mockGeminiClient.sendMessageStream.mockImplementation(
+    mockGemmaClient.sendMessageStream.mockImplementation(
       (_messages, signal: AbortSignal) =>
         (async function* () {
           yield events[0];
@@ -1358,7 +1358,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1370,7 +1370,7 @@ describe('runNonInteractive', () => {
     });
 
     // Ensure the raw input is sent to the model
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: '/unknowncommand' }],
       expect.any(AbortSignal),
       'prompt-id-unknown',
@@ -1422,7 +1422,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 1 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1455,7 +1455,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 1 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1538,7 +1538,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -1564,7 +1564,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1589,7 +1589,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1613,7 +1613,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1650,7 +1650,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1735,7 +1735,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -1758,7 +1758,7 @@ describe('runNonInteractive', () => {
       { type: GeminiEventType.Content, value: 'Hello' },
       { type: GeminiEventType.Content, value: ' World' },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1797,7 +1797,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1823,7 +1823,7 @@ describe('runNonInteractive', () => {
       resumedSessionData,
     });
 
-    expect(mockGeminiClient.resumeChat).toHaveBeenCalledWith(
+    expect(mockGemmaClient.resumeChat).toHaveBeenCalledWith(
       expect.any(Array),
       resumedSessionData,
     );
@@ -1864,7 +1864,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(streamEvents),
       );
 
@@ -1910,7 +1910,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(streamEvents),
       );
 
@@ -1966,7 +1966,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(events))
       .mockReturnValueOnce(
         createStreamFromEvents([
@@ -1984,8 +1984,8 @@ describe('runNonInteractive', () => {
         throw new Error('Recording failed');
       }),
     };
-    mockGeminiClient.getChat = vi.fn().mockReturnValue(mockChat);
-    mockGeminiClient.getCurrentSequenceModel = vi
+    mockGemmaClient.getChat = vi.fn().mockReturnValue(mockChat);
+    mockGemmaClient.getCurrentSequenceModel = vi
       .fn()
       .mockReturnValue('model-1');
 
@@ -2047,7 +2047,7 @@ describe('runNonInteractive', () => {
     // Setup the mock to return events for the first call.
     // We expect the loop to terminate after the tool execution.
     // If it doesn't, it might call sendMessageStream again, which we'll assert against.
-    mockGeminiClient.sendMessageStream
+    mockGemmaClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents([]));
 
@@ -2061,7 +2061,7 @@ describe('runNonInteractive', () => {
     expect(mockSchedulerSchedule).toHaveBeenCalled();
 
     // The key assertion: sendMessageStream should have been called ONLY ONCE (initial user input).
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(1);
+    expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(1);
 
     expect(processStderrSpy).toHaveBeenCalledWith(
       'Agent execution stopped: Stop reason from hook\n',
@@ -2106,7 +2106,7 @@ describe('runNonInteractive', () => {
       toolCallEvent,
     ];
 
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(firstCallEvents),
     );
 
@@ -2167,7 +2167,7 @@ describe('runNonInteractive', () => {
 
     const firstCallEvents: ServerGeminiStreamEvent[] = [toolCallEvent];
 
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockGemmaClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(firstCallEvents),
     );
 
@@ -2191,7 +2191,7 @@ describe('runNonInteractive', () => {
           value: { reason: 'Stopped by hook' },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2205,7 +2205,7 @@ describe('runNonInteractive', () => {
       expect(processStderrSpy).toHaveBeenCalledWith(
         'Agent execution stopped: Stopped by hook\n',
       );
-      expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(1);
+      expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(1);
     });
 
     it('should write JSON output when AgentExecutionStopped event occurs', async () => {
@@ -2222,7 +2222,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2262,7 +2262,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2291,7 +2291,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(allEvents),
       );
 
@@ -2307,7 +2307,7 @@ describe('runNonInteractive', () => {
       );
       // Stream continues after blocked event — content should be output
       expect(getWrittenOutput()).toBe('Final answer\n');
-      expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(1);
+      expect(mockGemmaClient.sendMessageStream).toHaveBeenCalledTimes(1);
     });
 
     it('should emit ERROR event in STREAM_JSON mode when AgentExecutionBlocked occurs', async () => {
@@ -2323,7 +2323,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(allEvents),
       );
 
@@ -2370,7 +2370,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(allEvents),
       );
 
@@ -2407,7 +2407,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockImplementation(() =>
+      mockGemmaClient.sendMessageStream.mockImplementation(() =>
         createStreamFromEvents(allEvents),
       );
       vi.spyOn(uiTelemetryService, 'getMetrics').mockReturnValue(
@@ -2438,7 +2438,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockImplementation(() =>
+      mockGemmaClient.sendMessageStream.mockImplementation(() =>
         createStreamFromEvents(allEvents),
       );
       vi.spyOn(uiTelemetryService, 'getMetrics').mockReturnValue(
@@ -2476,7 +2476,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2502,7 +2502,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2527,7 +2527,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2551,7 +2551,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2577,7 +2577,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2612,7 +2612,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(streamEvents),
       );
 
@@ -2665,7 +2665,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockGemmaClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 

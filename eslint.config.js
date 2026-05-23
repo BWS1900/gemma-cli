@@ -62,7 +62,7 @@ export default tseslint.config(
       'dist/**',
       'evals/**',
       'packages/test-utils/**',
-      '.gemini/**',
+      '.gemma/**',
       '**/*.d.ts',
     ],
   },

@@ -1418,10 +1418,10 @@ name = "yolo-checker"
     it('should add the workspace to trusted folders if user consents', async () => {
       const trustedFoldersPath = path.join(
         tempHomeDir,
-        '.gemini',
+        '.gemma',
         'trustedFolders.json',
       );
-      vi.stubEnv('GEMINI_CLI_TRUSTED_FOLDERS_PATH', trustedFoldersPath);
+      vi.stubEnv('GEMMA_CLI_TRUSTED_FOLDERS_PATH', trustedFoldersPath);
       vi.mocked(isWorkspaceTrusted).mockReturnValue({
         isTrusted: false,
         source: undefined,

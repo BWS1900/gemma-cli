@@ -12,7 +12,7 @@ import {
   AuthType,
   Config,
   ApprovalMode,
-  GEMINI_DIR,
+  GEMMA_DIR,
   DEFAULT_GEMINI_EMBEDDING_MODEL,
   startupProfiler,
   PREVIEW_GEMINI_MODEL,
@@ -220,8 +220,8 @@ export function loadEnvironment(): void {
 function findEnvFile(startDir: string): string | null {
   let currentDir = path.resolve(startDir);
   while (true) {
-    // prefer gemini-specific .env under GEMINI_DIR
-    const geminiEnvPath = path.join(currentDir, GEMINI_DIR, '.env');
+    // prefer gemini-specific .env under GEMMA_DIR
+    const geminiEnvPath = path.join(currentDir, GEMMA_DIR, '.env');
     if (fs.existsSync(geminiEnvPath)) {
       return geminiEnvPath;
     }
@@ -232,7 +232,7 @@ function findEnvFile(startDir: string): string | null {
     const parentDir = path.dirname(currentDir);
     if (parentDir === currentDir || !parentDir) {
       // check .env under home as fallback, again preferring gemini-specific .env
-      const homeGeminiEnvPath = path.join(process.cwd(), GEMINI_DIR, '.env');
+      const homeGeminiEnvPath = path.join(process.cwd(), GEMMA_DIR, '.env');
       if (fs.existsSync(homeGeminiEnvPath)) {
         return homeGeminiEnvPath;
       }
@@ -265,13 +265,13 @@ async function refreshAuthentication(
       );
 
       const useComputeAdc =
-        process.env['GEMINI_CLI_USE_COMPUTE_ADC'] === 'true';
+        process.env['GEMMA_CLI_USE_COMPUTE_ADC'] === 'true';
       const isHeadless = isHeadlessMode();
 
       if (isHeadless || useComputeAdc) {
         const reason = isHeadless
           ? 'headless mode'
-          : 'GEMINI_CLI_USE_COMPUTE_ADC=true';
+          : 'GEMMA_CLI_USE_COMPUTE_ADC=true';
         throw new FatalAuthenticationError(
           `COMPUTE_ADC failed: ${adcMessage}. (LOGIN_WITH_GOOGLE fallback skipped due to ${reason}. Run in an interactive terminal to use OAuth.)`,
         );
@@ -296,11 +296,11 @@ async function refreshAuthentication(
     logger.info(
       `[${logPrefix}] GOOGLE_CLOUD_PROJECT: ${process.env['GOOGLE_CLOUD_PROJECT']}`,
     );
-  } else if (process.env['GEMINI_API_KEY']) {
+  } else if (process.env['GEMMA_API_KEY']) {
     logger.info(`[${logPrefix}] Using Gemini API Key`);
     await config.refreshAuth(AuthType.USE_GEMINI);
   } else {
-    const errorMessage = `[${logPrefix}] Unable to set GeneratorConfig. Please provide a GEMINI_API_KEY or set USE_CCPA.`;
+    const errorMessage = `[${logPrefix}] Unable to set GeneratorConfig. Please provide a GEMMA_API_KEY or set USE_CCPA.`;
     logger.error(errorMessage);
     throw new Error(errorMessage);
   }

@@ -10,8 +10,8 @@ import { Text } from 'ink';
 import { McpProgressIndicator, ToolInfo } from './ToolShared.js';
 import { CoreToolCallStatus } from '@google/gemini-cli-core';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>MockSpinner</Text>,
+vi.mock('../GemmaRespondingSpinner.js', () => ({
+  GemmaRespondingSpinner: () => <Text>MockSpinner</Text>,
 }));
 
 describe('McpProgressIndicator', () => {

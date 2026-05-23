@@ -7,7 +7,7 @@
 import {
   CompressionStatus,
   type ChatCompressionInfo,
-  type GeminiClient,
+  type GemmaClient,
 } from '@google/gemini-cli-core';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { compressCommand } from './compressCommand.js';
@@ -23,9 +23,9 @@ describe('compressCommand', () => {
     context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: {
+          gemmaClient: {
             tryCompressChat: mockTryCompressChat,
-          } as unknown as GeminiClient,
+          } as unknown as GemmaClient,
         },
       },
     });

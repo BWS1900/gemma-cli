@@ -6,8 +6,8 @@
 
 import { type Part, type PartListUnion } from '@google/genai';
 import { type ConversationRecord } from '../services/chatRecordingService.js';
-export { partListUnionToString } from '../core/geminiRequest.js';
-import { partListUnionToString } from '../core/geminiRequest.js';
+export { partListUnionToString } from '../core/gemmaRequest.js';
+import { partListUnionToString } from '../core/gemmaRequest.js';
 import { type HistoryTurn } from '../core/agentChatHistory.js';
 import { deriveStableId } from './cryptoUtils.js';
 

@@ -9,7 +9,7 @@ import { authCommand } from './authCommand.js';
 import { type CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import { SettingScope } from '../../config/settings.js';
-import type { GeminiClient } from '@google/gemini-cli-core';
+import type { GemmaClient } from '@google/gemini-cli-core';
 
 vi.mock('@google/gemini-cli-core', async () => {
   const actual = await vi.importActual('@google/gemini-cli-core');
@@ -26,7 +26,7 @@ describe('authCommand', () => {
     mockContext = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: {
+          gemmaClient: {
             stripThoughtsFromHistory: vi.fn(),
           },
         },
@@ -104,9 +104,9 @@ describe('authCommand', () => {
       const mockStripThoughts = vi.fn();
       const mockClient = {
         stripThoughtsFromHistory: mockStripThoughts,
-      } as unknown as GeminiClient;
+      } as unknown as GemmaClient;
       if (mockContext.services.agentContext?.config) {
-        mockContext.services.agentContext.config.getGeminiClient = vi.fn(
+        mockContext.services.agentContext.config.getGemmaClient = vi.fn(
           () => mockClient,
         );
       }
@@ -114,7 +114,7 @@ describe('authCommand', () => {
       await logoutCommand!.action!(mockContext, '');
 
       expect(
-        mockContext.services.agentContext?.geminiClient
+        mockContext.services.agentContext?.gemmaClient
           .stripThoughtsFromHistory,
       ).toHaveBeenCalled();
     });

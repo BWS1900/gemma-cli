@@ -20,8 +20,8 @@ import {
   CoreToolCallStatus,
 } from '@google/gemini-cli-core';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => null,
+vi.mock('../GemmaRespondingSpinner.js', () => ({
+  GemmaRespondingSpinner: () => null,
 }));
 
 vi.mock('./ToolResultDisplay.js', () => ({

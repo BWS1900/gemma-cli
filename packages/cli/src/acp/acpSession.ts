@@ -27,7 +27,7 @@ import {
   isTextPart,
   GeminiEventType,
   type ToolCallRequestInfo,
-  type GeminiChat,
+  type GemmaChat,
   type ToolResult,
   isWithinRoot,
   processSingleFileContent,
@@ -74,7 +74,7 @@ export class Session {
 
   constructor(
     private readonly id: string,
-    private readonly chat: GeminiChat,
+    private readonly chat: GemmaChat,
     private readonly context: AgentLoopContext,
     private readonly connection: acp.AgentSideConnection,
     private readonly settings: LoadedSettings,
@@ -403,7 +403,7 @@ export class Session {
       let turnOutputTokens = 0;
 
       try {
-        const responseStream = this.context.geminiClient.sendMessageStream(
+        const responseStream = this.context.gemmaClient.sendMessageStream(
           currentParts,
           pendingSend.signal,
           promptId,

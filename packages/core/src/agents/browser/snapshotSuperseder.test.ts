@@ -9,12 +9,12 @@ import {
   supersedeStaleSnapshots,
   SNAPSHOT_SUPERSEDED_PLACEHOLDER,
 } from './snapshotSuperseder.js';
-import type { GeminiChat, HistoryTurn } from '../../core/geminiChat.js';
+import type { GemmaChat, HistoryTurn } from '../../core/gemmaChat.js';
 import type { Content } from '@google/genai';
 import { randomUUID } from 'node:crypto';
 
-/** Builds a minimal mock GeminiChat around a mutable history array. */
-function createMockChat(history: Content[]): GeminiChat {
+/** Builds a minimal mock GemmaChat around a mutable history array. */
+function createMockChat(history: Content[]): GemmaChat {
   const getTurns = () => history.map((c) => ({ id: randomUUID(), content: c }));
   return {
     getHistory: vi.fn(() => [...history]),
@@ -25,7 +25,7 @@ function createMockChat(history: Content[]): GeminiChat {
         history.push('content' in item ? item.content : item);
       }
     }),
-  } as unknown as GeminiChat;
+  } as unknown as GemmaChat;
 }
 
 /** Helper: creates a take_snapshot functionResponse part. */
@@ -50,7 +50,7 @@ function otherToolResponse(name: string, output: string) {
 
 describe('supersedeStaleSnapshots', () => {
   let history: Content[];
-  let chat: GeminiChat;
+  let chat: GemmaChat;
 
   beforeEach(() => {
     history = [];

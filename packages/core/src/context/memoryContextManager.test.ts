@@ -51,7 +51,7 @@ describe('MemoryContextManager', () => {
       storage: {
         getProjectMemoryDir: vi
           .fn()
-          .mockReturnValue('/home/user/.gemini/memory/test-project'),
+          .mockReturnValue('/home/user/.gemma/memory/test-project'),
       },
     } as unknown as Config;
 
@@ -71,7 +71,7 @@ describe('MemoryContextManager', () => {
 
   describe('refresh', () => {
     it('should load and format global and environment memory', async () => {
-      const globalPaths = ['/home/user/.gemini/GEMINI.md'];
+      const globalPaths = ['/home/user/.gemma/GEMINI.md'];
       const envPaths = ['/app/GEMINI.md'];
 
       vi.mocked(memoryDiscovery.getGlobalMemoryPaths).mockResolvedValue(
@@ -135,10 +135,10 @@ describe('MemoryContextManager', () => {
     it('should not load environment memory if folder is not trusted', async () => {
       vi.mocked(mockConfig.isTrustedFolder).mockReturnValue(false);
       vi.mocked(memoryDiscovery.getGlobalMemoryPaths).mockResolvedValue([
-        '/home/user/.gemini/GEMINI.md',
+        '/home/user/.gemma/GEMINI.md',
       ]);
       vi.mocked(memoryDiscovery.readGeminiMdFiles).mockResolvedValue([
-        { filePath: '/home/user/.gemini/GEMINI.md', content: 'Global Content' },
+        { filePath: '/home/user/.gemma/GEMINI.md', content: 'Global Content' },
       ]);
 
       await memoryContextManager.refresh();
@@ -151,8 +151,8 @@ describe('MemoryContextManager', () => {
     });
 
     it('should deduplicate files by file identity in case-insensitive filesystems', async () => {
-      const globalPaths = ['/home/user/.gemini/GEMINI.md'];
-      const envPaths = ['/app/gemini.md', '/app/GEMINI.md'];
+      const globalPaths = ['/home/user/.gemma/GEMINI.md'];
+      const envPaths = ['/app/gemma.md', '/app/GEMINI.md'];
 
       vi.mocked(memoryDiscovery.getGlobalMemoryPaths).mockResolvedValue(
         globalPaths,
@@ -165,13 +165,13 @@ describe('MemoryContextManager', () => {
       vi.mocked(
         memoryDiscovery.deduplicatePathsByFileIdentity,
       ).mockResolvedValue({
-        paths: ['/home/user/.gemini/GEMINI.md', '/app/gemini.md'],
+        paths: ['/home/user/.gemma/GEMINI.md', '/app/gemma.md'],
         identityMap: new Map<string, string>(),
       });
 
       vi.mocked(memoryDiscovery.readGeminiMdFiles).mockResolvedValue([
-        { filePath: '/home/user/.gemini/GEMINI.md', content: 'Global Content' },
-        { filePath: '/app/gemini.md', content: 'Project Content' },
+        { filePath: '/home/user/.gemma/GEMINI.md', content: 'Global Content' },
+        { filePath: '/app/gemma.md', content: 'Project Content' },
       ]);
 
       await memoryContextManager.refresh();
@@ -180,13 +180,13 @@ describe('MemoryContextManager', () => {
         memoryDiscovery.deduplicatePathsByFileIdentity,
       ).toHaveBeenCalledWith(
         expect.arrayContaining([
-          '/home/user/.gemini/GEMINI.md',
-          '/app/gemini.md',
+          '/home/user/.gemma/GEMINI.md',
+          '/app/gemma.md',
           '/app/GEMINI.md',
         ]),
       );
       expect(memoryDiscovery.readGeminiMdFiles).toHaveBeenCalledWith(
-        ['/home/user/.gemini/GEMINI.md', '/app/gemini.md'],
+        ['/home/user/.gemma/GEMINI.md', '/app/gemma.md'],
         'tree',
         ['.git'],
       );

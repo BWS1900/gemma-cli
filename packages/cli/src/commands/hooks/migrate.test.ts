@@ -133,7 +133,7 @@ describe('migrate command', () => {
       expect.stringContaining('Migrating 1 hook event'),
     );
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '✓ Hooks successfully migrated to .gemini/settings.json',
+      '✓ Hooks successfully migrated to .gemma/settings.json',
     );
   });
 
@@ -506,10 +506,10 @@ describe('migrate command', () => {
     await handleMigrateFromClaude();
 
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '✓ Hooks successfully migrated to .gemini/settings.json',
+      '✓ Hooks successfully migrated to .gemma/settings.json',
     );
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '\nMigration complete! Please review the migrated hooks in .gemini/settings.json',
+      '\nMigration complete! Please review the migrated hooks in .gemma/settings.json',
     );
   });
 });

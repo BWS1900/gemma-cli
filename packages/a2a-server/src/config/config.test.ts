@@ -102,7 +102,7 @@ describe('loadConfig', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.stubEnv('GEMINI_API_KEY', 'test-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-key');
   });
 
   afterEach(() => {
@@ -529,7 +529,7 @@ describe('loadConfig', () => {
 
       beforeEach(() => {
         vi.stubEnv('USE_CCPA', 'true');
-        vi.stubEnv('GEMINI_API_KEY', '');
+        vi.stubEnv('GEMMA_API_KEY', '');
       });
 
       afterEach(() => {

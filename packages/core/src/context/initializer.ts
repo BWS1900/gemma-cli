@@ -5,7 +5,7 @@
  */
 
 import type { Config } from '../config/config.js';
-import type { GeminiChat } from '../core/geminiChat.js';
+import type { GemmaChat } from '../core/gemmaChat.js';
 import { ContextProcessorRegistry } from './config/registry.js';
 import { loadContextManagementConfig } from './config/configLoader.js';
 import { ContextTracer } from './tracer.js';
@@ -29,7 +29,7 @@ import { registerBuiltInBehaviors } from './graph/builtinBehaviors.js';
 
 export async function initializeContextManager(
   config: Config,
-  chat: GeminiChat,
+  chat: GemmaChat,
   lastPromptId: string,
 ): Promise<ContextManager | undefined> {
   const isV1Enabled = config.getContextManagementConfig().enabled;

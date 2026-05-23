@@ -21,7 +21,7 @@ vi.mock('@google/gemini-cli-core', async () => {
   };
 });
 
-import { uiTelemetryService, type GeminiClient } from '@google/gemini-cli-core';
+import { uiTelemetryService, type GemmaClient } from '@google/gemini-cli-core';
 
 describe('clearCommand', () => {
   let mockContext: CommandContext;
@@ -49,12 +49,12 @@ describe('clearCommand', () => {
               clear: mockHintClear,
             },
           },
-          geminiClient: {
+          gemmaClient: {
             resetChat: mockResetChat,
             getChat: () => ({
               getChatRecordingService: mockGetChatRecordingService,
             }),
-          } as unknown as GeminiClient,
+          } as unknown as GemmaClient,
         },
       },
     });

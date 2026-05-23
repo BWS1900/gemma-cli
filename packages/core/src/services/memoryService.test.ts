@@ -392,7 +392,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         sandboxManager: undefined,
       } as unknown as Parameters<typeof startMemoryService>[0];
 
@@ -424,7 +424,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         sandboxManager: undefined,
       } as unknown as Parameters<typeof startMemoryService>[0];
 
@@ -477,7 +477,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         sandboxManager: undefined,
       } as unknown as Parameters<typeof startMemoryService>[0];
 
@@ -547,7 +547,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         getSkillManager: vi.fn().mockReturnValue({ getSkills: () => [] }),
         modelConfigService: {
           registerRuntimeModelConfig: vi.fn(),
@@ -636,7 +636,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         getSkillManager: vi.fn().mockReturnValue({ getSkills: () => [] }),
         modelConfigService: {
           registerRuntimeModelConfig: vi.fn(),
@@ -736,7 +736,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         getSkillManager: vi.fn().mockReturnValue({ getSkills: () => [] }),
         modelConfigService: {
           registerRuntimeModelConfig: vi.fn(),
@@ -988,7 +988,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         getSkillManager: vi.fn().mockReturnValue({ getSkills: () => [] }),
         modelConfigService: {
           registerRuntimeModelConfig: vi.fn(),
@@ -1956,7 +1956,7 @@ describe('memoryService', () => {
         patchPath,
         [
           `--- ${targetFile}`,
-          '+++ .gemini/skills/foo/SKILL.md',
+          '+++ .gemma/skills/foo/SKILL.md',
           '@@ -1,3 +1,4 @@',
           ' line1',
           ' line2',
@@ -2129,7 +2129,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         getSkillManager: vi.fn().mockReturnValue({ getSkills: () => [] }),
         modelConfigService: {
           registerRuntimeModelConfig: vi.fn(),
@@ -2210,7 +2210,7 @@ describe('memoryService', () => {
         },
         getToolRegistry: vi.fn(),
         getMessageBus: vi.fn(),
-        getGeminiClient: vi.fn(),
+        getGemmaClient: vi.fn(),
         getSkillManager: vi.fn().mockReturnValue({ getSkills: () => [] }),
         modelConfigService: {
           registerRuntimeModelConfig: vi.fn(),

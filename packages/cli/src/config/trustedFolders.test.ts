@@ -53,12 +53,12 @@ describe('Trusted Folders', () => {
     trustedFoldersPath = path.join(tempDir, 'trustedFolders.json');
 
     // Set the environment variable to point to the temp file
-    vi.stubEnv('GEMINI_CLI_TRUSTED_FOLDERS_PATH', trustedFoldersPath);
+    vi.stubEnv('GEMMA_CLI_TRUSTED_FOLDERS_PATH', trustedFoldersPath);
 
     // Reset the internal state
     resetTrustedFoldersForTesting();
     vi.clearAllMocks();
-    delete process.env['GEMINI_CLI_TRUST_WORKSPACE'];
+    delete process.env['GEMMA_CLI_TRUST_WORKSPACE'];
   });
 
   afterEach(() => {
@@ -433,15 +433,15 @@ describe('Trusted Folders', () => {
       });
     });
 
-    it('should return true when GEMINI_CLI_TRUST_WORKSPACE is true', async () => {
-      process.env['GEMINI_CLI_TRUST_WORKSPACE'] = 'true';
+    it('should return true when GEMMA_CLI_TRUST_WORKSPACE is true', async () => {
+      process.env['GEMMA_CLI_TRUST_WORKSPACE'] = 'true';
       try {
         expect(isWorkspaceTrusted(mockSettings)).toEqual({
           isTrusted: true,
           source: 'env',
         });
       } finally {
-        delete process.env['GEMINI_CLI_TRUST_WORKSPACE'];
+        delete process.env['GEMMA_CLI_TRUST_WORKSPACE'];
       }
     });
 
@@ -536,9 +536,9 @@ describe('Trusted Folders', () => {
       fs.writeFileSync(trustedFoldersPath, JSON.stringify(config), 'utf-8');
 
       const envPath = path.join(untrustedDir, '.env');
-      fs.writeFileSync(envPath, 'GEMINI_API_KEY=secret', 'utf-8');
+      fs.writeFileSync(envPath, 'GEMMA_API_KEY=secret', 'utf-8');
 
-      vi.stubEnv('GEMINI_API_KEY', '');
+      vi.stubEnv('GEMMA_API_KEY', '');
 
       const settings = createMockSettings({
         security: { folderTrust: { enabled: true } },
@@ -546,7 +546,7 @@ describe('Trusted Folders', () => {
 
       loadEnvironment(settings.merged, untrustedDir);
 
-      expect(process.env['GEMINI_API_KEY']).toBe('');
+      expect(process.env['GEMMA_API_KEY']).toBe('');
 
       vi.unstubAllEnvs();
     });

@@ -83,7 +83,7 @@ export async function runNonInteractive({
       },
     });
 
-    if (process.env['GEMINI_CLI_ACTIVITY_LOG_TARGET']) {
+    if (process.env['GEMMA_CLI_ACTIVITY_LOG_TARGET']) {
       const { setupInitialActivityLogger } = await import(
         './utils/devtoolsService.js'
       );
@@ -223,7 +223,7 @@ export async function runNonInteractive({
         }
       });
 
-      const geminiClient = config.getGeminiClient();
+      const gemmaClient = config.getGemmaClient();
       scheduler = new Scheduler({
         context: config,
         messageBus: config.getMessageBus(),
@@ -233,7 +233,7 @@ export async function runNonInteractive({
 
       // Initialize chat.  Resume if resume data is passed.
       if (resumedSessionData) {
-        await geminiClient.resumeChat(
+        await gemmaClient.resumeChat(
           convertSessionToClientHistory(
             resumedSessionData.conversation.messages,
           ),
@@ -297,7 +297,7 @@ export async function runNonInteractive({
 
       // Create LegacyAgentSession — owns the agentic loop
       const session = new LegacyAgentSession({
-        client: geminiClient,
+        client: gemmaClient,
         scheduler,
         config,
         promptId: prompt_id,

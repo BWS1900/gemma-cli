@@ -25,8 +25,8 @@ vi.mock('ink', async (importOriginal) => {
   };
 });
 
-vi.mock('./components/GeminiSpinner.js', () => ({
-  GeminiSpinner: () => null,
+vi.mock('./components/GemmaSpinner.js', () => ({
+  GemmaSpinner: () => null,
 }));
 
 vi.mock('./components/CliSpinner.js', () => ({

@@ -87,7 +87,7 @@ describe('skills disable command', () => {
       const mockSettings = {
         forScope: vi.fn().mockReturnValue({
           settings: { skills: { disabled: [] } },
-          path: '/workspace/.gemini/settings.json',
+          path: '/workspace/.gemma/settings.json',
         }),
         setValue: vi.fn(),
       };
@@ -107,7 +107,7 @@ describe('skills disable command', () => {
       );
       expect(emitConsoleLog).toHaveBeenCalledWith(
         'log',
-        'Skill "skill1" disabled by adding it to the disabled list in workspace (/workspace/.gemini/settings.json) settings.',
+        'Skill "skill1" disabled by adding it to the disabled list in workspace (/workspace/.gemma/settings.json) settings.',
       );
     });
 

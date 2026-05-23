@@ -131,13 +131,13 @@ class MockExtensionManager extends ExtensionLoader {
   };
 }
 
-// Mock GeminiRespondingSpinner to disable animations (avoiding 'act()' warnings) without triggering screen reader mode.
-vi.mock('../ui/components/GeminiRespondingSpinner.js', async () => {
+// Mock GemmaRespondingSpinner to disable animations (avoiding 'act()' warnings) without triggering screen reader mode.
+vi.mock('../ui/components/GemmaRespondingSpinner.js', async () => {
   const React = await import('react');
   const { Text } = await import('ink');
   return {
-    GeminiSpinner: () => React.createElement(Text, null, '...'),
-    GeminiRespondingSpinner: ({
+    GemmaSpinner: () => React.createElement(Text, null, '...'),
+    GemmaRespondingSpinner: ({
       nonRespondingDisplay,
     }: {
       nonRespondingDisplay: string;
@@ -183,7 +183,7 @@ export class AppRig {
     activeRigs.set(this.sessionId, this);
 
     // Pre-create the persistent state file to bypass the terminal setup prompt
-    const geminiDir = path.join(this.testDir, '.gemini');
+    const geminiDir = path.join(this.testDir, '.gemma');
     if (!fs.existsSync(geminiDir)) {
       fs.mkdirSync(geminiDir, { recursive: true });
     }
@@ -244,16 +244,16 @@ export class AppRig {
 
   private setupEnvironment() {
     // Stub environment variables to avoid interference from developer's machine
-    vi.stubEnv('GEMINI_CLI_HOME', this.testDir);
+    vi.stubEnv('GEMMA_CLI_HOME', this.testDir);
     vi.stubEnv('TERM_PROGRAM', 'other');
     vi.stubEnv('VSCODE_GIT_IPC_HANDLE', '');
     if (this.options.fakeResponsesPath) {
-      vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+      vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
       MockShellExecutionService.setPassthrough(false);
     } else {
-      if (!process.env['GEMINI_API_KEY']) {
+      if (!process.env['GEMMA_API_KEY']) {
         throw new Error(
-          'GEMINI_API_KEY must be set in the environment for live model tests.',
+          'GEMMA_API_KEY must be set in the environment for live model tests.',
         );
       }
       // For live tests, we allow falling through to the real shell service if no mock matches
@@ -265,7 +265,7 @@ export class AppRig {
   private createRigSettings(): LoadedSettings {
     return createMockSettings({
       user: {
-        path: path.join(this.testDir, '.gemini', 'user_settings.json'),
+        path: path.join(this.testDir, '.gemma', 'user_settings.json'),
         settings: {
           security: {
             auth: {
@@ -313,7 +313,7 @@ export class AppRig {
       const newContentGeneratorConfig = {
         authType: authMethod,
         proxy: gcConfig.getProxy(),
-        apiKey: process.env['GEMINI_API_KEY'] || 'test-api-key',
+        apiKey: process.env['GEMMA_API_KEY'] || 'test-api-key',
       };
 
       gcConfig.contentGenerator = await createContentGenerator(
@@ -738,7 +738,7 @@ export class AppRig {
     // Poison the chat recording service to prevent late writes to the test directory
     if (this.config) {
       const recordingService = this.config
-        .getGeminiClient()
+        .getGemmaClient()
         ?.getChatRecordingService();
       if (recordingService) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

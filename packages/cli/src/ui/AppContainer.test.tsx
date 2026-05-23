@@ -753,7 +753,7 @@ describe('AppContainer State Management', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'session_complete',
-          detail: 'Gemini CLI finished responding.',
+          detail: 'Gemma CLI finished responding.',
         }),
       );
       expect(terminalNotificationsMocks.notifyViaTerminal).toHaveBeenCalled();
@@ -784,7 +784,7 @@ describe('AppContainer State Management', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'session_complete',
-          detail: 'Gemini CLI finished responding.',
+          detail: 'Gemma CLI finished responding.',
         }),
       );
 
@@ -1090,7 +1090,7 @@ describe('AppContainer State Management', () => {
         recordToolCalls: vi.fn(),
       };
 
-      const mockGeminiClient = {
+      const mockGemmaClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: vi.fn(),
         getUserTier: vi.fn(),
@@ -1098,8 +1098,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getGemmaClient').mockReturnValue(
+        mockGemmaClient as unknown as ReturnType<Config['getGemmaClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1124,7 +1124,7 @@ describe('AppContainer State Management', () => {
         getCurrentConversation: vi.fn(),
       };
 
-      const mockGeminiClient = {
+      const mockGemmaClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: vi.fn(),
         getUserTier: vi.fn(),
@@ -1133,8 +1133,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getGemmaClient').mockReturnValue(
+        mockGemmaClient as unknown as ReturnType<Config['getGemmaClient']>,
       );
       vi.spyOn(configWithRecording, 'getSessionId').mockReturnValue(
         'test-session-123',
@@ -1150,8 +1150,8 @@ describe('AppContainer State Management', () => {
       );
 
       // Verify the recording service structure is correct
-      expect(configWithRecording.getGeminiClient).toBeDefined();
-      expect(mockGeminiClient.getChatRecordingService).toBeDefined();
+      expect(configWithRecording.getGemmaClient).toBeDefined();
+      expect(mockGemmaClient.getChatRecordingService).toBeDefined();
       expect(mockChatRecordingService.initialize).toBeDefined();
       expect(mockChatRecordingService.recordMessage).toBeDefined();
       unmount();
@@ -1169,15 +1169,15 @@ describe('AppContainer State Management', () => {
         getSessionId: vi.fn(() => 'test-session-123'),
       };
 
-      const mockGeminiClient = {
+      const mockGemmaClient = {
         isInitialized: vi.fn(() => true),
         getChatRecordingService: vi.fn(() => mockChatRecordingService),
         getUserTier: vi.fn(),
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getGemmaClient').mockReturnValue(
+        mockGemmaClient as unknown as ReturnType<Config['getGemmaClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1200,7 +1200,7 @@ describe('AppContainer State Management', () => {
   describe('Session Resume Flow', () => {
     it('accepts resumed session data', async () => {
       const mockResumeChat = vi.fn();
-      const mockGeminiClient = {
+      const mockGemmaClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: mockResumeChat,
         getUserTier: vi.fn(),
@@ -1213,8 +1213,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithClient = makeFakeConfig();
-      vi.spyOn(configWithClient, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithClient, 'getGemmaClient').mockReturnValue(
+        mockGemmaClient as unknown as ReturnType<Config['getGemmaClient']>,
       );
 
       const resumedData = {
@@ -1255,14 +1255,14 @@ describe('AppContainer State Management', () => {
       );
 
       // Verify the resume functionality structure is in place
-      expect(mockGeminiClient.resumeChat).toBeDefined();
+      expect(mockGemmaClient.resumeChat).toBeDefined();
       expect(resumedData.conversation.messages).toHaveLength(2);
       unmount();
     });
 
     it('does not attempt resume when client is not initialized', async () => {
       const mockResumeChat = vi.fn();
-      const mockGeminiClient = {
+      const mockGemmaClient = {
         isInitialized: vi.fn(() => false), // Not initialized
         resumeChat: mockResumeChat,
         getUserTier: vi.fn(),
@@ -1270,8 +1270,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithClient = makeFakeConfig();
-      vi.spyOn(configWithClient, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithClient, 'getGemmaClient').mockReturnValue(
+        mockGemmaClient as unknown as ReturnType<Config['getGemmaClient']>,
       );
 
       const resumedData = {
@@ -1355,15 +1355,15 @@ describe('AppContainer State Management', () => {
         })),
       };
 
-      const mockGeminiClient = {
+      const mockGemmaClient = {
         isInitialized: vi.fn(() => true),
         getChatRecordingService: vi.fn(() => mockChatRecordingService),
         getUserTier: vi.fn(),
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getGemmaClient').mockReturnValue(
+        mockGemmaClient as unknown as ReturnType<Config['getGemmaClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1511,7 +1511,7 @@ describe('AppContainer State Management', () => {
 
       expect(titleWrites).toHaveLength(1);
       expect(titleWrites[0][0]).toBe(
-        `\x1b]0;${'Gemini CLI (workspace)'.padEnd(80, ' ')}\x07`,
+        `\x1b]0;${'Gemma CLI (workspace)'.padEnd(80, ' ')}\x07`,
       );
       unmount();
     });

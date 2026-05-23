@@ -86,7 +86,7 @@ export async function runNonInteractive(
       },
     });
 
-    if (process.env['GEMINI_CLI_ACTIVITY_LOG_TARGET']) {
+    if (process.env['GEMMA_CLI_ACTIVITY_LOG_TARGET']) {
       const { setupInitialActivityLogger } = await import(
         './utils/devtoolsService.js'
       );
@@ -225,7 +225,7 @@ export async function runNonInteractive(
         }
       });
 
-      const geminiClient = config.getGeminiClient();
+      const gemmaClient = config.getGemmaClient();
       scheduler = new Scheduler({
         context: config,
         messageBus: config.getMessageBus(),
@@ -235,7 +235,7 @@ export async function runNonInteractive(
 
       // Initialize chat.  Resume if resume data is passed.
       if (resumedSessionData) {
-        await geminiClient.resumeChat(
+        await gemmaClient.resumeChat(
           convertSessionToClientHistory(
             resumedSessionData.conversation.messages,
           ),
@@ -317,7 +317,7 @@ export async function runNonInteractive(
         }
         const toolCallRequests: ToolCallRequestInfo[] = [];
 
-        const responseStream = geminiClient.sendMessageStream(
+        const responseStream = gemmaClient.sendMessageStream(
           currentMessages[0]?.parts || [],
           abortController.signal,
           prompt_id,
@@ -502,8 +502,8 @@ export async function runNonInteractive(
           // Record tool calls with full metadata before sending responses to Gemini
           try {
             const currentModel =
-              geminiClient.getCurrentSequenceModel() ?? config.getModel();
-            geminiClient
+              gemmaClient.getCurrentSequenceModel() ?? config.getModel();
+            gemmaClient
               .getChat()
               .recordCompletedToolCalls(currentModel, completedToolCalls);
 

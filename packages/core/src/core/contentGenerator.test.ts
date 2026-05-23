@@ -40,7 +40,7 @@ const mockConfig = {
 
 describe('getAuthTypeFromEnv', () => {
   beforeEach(() => {
-    vi.stubEnv('GEMINI_API_KEY', '');
+    vi.stubEnv('GEMMA_API_KEY', '');
   });
 
   afterEach(() => {
@@ -62,8 +62,8 @@ describe('getAuthTypeFromEnv', () => {
     expect(getAuthTypeFromEnv()).toBe(AuthType.GATEWAY);
   });
 
-  it('should detect USE_GEMINI when GEMINI_API_KEY is present', () => {
-    vi.stubEnv('GEMINI_API_KEY', 'fake-key');
+  it('should detect USE_GEMINI when GEMMA_API_KEY is present', () => {
+    vi.stubEnv('GEMMA_API_KEY', 'fake-key');
     expect(getAuthTypeFromEnv()).toBe(AuthType.USE_GEMINI);
   });
 
@@ -176,7 +176,7 @@ describe('createContentGenerator', () => {
     vi.stubEnv('TERM_PROGRAM', 'iTerm.app');
     vi.stubEnv('VSCODE_PID', '');
     vi.stubEnv('GITHUB_SHA', '');
-    vi.stubEnv('GEMINI_CLI_SURFACE', '');
+    vi.stubEnv('GEMMA_CLI_SURFACE', '');
 
     const mockGenerator = {
       models: {},
@@ -218,7 +218,7 @@ describe('createContentGenerator', () => {
     vi.stubEnv('TERM_PROGRAM', 'iTerm.app');
     vi.stubEnv('VSCODE_PID', '');
     vi.stubEnv('GITHUB_SHA', '');
-    vi.stubEnv('GEMINI_CLI_SURFACE', '');
+    vi.stubEnv('GEMMA_CLI_SURFACE', '');
 
     const mockGenerator = {
       models: {},
@@ -294,7 +294,7 @@ describe('createContentGenerator', () => {
     vi.stubEnv('TERM_PROGRAM', 'iTerm.app');
     vi.stubEnv('VSCODE_PID', '');
     vi.stubEnv('GITHUB_SHA', '');
-    vi.stubEnv('GEMINI_CLI_SURFACE', '');
+    vi.stubEnv('GEMMA_CLI_SURFACE', '');
 
     const mockGenerator = {
       models: {},
@@ -327,7 +327,7 @@ describe('createContentGenerator', () => {
       getClientName: vi.fn().mockReturnValue(undefined),
     } as unknown as Config;
 
-    vi.stubEnv('GEMINI_CLI_CUSTOM_HEADERS', 'User-Agent:MyCustomUA');
+    vi.stubEnv('GEMMA_CLI_CUSTOM_HEADERS', 'User-Agent:MyCustomUA');
 
     const mockGenerator = {
       models: {},
@@ -350,13 +350,13 @@ describe('createContentGenerator', () => {
     );
   });
 
-  it('should include custom headers from GEMINI_CLI_CUSTOM_HEADERS for Code Assist requests', async () => {
+  it('should include custom headers from GEMMA_CLI_CUSTOM_HEADERS for Code Assist requests', async () => {
     const mockGenerator = {} as unknown as ContentGenerator;
     vi.mocked(createCodeAssistContentGenerator).mockResolvedValue(
       mockGenerator as never,
     );
     vi.stubEnv(
-      'GEMINI_CLI_CUSTOM_HEADERS',
+      'GEMMA_CLI_CUSTOM_HEADERS',
       'X-Test-Header: test-value, Another-Header: another value',
     );
 
@@ -381,7 +381,7 @@ describe('createContentGenerator', () => {
     );
   });
 
-  it('should include custom headers from GEMINI_CLI_CUSTOM_HEADERS for GoogleGenAI requests without inferring auth mechanism', async () => {
+  it('should include custom headers from GEMMA_CLI_CUSTOM_HEADERS for GoogleGenAI requests without inferring auth mechanism', async () => {
     const mockConfig = {
       getModel: vi.fn().mockReturnValue('gemini-pro'),
       getProxy: vi.fn().mockReturnValue(undefined),
@@ -394,7 +394,7 @@ describe('createContentGenerator', () => {
     } as unknown as GoogleGenAI;
     vi.mocked(GoogleGenAI).mockImplementation(() => mockGenerator as never);
     vi.stubEnv(
-      'GEMINI_CLI_CUSTOM_HEADERS',
+      'GEMMA_CLI_CUSTOM_HEADERS',
       'X-Test-Header: test, Another: value',
     );
 
@@ -634,7 +634,7 @@ describe('createContentGenerator', () => {
     expect(callArg).not.toHaveProperty('googleAuthOptions');
   });
 
-  it('should pass api key as Authorization Header when GEMINI_API_KEY_AUTH_MECHANISM is set to bearer', async () => {
+  it('should pass api key as Authorization Header when GEMMA_API_KEY_AUTH_MECHANISM is set to bearer', async () => {
     const mockConfig = {
       getModel: vi.fn().mockReturnValue('gemini-pro'),
       getProxy: vi.fn().mockReturnValue(undefined),
@@ -646,7 +646,7 @@ describe('createContentGenerator', () => {
       models: {},
     } as unknown as GoogleGenAI;
     vi.mocked(GoogleGenAI).mockImplementation(() => mockGenerator as never);
-    vi.stubEnv('GEMINI_API_KEY_AUTH_MECHANISM', 'bearer');
+    vi.stubEnv('GEMMA_API_KEY_AUTH_MECHANISM', 'bearer');
 
     await createContentGenerator(
       {
@@ -668,7 +668,7 @@ describe('createContentGenerator', () => {
     });
   });
 
-  it('should not pass api key as Authorization Header when GEMINI_API_KEY_AUTH_MECHANISM is not set (default behavior)', async () => {
+  it('should not pass api key as Authorization Header when GEMMA_API_KEY_AUTH_MECHANISM is not set (default behavior)', async () => {
     const mockConfig = {
       getModel: vi.fn().mockReturnValue('gemini-pro'),
       getProxy: vi.fn().mockReturnValue(undefined),
@@ -680,7 +680,7 @@ describe('createContentGenerator', () => {
       models: {},
     } as unknown as GoogleGenAI;
     vi.mocked(GoogleGenAI).mockImplementation(() => mockGenerator as never);
-    // GEMINI_API_KEY_AUTH_MECHANISM is not stubbed, so it will be undefined, triggering default 'x-goog-api-key'
+    // GEMMA_API_KEY_AUTH_MECHANISM is not stubbed, so it will be undefined, triggering default 'x-goog-api-key'
 
     await createContentGenerator(
       {
@@ -901,7 +901,7 @@ describe('createContentGenerator', () => {
     } as unknown as GoogleGenAI;
     vi.mocked(GoogleGenAI).mockImplementation(() => mockGenerator as never);
     vi.stubEnv('GOOGLE_GEMINI_BASE_URL', 'https://gemini.test.local');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
 
     const config = await createContentGeneratorConfig(
       mockConfig,
@@ -999,7 +999,7 @@ describe('createContentGenerator', () => {
     } as unknown as GoogleGenAI;
     vi.mocked(GoogleGenAI).mockImplementation(() => mockGenerator as never);
     vi.stubEnv('GOOGLE_GEMINI_BASE_URL', 'https://env.test.local');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
 
     const config = await createContentGeneratorConfig(
       mockConfig,
@@ -1116,8 +1116,8 @@ describe('createContentGeneratorConfig', () => {
     vi.unstubAllEnvs();
   });
 
-  it('should configure for Gemini using GEMINI_API_KEY when set', async () => {
-    vi.stubEnv('GEMINI_API_KEY', 'env-gemini-key');
+  it('should configure for Gemini using GEMMA_API_KEY when set', async () => {
+    vi.stubEnv('GEMMA_API_KEY', 'env-gemini-key');
     const config = await createContentGeneratorConfig(
       mockConfig,
       AuthType.USE_GEMINI,
@@ -1126,8 +1126,8 @@ describe('createContentGeneratorConfig', () => {
     expect(config.vertexai).toBe(false);
   });
 
-  it('should not configure for Gemini if GEMINI_API_KEY is empty', async () => {
-    vi.stubEnv('GEMINI_API_KEY', '');
+  it('should not configure for Gemini if GEMMA_API_KEY is empty', async () => {
+    vi.stubEnv('GEMMA_API_KEY', '');
     const config = await createContentGeneratorConfig(
       mockConfig,
       AuthType.USE_GEMINI,
@@ -1136,8 +1136,8 @@ describe('createContentGeneratorConfig', () => {
     expect(config.vertexai).toBeUndefined();
   });
 
-  it('should not configure for Gemini if GEMINI_API_KEY is not set and storage is empty', async () => {
-    vi.stubEnv('GEMINI_API_KEY', '');
+  it('should not configure for Gemini if GEMMA_API_KEY is not set and storage is empty', async () => {
+    vi.stubEnv('GEMMA_API_KEY', '');
     vi.mocked(loadApiKey).mockResolvedValue(null);
     const config = await createContentGeneratorConfig(
       mockConfig,
@@ -1209,8 +1209,8 @@ describe('createContentGeneratorConfig', () => {
     expect(config.vertexai).toBe(false);
   });
 
-  it('should configure for GATEWAY using GEMINI_API_KEY from environment if set', async () => {
-    vi.stubEnv('GEMINI_API_KEY', 'env-gateway-key');
+  it('should configure for GATEWAY using GEMMA_API_KEY from environment if set', async () => {
+    vi.stubEnv('GEMMA_API_KEY', 'env-gateway-key');
     const config = await createContentGeneratorConfig(
       mockConfig,
       AuthType.GATEWAY,
@@ -1220,7 +1220,7 @@ describe('createContentGeneratorConfig', () => {
   });
 
   it('should configure for GATEWAY using empty string if no apiKey is provided', async () => {
-    vi.stubEnv('GEMINI_API_KEY', '');
+    vi.stubEnv('GEMMA_API_KEY', '');
     const config = await createContentGeneratorConfig(
       mockConfig,
       AuthType.GATEWAY,

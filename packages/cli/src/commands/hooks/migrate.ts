@@ -249,9 +249,9 @@ export async function handleMigrateFromClaude() {
   try {
     settings.setValue(SettingScope.Workspace, 'hooks', mergedHooks);
 
-    debugLogger.log('✓ Hooks successfully migrated to .gemini/settings.json');
+    debugLogger.log('✓ Hooks successfully migrated to .gemma/settings.json');
     debugLogger.log(
-      '\nMigration complete! Please review the migrated hooks in .gemini/settings.json',
+      '\nMigration complete! Please review the migrated hooks in .gemma/settings.json',
     );
   } catch (error) {
     debugLogger.error(`Error saving migrated hooks: ${getErrorMessage(error)}`);
@@ -260,7 +260,7 @@ export async function handleMigrateFromClaude() {
 
 export const migrateCommand: CommandModule = {
   command: 'migrate',
-  describe: 'Migrate hooks from Claude Code to Gemini CLI',
+  describe: 'Migrate hooks from Claude Code to Gemma CLI',
   builder: (yargs) =>
     yargs.option('from-claude', {
       describe: 'Migrate from Claude Code hooks',
@@ -274,7 +274,7 @@ export const migrateCommand: CommandModule = {
       await handleMigrateFromClaude();
     } else {
       debugLogger.log(
-        'Usage: gemini hooks migrate --from-claude\n\nMigrate hooks from Claude Code to Gemini CLI format.',
+        'Usage: gemini hooks migrate --from-claude\n\nMigrate hooks from Claude Code to Gemma CLI format.',
       );
     }
     await exitCli();

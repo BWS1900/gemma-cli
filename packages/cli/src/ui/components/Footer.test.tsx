@@ -137,7 +137,7 @@ const mockSessionStats = {
 describe('<Footer />', () => {
   beforeEach(() => {
     const root = path.parse(process.cwd()).root;
-    vi.stubEnv('GEMINI_CLI_HOME', path.join(root, 'Users', 'test'));
+    vi.stubEnv('GEMMA_CLI_HOME', path.join(root, 'Users', 'test'));
     vi.stubEnv('SANDBOX', '');
     vi.stubEnv('SEATBELT_PROFILE', '');
   });

@@ -77,7 +77,7 @@ export const bugCommand: SlashCommand = {
       info += `* **IDE Client:** ${ideClient}\n`;
     }
 
-    const chat = agentContext?.geminiClient?.getChat();
+    const chat = agentContext?.gemmaClient?.getChat();
     const history = chat?.getHistory() || [];
     let historyFileMessage = '';
     let problemValue = bugDescription;

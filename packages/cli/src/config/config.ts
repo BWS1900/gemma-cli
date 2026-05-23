@@ -166,7 +166,7 @@ export async function parseArguments(
     .locale('en')
     .scriptName('gemini')
     .usage(
-      'Usage: gemini [options] [command]\n\nGemini CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
+      'Usage: gemini [options] [command]\n\nGemma CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
     )
     .option('isCommand', {
       type: 'boolean',
@@ -278,7 +278,7 @@ export async function parseArguments(
   yargsInstance.command(gemmaCommand);
 
   yargsInstance
-    .command('$0 [query..]', 'Launch Gemini CLI', (yargsInstance) =>
+    .command('$0 [query..]', 'Launch Gemma CLI', (yargsInstance) =>
       yargsInstance
         .positional('query', {
           description:
@@ -513,7 +513,7 @@ export async function parseArguments(
     }
     result = parsed;
     if (result['skip-trust']) {
-      process.env['GEMINI_CLI_TRUST_WORKSPACE'] = 'true';
+      process.env['GEMMA_CLI_TRUST_WORKSPACE'] = 'true';
     }
   } catch (e) {
     const msg = getErrorMessage(e);
@@ -599,7 +599,7 @@ export async function loadCliConfig(
   const ideMode = settings.ide?.enabled ?? false;
 
   const folderTrust =
-    process.env['GEMINI_CLI_INTEGRATION_TEST'] === 'true' ||
+    process.env['GEMMA_CLI_INTEGRATION_TEST'] === 'true' ||
     process.env['VITEST'] === 'true'
       ? false
       : (settings.security?.folderTrust?.enabled ?? false);
@@ -635,7 +635,7 @@ export async function loadCliConfig(
   // When running inside VSCode with multiple workspace folders,
   // automatically add the other folders as include directories
   // so Gemini has context of all open folders, not just the cwd.
-  const ideWorkspacePath = process.env['GEMINI_CLI_IDE_WORKSPACE_PATH'];
+  const ideWorkspacePath = process.env['GEMMA_CLI_IDE_WORKSPACE_PATH'];
   if (ideWorkspacePath) {
     const realCwd = resolveToRealPath(cwd);
     const ideFolders = ideWorkspacePath.split(path.delimiter).filter((p) => {
@@ -673,7 +673,7 @@ export async function loadCliConfig(
     ?.find((ext) => ext.isActive && ext.plan?.directory)?.plan;
 
   let extensionRegistryURI =
-    process.env['GEMINI_CLI_EXTENSION_REGISTRY_URI'] ??
+    process.env['GEMMA_CLI_EXTENSION_REGISTRY_URI'] ??
     (trustedFolder ? settings.experimental?.extensionRegistryURI : undefined);
 
   if (extensionRegistryURI && !extensionRegistryURI.startsWith('http')) {
@@ -1069,7 +1069,7 @@ export async function loadCliConfig(
     enableShellOutputEfficiency:
       settings.tools?.shell?.enableShellOutputEfficiency ?? true,
     // In ACP mode, always skip the next-speaker check. This check triggers
-    // recursive continuation turns inside GeminiClient.processTurn() that
+    // recursive continuation turns inside GemmaClient.processTurn() that
     // conflict with ACP's explicit turn management via session/prompt,
     // causing infinite agent_thought_chunk loops.
     skipNextSpeakerCheck: isAcpMode || settings.model?.skipNextSpeakerCheck,

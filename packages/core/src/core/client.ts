@@ -12,7 +12,7 @@ import {
   type Tool,
   type GenerateContentResponse,
 } from '@google/genai';
-import { partListUnionToString } from './geminiRequest.js';
+import { partListUnionToString } from './gemmaRequest.js';
 import {
   getDirectoryContextString,
   getInitialChatHistory,
@@ -29,7 +29,7 @@ import { type AgentLoopContext } from '../config/agent-loop-context.js';
 import { getCoreSystemPrompt } from './prompts.js';
 import { checkNextSpeaker } from '../utils/nextSpeakerChecker.js';
 import { reportError } from '../utils/errorReporting.js';
-import { GeminiChat } from './geminiChat.js';
+import { GemmaChat } from './gemmaChat.js';
 import {
   retryWithBackoff,
   type RetryAvailabilityContext,
@@ -90,8 +90,8 @@ type BeforeAgentHookReturn =
   | { additionalContext: string | undefined }
   | undefined;
 
-export class GeminiClient {
-  private chat?: GeminiChat;
+export class GemmaClient {
+  private chat?: GemmaChat;
   private sessionTurnCount = 0;
 
   private readonly loopDetector: LoopDetectionService;
@@ -276,7 +276,7 @@ export class GeminiClient {
     this.getChat().addHistory(content);
   }
 
-  getChat(): GeminiChat {
+  getChat(): GemmaChat {
     if (!this.chat) {
       throw new Error('Chat not initialized');
     }
@@ -380,7 +380,7 @@ export class GeminiClient {
   async startChat(
     extraHistory?: ReadonlyArray<Content | HistoryTurn>,
     resumedSessionData?: ResumedSessionData,
-  ): Promise<GeminiChat> {
+  ): Promise<GemmaChat> {
     this.forceFullIdeContext = true;
     this.hasFailedCompressionAttempt = false;
     this.lastUsedModelId = undefined;
@@ -394,7 +394,7 @@ export class GeminiClient {
     try {
       const systemMemory = this.config.getSystemInstructionMemory();
       const systemInstruction = getCoreSystemPrompt(this.config, systemMemory);
-      const chat = new GeminiChat(
+      const chat = new GemmaChat(
         this.config,
         systemInstruction,
         tools,
@@ -603,8 +603,8 @@ export class GeminiClient {
     // including any permanent fallbacks (config.setModel) or manual overrides.
     return resolveModel(
       this.config.getActiveModel(),
-      this.config.getGemini31LaunchedSync?.() ?? false,
-      this.config.getGemini31FlashLiteLaunchedSync?.() ?? false,
+      this.config.getGemma31LaunchedSync?.() ?? false,
+      this.config.getGemma31FlashLiteLaunchedSync?.() ?? false,
       false,
       this.config.getHasAccessToPreviewModel?.() ?? true,
       this.config,

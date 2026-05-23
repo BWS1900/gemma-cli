@@ -30,7 +30,7 @@ const mockConfig = {
     unregisterTool: vi.fn(),
   }),
   getMessageBus: vi.fn().mockReturnValue({}),
-  getGeminiClient: vi.fn().mockReturnValue(mockClient),
+  getGemmaClient: vi.fn().mockReturnValue(mockClient),
   getSessionId: vi.fn().mockReturnValue('mock-session-id'),
   getWorkingDir: vi.fn().mockReturnValue('/tmp'),
   setUserMemory: vi.fn(),
@@ -181,7 +181,7 @@ describe('GeminiCliSession initialize()', () => {
   });
 });
 
-// TODO(#24999): Mock uses getGeminiClient() method but session.ts expects geminiClient property.
+// TODO(#24999): Mock uses getGemmaClient() method but session.ts expects gemmaClient property.
 describe.skip('GeminiCliSession sendStream()', () => {
   it('auto-initializes if not yet initialized', async () => {
     const session = new GeminiCliSession(

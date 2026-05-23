@@ -6,8 +6,8 @@
 
 import * as path from 'node:path';
 import * as fs from 'node:fs';
-import { homedir, GEMINI_DIR } from '../utils/paths.js';
-import { GeminiLiveTranscriptionProvider } from './geminiLiveTranscriptionProvider.js';
+import { homedir, GEMMA_DIR } from '../utils/paths.js';
+import { GeminiLiveTranscriptionProvider } from './gemmaLiveTranscriptionProvider.js';
 import { WhisperTranscriptionProvider } from './whisperTranscriptionProvider.js';
 import type { TranscriptionProvider } from './transcriptionProvider.js';
 
@@ -19,7 +19,7 @@ export class TranscriptionFactory {
     const backend = voiceConfig?.backend ?? 'gemini-live';
 
     if (backend === 'whisper') {
-      const modelsDir = path.join(homedir(), GEMINI_DIR, 'whisper_models');
+      const modelsDir = path.join(homedir(), GEMMA_DIR, 'whisper_models');
       if (!fs.existsSync(modelsDir)) {
         fs.mkdirSync(modelsDir, { recursive: true });
       }

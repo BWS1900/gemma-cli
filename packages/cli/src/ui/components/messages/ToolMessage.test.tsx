@@ -19,8 +19,8 @@ import { renderWithProviders } from '../../../test-utils/render.js';
 import { createMockSettings } from '../../../test-utils/settings.js';
 import { tryParseJSON } from '../../../utils/jsonoutput.js';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>MockRespondingSpinner</Text>,
+vi.mock('../GemmaRespondingSpinner.js', () => ({
+  GemmaRespondingSpinner: () => <Text>MockRespondingSpinner</Text>,
 }));
 
 vi.mock('../TerminalOutput.js', () => ({

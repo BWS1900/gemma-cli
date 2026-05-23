@@ -22,7 +22,7 @@ describe('SkillExtractionAgent', () => {
   const sessionIndex =
     '[NEW] Debug login flow (12 user msgs) — /tmp/chats/session-1.json';
   const existingSkillsSummary =
-    '## Workspace Skills (.gemini/skills — do NOT duplicate)\n- **existing-skill**: Existing description';
+    '## Workspace Skills (.gemma/skills — do NOT duplicate)\n- **existing-skill**: Existing description';
 
   const agent = SkillExtractionAgent(
     skillsDir,
@@ -98,7 +98,7 @@ describe('SkillExtractionAgent', () => {
     expect(prompt).toContain(
       'the target MUST be exactly the single global personal memory',
     );
-    expect(prompt).toContain('~/.gemini/GEMINI.md');
+    expect(prompt).toContain('~/.gemma/GEMINI.md');
     expect(prompt).not.toContain('memory.md');
     expect(prompt).not.toContain('and siblings');
     expect(prompt).toContain(

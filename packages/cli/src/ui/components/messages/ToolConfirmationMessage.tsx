@@ -912,7 +912,7 @@ export const ToolConfirmationMessage: React.FC<
           <Text color={titleColor} wrap="truncate">
             {item.label}{' '}
             <Text color={theme.text.secondary}>
-              ~/.gemini/policies/auto-saved.toml
+              ~/.gemma/policies/auto-saved.toml
             </Text>
           </Text>
         );

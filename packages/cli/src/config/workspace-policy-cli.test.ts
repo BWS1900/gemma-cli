@@ -79,7 +79,7 @@ describe('Workspace-Level Policy CLI Integration', () => {
     expect(ServerConfig.createPolicyEngineConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         workspacePoliciesDir: expect.stringContaining(
-          path.join('.gemini', 'policies'),
+          path.join('.gemma', 'policies'),
         ),
       }),
       expect.anything(),
@@ -160,7 +160,7 @@ describe('Workspace-Level Policy CLI Integration', () => {
     expect(ServerConfig.createPolicyEngineConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         workspacePoliciesDir: expect.stringContaining(
-          path.join('.gemini', 'policies'),
+          path.join('.gemma', 'policies'),
         ),
       }),
       expect.anything(),
@@ -200,7 +200,7 @@ describe('Workspace-Level Policy CLI Integration', () => {
     expect(ServerConfig.createPolicyEngineConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         workspacePoliciesDir: expect.stringContaining(
-          path.join('.gemini', 'policies'),
+          path.join('.gemma', 'policies'),
         ),
       }),
       expect.anything(),
@@ -238,7 +238,7 @@ describe('Workspace-Level Policy CLI Integration', () => {
     expect(ServerConfig.createPolicyEngineConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         workspacePoliciesDir: expect.stringContaining(
-          path.join('.gemini', 'policies'),
+          path.join('.gemma', 'policies'),
         ),
       }),
       expect.anything(),
@@ -277,7 +277,7 @@ describe('Workspace-Level Policy CLI Integration', () => {
       expect(config.getPolicyUpdateConfirmationRequest()).toEqual({
         scope: 'workspace',
         identifier: MOCK_CWD,
-        policyDir: expect.stringContaining(path.join('.gemini', 'policies')),
+        policyDir: expect.stringContaining(path.join('.gemma', 'policies')),
         newHash: 'new-hash',
       });
       expect(ServerConfig.createPolicyEngineConfig).toHaveBeenCalledWith(

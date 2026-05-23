@@ -1,16 +1,16 @@
 {
-  "name": "@google/gemini-cli",
+  "name": "@gemma/gemma-cli",
   "version": "0.45.0-nightly.20260521.g854f811be",
-  "description": "Gemini CLI",
+  "description": "Gemma CLI",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-gemini/gemini-cli.git"
+    "url": "git+https://github.com/BWS1900/gemma-cli.git"
   },
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gemini": "dist/index.js"
+    "gemma": "dist/index.js"
   },
   "scripts": {
     "build": "node ../../scripts/build_package.js",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@agentclientprotocol/sdk": "^0.16.1",
-    "@google/gemini-cli-core": "file:../core",
+    "@gemma/gemma-cli-core": "file:../core",
     "@google/genai": "1.30.0",
     "@iarna/toml": "^2.2.5",
     "@modelcontextprotocol/sdk": "^1.23.0",
@@ -72,7 +72,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@google/gemini-cli-test-utils": "file:../test-utils",
+    "@gemma/gemma-cli-test-utils": "file:../test-utils",
     "@types/command-exists": "^1.2.3",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.11.24",

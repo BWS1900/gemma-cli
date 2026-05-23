@@ -112,7 +112,7 @@ import {
 } from './useExecutionLifecycle.js';
 import {
   type Config,
-  type GeminiClient,
+  type GemmaClient,
   type ShellExecutionResult,
   type ShellOutputEvent,
   type AnsiOutput,
@@ -129,7 +129,7 @@ describe('useExecutionLifecycle', () => {
   let onExecMock: Mock;
   let onDebugMessageMock: Mock;
   let mockConfig: Config;
-  let mockGeminiClient: GeminiClient;
+  let mockGemmaClient: GemmaClient;
 
   let mockShellOutputCallback: (event: ShellOutputEvent) => void;
   let resolveExecutionPromise: (result: ShellExecutionResult) => void;
@@ -159,7 +159,7 @@ describe('useExecutionLifecycle', () => {
         },
       }),
     } as unknown as Config;
-    mockGeminiClient = { addHistory: vi.fn() } as unknown as GeminiClient;
+    mockGemmaClient = { addHistory: vi.fn() } as unknown as GemmaClient;
 
     vi.mocked(os.platform).mockReturnValue('linux');
     vi.mocked(os.tmpdir).mockReturnValue('/tmp');
@@ -196,7 +196,7 @@ describe('useExecutionLifecycle', () => {
         onExecMock,
         onDebugMessageMock,
         mockConfig,
-        mockGeminiClient,
+        mockGemmaClient,
         setShellInputFocusedMock,
         undefined,
         undefined,
@@ -317,7 +317,7 @@ describe('useExecutionLifecycle', () => {
         ],
       }),
     );
-    expect(mockGeminiClient.addHistory).toHaveBeenCalled();
+    expect(mockGemmaClient.addHistory).toHaveBeenCalled();
     expect(setShellInputFocusedMock).toHaveBeenCalledWith(false);
   });
 

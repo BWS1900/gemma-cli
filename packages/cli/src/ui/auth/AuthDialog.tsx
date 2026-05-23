@@ -56,7 +56,7 @@ export function AuthDialog({
             key: AuthType.COMPUTE_ADC,
           },
         ]
-      : process.env['GEMINI_CLI_USE_COMPUTE_ADC'] === 'true'
+      : process.env['GEMMA_CLI_USE_COMPUTE_ADC'] === 'true'
         ? [
             {
               label: 'Use metadata server application default credentials',
@@ -103,7 +103,7 @@ export function AuthDialog({
       return item.value === defaultAuthType;
     }
 
-    if (process.env['GEMINI_API_KEY']) {
+    if (process.env['GEMMA_API_KEY']) {
       return item.value === AuthType.USE_GEMINI;
     }
 
@@ -144,7 +144,7 @@ export function AuthDialog({
         if (authType === AuthType.USE_GEMINI) {
           // Always show the API key input dialog so the user can
           // explicitly enter or confirm their key, regardless of
-          // whether GEMINI_API_KEY env var or a stored key exists.
+          // whether GEMMA_API_KEY env var or a stored key exists.
           setAuthState(AuthState.AwaitingApiKeyInput);
           return;
         }
@@ -202,7 +202,7 @@ export function AuthDialog({
         alignItems="flex-start"
       >
         <Text color={theme.text.primary}>
-          Logging in with Google... Restarting Gemini CLI to continue.
+          Logging in with Google... Restarting Gemma CLI to continue.
         </Text>
       </Box>
     );
@@ -247,7 +247,7 @@ export function AuthDialog({
         </Box>
         <Box marginTop={1}>
           <Text color={theme.text.primary}>
-            Terms of Services and Privacy Notice for Gemini CLI
+            Terms of Services and Privacy Notice for Gemma CLI
           </Text>
         </Box>
         <Box marginTop={1}>

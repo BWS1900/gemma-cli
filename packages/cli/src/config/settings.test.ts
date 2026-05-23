@@ -80,7 +80,7 @@ import {
 } from './settings.js';
 import {
   FatalConfigError,
-  GEMINI_DIR,
+  GEMMA_DIR,
   Storage,
   AuthType,
   type MCPServerConfig,
@@ -94,10 +94,10 @@ import {
 import { createMockSettings } from '../test-utils/settings.js';
 
 const MOCK_WORKSPACE_DIR = path.resolve(path.resolve('/mock/workspace'));
-// Use the (mocked) GEMINI_DIR for consistency
+// Use the (mocked) GEMMA_DIR for consistency
 const MOCK_WORKSPACE_SETTINGS_PATH = path.join(
   MOCK_WORKSPACE_DIR,
-  GEMINI_DIR,
+  GEMMA_DIR,
   'settings.json',
 );
 
@@ -1627,18 +1627,18 @@ describe('Settings Loading and Merging', () => {
       delete process.env['TEST_PORT'];
     });
 
-    describe('when GEMINI_CLI_SYSTEM_SETTINGS_PATH is set', () => {
+    describe('when GEMMA_CLI_SYSTEM_SETTINGS_PATH is set', () => {
       const MOCK_ENV_SYSTEM_SETTINGS_PATH = path.resolve(
         '/mock/env/system/settings.json',
       );
 
       beforeEach(() => {
-        process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'] =
+        process.env['GEMMA_CLI_SYSTEM_SETTINGS_PATH'] =
           MOCK_ENV_SYSTEM_SETTINGS_PATH;
       });
 
       afterEach(() => {
-        delete process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'];
+        delete process.env['GEMMA_CLI_SYSTEM_SETTINGS_PATH'];
       });
 
       it('should load system settings from the path specified in the environment variable', () => {
@@ -1676,7 +1676,7 @@ describe('Settings Loading and Merging', () => {
       const mockSymlinkDir = path.resolve('/mock/symlink/to/home');
       const mockWorkspaceSettingsPath = path.join(
         mockSymlinkDir,
-        GEMINI_DIR,
+        GEMMA_DIR,
         'settings.json',
       );
 
@@ -1835,7 +1835,7 @@ describe('Settings Loading and Merging', () => {
       (fs.readFileSync as Mock).mockImplementation(
         (p: fs.PathOrFileDescriptor) => {
           if (p === path.resolve('/mock/project/.env')) {
-            return 'DEBUG=true\nDEBUG_MODE=1\nGEMINI_API_KEY=test-key';
+            return 'DEBUG=true\nDEBUG_MODE=1\nGEMMA_API_KEY=test-key';
           }
           if (
             normalizePath(p) === normalizePath(MOCK_WORKSPACE_SETTINGS_PATH)
@@ -2040,10 +2040,10 @@ describe('Settings Loading and Merging', () => {
       isFolderTrustEnabled = true,
       isWorkspaceTrustedValue = true as boolean | undefined,
     }) {
-      delete process.env['GEMINI_API_KEY']; // reset
+      delete process.env['GEMMA_API_KEY']; // reset
       delete process.env['TESTTEST']; // reset
       const geminiEnvPath = path.resolve(
-        path.join(MOCK_WORKSPACE_DIR, GEMINI_DIR, '.env'),
+        path.join(MOCK_WORKSPACE_DIR, GEMMA_DIR, '.env'),
       );
       const workspaceEnvPath = path.resolve(
         path.join(MOCK_WORKSPACE_DIR, '.env'),
@@ -2080,7 +2080,7 @@ describe('Settings Loading and Merging', () => {
           if (normalizedP === path.resolve(USER_SETTINGS_PATH))
             return JSON.stringify(userSettingsContent);
           if (normalizedP === geminiEnvPath || normalizedP === workspaceEnvPath)
-            return 'TESTTEST=1234\nGEMINI_API_KEY=test-key';
+            return 'TESTTEST=1234\nGEMMA_API_KEY=test-key';
           return '{}';
         },
       );
@@ -2094,7 +2094,7 @@ describe('Settings Loading and Merging', () => {
       loadEnvironment(settings, MOCK_WORKSPACE_DIR, isWorkspaceTrusted);
 
       expect(process.env['TESTTEST']).toEqual('1234');
-      expect(process.env['GEMINI_API_KEY']).toEqual('test-key');
+      expect(process.env['GEMMA_API_KEY']).toEqual('test-key');
     });
 
     it('does not load env files from untrusted spaces when sandboxed', () => {
@@ -2117,7 +2117,7 @@ describe('Settings Loading and Merging', () => {
       loadEnvironment(settings, MOCK_WORKSPACE_DIR, isWorkspaceTrusted);
 
       expect(process.env['TESTTEST']).not.toEqual('1234');
-      expect(process.env['GEMINI_API_KEY']).toEqual('test-key');
+      expect(process.env['GEMMA_API_KEY']).toEqual('test-key');
     });
 
     it('does not load env files when trust is undefined and sandboxed', () => {
@@ -2133,7 +2133,7 @@ describe('Settings Loading and Merging', () => {
       loadEnvironment(settings, MOCK_WORKSPACE_DIR, mockTrustFn);
 
       expect(process.env['TESTTEST']).not.toEqual('1234');
-      expect(process.env['GEMINI_API_KEY']).toEqual('test-key');
+      expect(process.env['GEMMA_API_KEY']).toEqual('test-key');
     });
 
     it('loads whitelisted env files from untrusted spaces if sandboxing is enabled', () => {
@@ -2143,8 +2143,8 @@ describe('Settings Loading and Merging', () => {
       });
       loadEnvironment(settings, MOCK_WORKSPACE_DIR, isWorkspaceTrusted);
 
-      // GEMINI_API_KEY is in the whitelist, so it should be loaded.
-      expect(process.env['GEMINI_API_KEY']).toEqual('test-key');
+      // GEMMA_API_KEY is in the whitelist, so it should be loaded.
+      expect(process.env['GEMMA_API_KEY']).toEqual('test-key');
       // TESTTEST is NOT in the whitelist, so it should be blocked.
       expect(process.env['TESTTEST']).not.toEqual('1234');
     });
@@ -2159,7 +2159,7 @@ describe('Settings Loading and Merging', () => {
         });
         loadEnvironment(settings, MOCK_WORKSPACE_DIR, isWorkspaceTrusted);
 
-        expect(process.env['GEMINI_API_KEY']).toEqual('test-key');
+        expect(process.env['GEMMA_API_KEY']).toEqual('test-key');
         expect(process.env['TESTTEST']).not.toEqual('1234');
       } finally {
         process.argv = originalArgv;
@@ -3069,7 +3069,7 @@ describe('Settings Loading and Merging', () => {
       originalArgv = [...process.argv];
       originalEnv = { ...process.env };
       // Clear relevant env vars
-      delete process.env['GEMINI_API_KEY'];
+      delete process.env['GEMMA_API_KEY'];
       delete process.env['GOOGLE_API_KEY'];
       delete process.env['GOOGLE_CLOUD_PROJECT'];
       delete process.env['GOOGLE_CLOUD_LOCATION'];
@@ -3095,7 +3095,7 @@ describe('Settings Loading and Merging', () => {
         });
         vi.mocked(fs.existsSync).mockReturnValue(true);
         vi.mocked(fs.readFileSync).mockReturnValue(
-          'FOO=bar\nGEMINI_API_KEY=secret',
+          'FOO=bar\nGEMMA_API_KEY=secret',
         );
 
         loadEnvironment(
@@ -3103,9 +3103,9 @@ describe('Settings Loading and Merging', () => {
           MOCK_WORKSPACE_DIR,
         );
 
-        // If sandboxed and untrusted, FOO should NOT be loaded, but GEMINI_API_KEY should be.
+        // If sandboxed and untrusted, FOO should NOT be loaded, but GEMMA_API_KEY should be.
         expect(process.env['FOO']).toBeUndefined();
-        expect(process.env['GEMINI_API_KEY']).toBe('secret');
+        expect(process.env['GEMMA_API_KEY']).toBe('secret');
       });
 
       it('should detect sandbox when --sandbox is a real flag', () => {
@@ -3115,14 +3115,14 @@ describe('Settings Loading and Merging', () => {
           source: 'file',
         });
         vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readFileSync).mockReturnValue('GEMINI_API_KEY=secret');
+        vi.mocked(fs.readFileSync).mockReturnValue('GEMMA_API_KEY=secret');
 
         loadEnvironment(
           createMockSettings({ tools: { sandbox: false } }).merged,
           MOCK_WORKSPACE_DIR,
         );
 
-        expect(process.env['GEMINI_API_KEY']).toBe('secret');
+        expect(process.env['GEMMA_API_KEY']).toBe('secret');
       });
 
       it('should ignore sandbox flags if they appear after --', () => {
@@ -3134,14 +3134,14 @@ describe('Settings Loading and Merging', () => {
         vi.mocked(fs.existsSync).mockImplementation((path) =>
           path.toString().endsWith('.env'),
         );
-        vi.mocked(fs.readFileSync).mockReturnValue('GEMINI_API_KEY=secret');
+        vi.mocked(fs.readFileSync).mockReturnValue('GEMMA_API_KEY=secret');
 
         loadEnvironment(
           createMockSettings({ tools: { sandbox: false } }).merged,
           MOCK_WORKSPACE_DIR,
         );
 
-        expect(process.env['GEMINI_API_KEY']).toEqual('secret');
+        expect(process.env['GEMMA_API_KEY']).toEqual('secret');
       });
 
       it('should NOT be tricked by positional arguments that look like flags', () => {
@@ -3153,14 +3153,14 @@ describe('Settings Loading and Merging', () => {
         vi.mocked(fs.existsSync).mockImplementation((path) =>
           path.toString().endsWith('.env'),
         );
-        vi.mocked(fs.readFileSync).mockReturnValue('GEMINI_API_KEY=secret');
+        vi.mocked(fs.readFileSync).mockReturnValue('GEMMA_API_KEY=secret');
 
         loadEnvironment(
           createMockSettings({ tools: { sandbox: false } }).merged,
           MOCK_WORKSPACE_DIR,
         );
 
-        expect(process.env['GEMINI_API_KEY']).toEqual('secret');
+        expect(process.env['GEMMA_API_KEY']).toEqual('secret');
       });
     });
 
@@ -3175,7 +3175,7 @@ describe('Settings Loading and Merging', () => {
           path.toString().endsWith('.env'),
         );
         vi.mocked(fs.readFileSync).mockReturnValue(`
-GEMINI_API_KEY=secret-key
+GEMMA_API_KEY=secret-key
 MALICIOUS_VAR=should-be-ignored
 GOOGLE_API_KEY=another-secret
     `);
@@ -3185,7 +3185,7 @@ GOOGLE_API_KEY=another-secret
           MOCK_WORKSPACE_DIR,
         );
 
-        expect(process.env['GEMINI_API_KEY']).toBe('secret-key');
+        expect(process.env['GEMMA_API_KEY']).toBe('secret-key');
         expect(process.env['GOOGLE_API_KEY']).toBe('another-secret');
         expect(process.env['MALICIOUS_VAR']).toBeUndefined();
       });
@@ -3202,7 +3202,7 @@ GOOGLE_API_KEY=another-secret
 
         const maliciousPayload = 'key-$(whoami)-`id`-&|;><*?[]{}';
         vi.mocked(fs.readFileSync).mockReturnValue(
-          `GEMINI_API_KEY=${maliciousPayload}`,
+          `GEMMA_API_KEY=${maliciousPayload}`,
         );
 
         loadEnvironment(
@@ -3211,7 +3211,7 @@ GOOGLE_API_KEY=another-secret
         );
 
         // sanitizeEnvVar: value.replace(/[^a-zA-Z0-9\-_./]/g, '')
-        expect(process.env['GEMINI_API_KEY']).toBe('key-whoami-id-');
+        expect(process.env['GEMMA_API_KEY']).toBe('key-whoami-id-');
       });
 
       it('should allow . and / in whitelisted env vars but sanitize other characters in untrusted mode', () => {
@@ -3226,7 +3226,7 @@ GOOGLE_API_KEY=another-secret
 
         const complexPayload = 'secret-123/path.to/somewhere;rm -rf /';
         vi.mocked(fs.readFileSync).mockReturnValue(
-          `GEMINI_API_KEY=${complexPayload}`,
+          `GEMMA_API_KEY=${complexPayload}`,
         );
 
         loadEnvironment(
@@ -3234,7 +3234,7 @@ GOOGLE_API_KEY=another-secret
           MOCK_WORKSPACE_DIR,
         );
 
-        expect(process.env['GEMINI_API_KEY']).toBe(
+        expect(process.env['GEMMA_API_KEY']).toBe(
           'secret-123/path.to/somewhererm-rf/',
         );
       });
@@ -3268,7 +3268,7 @@ GOOGLE_API_KEY=another-secret
           path.toString().endsWith('.env'),
         );
         vi.mocked(fs.readFileSync).mockReturnValue(`
-GEMINI_API_KEY=un-sanitized;key!
+GEMMA_API_KEY=un-sanitized;key!
 MALICIOUS_VAR=allowed-because-trusted
     `);
 
@@ -3277,7 +3277,7 @@ MALICIOUS_VAR=allowed-because-trusted
           MOCK_WORKSPACE_DIR,
         );
 
-        expect(process.env['GEMINI_API_KEY']).toBe('un-sanitized;key!');
+        expect(process.env['GEMMA_API_KEY']).toBe('un-sanitized;key!');
         expect(process.env['MALICIOUS_VAR']).toBe('allowed-because-trusted');
       });
 

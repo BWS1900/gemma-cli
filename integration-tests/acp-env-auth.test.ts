@@ -50,7 +50,7 @@ describe.skip('ACP Environment and Auth', () => {
       mkdirSync(projectDir, { recursive: true });
       writeFileSync(
         join(projectDir, '.env'),
-        'GEMINI_API_KEY=test-key-from-env\n',
+        'GEMMA_API_KEY=test-key-from-env\n',
       );
 
       const bundlePath = join(import.meta.dirname, '..', 'bundle/gemini.js');
@@ -60,8 +60,8 @@ describe.skip('ACP Environment and Auth', () => {
         stdio: ['pipe', 'pipe', 'inherit'],
         env: {
           ...process.env,
-          GEMINI_CLI_HOME: rig.homeDir!,
-          GEMINI_API_KEY: undefined,
+          GEMMA_CLI_HOME: rig.homeDir!,
+          GEMMA_API_KEY: undefined,
           VERBOSE: 'true',
         },
       });
@@ -125,8 +125,8 @@ describe.skip('ACP Environment and Auth', () => {
         stdio: ['pipe', 'pipe', 'inherit'],
         env: {
           ...process.env,
-          GEMINI_CLI_HOME: rig.homeDir!,
-          GEMINI_API_KEY: undefined,
+          GEMMA_CLI_HOME: rig.homeDir!,
+          GEMMA_API_KEY: undefined,
           VERBOSE: 'true',
         },
       });

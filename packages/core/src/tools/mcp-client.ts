@@ -88,8 +88,8 @@ import {
 import { expandEnvVars } from '../utils/envExpansion.js';
 
 import {
-  GEMINI_CLI_IDENTIFICATION_ENV_VAR,
-  GEMINI_CLI_IDENTIFICATION_ENV_VAR_VALUE,
+  GEMMA_CLI_IDENTIFICATION_ENV_VAR,
+  GEMMA_CLI_IDENTIFICATION_ENV_VAR_VALUE,
 } from '../services/shellExecutionService.js';
 
 export const MCP_DEFAULT_TIMEOUT_MSEC = 10 * 60 * 1000; // default to 10 minutes
@@ -2344,8 +2344,8 @@ export async function createTransport(
     });
 
     const finalEnv: Record<string, string> = {
-      [GEMINI_CLI_IDENTIFICATION_ENV_VAR]:
-        GEMINI_CLI_IDENTIFICATION_ENV_VAR_VALUE,
+      [GEMMA_CLI_IDENTIFICATION_ENV_VAR]:
+        GEMMA_CLI_IDENTIFICATION_ENV_VAR_VALUE,
       ...extensionEnv,
     };
     for (const [key, value] of Object.entries(sanitizedEnv)) {

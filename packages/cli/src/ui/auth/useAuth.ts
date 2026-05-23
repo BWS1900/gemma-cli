@@ -67,7 +67,7 @@ export const useAuthCommand = (
   );
 
   const reloadApiKey = useCallback(async () => {
-    const envKey = process.env['GEMINI_API_KEY'];
+    const envKey = process.env['GEMMA_API_KEY'];
     if (envKey !== undefined) {
       setApiKeyDefaultValue(envKey);
       return envKey;
@@ -99,9 +99,9 @@ export const useAuthCommand = (
       const llmApiKey = settings.merged.llmApiKey;
       const llmBaseUrl = settings.merged.llmBaseUrl;
       if (!authType) {
-        if (process.env['GEMINI_API_KEY']) {
+        if (process.env['GEMMA_API_KEY']) {
           onAuthError(
-            'Existing API key detected (GEMINI_API_KEY). Select "Gemini API Key" option to use it.',
+            'Existing API key detected (GEMMA_API_KEY). Select "Gemini API Key" option to use it.',
           );
         } else {
           onAuthError('No authentication method selected.');

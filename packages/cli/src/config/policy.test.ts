@@ -40,12 +40,12 @@ describe('resolveWorkspacePolicyState', () => {
   beforeEach(() => {
     // Create a temporary directory for the test
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-cli-test-'));
-    // Redirect GEMINI_CLI_HOME to the temp directory to isolate integrity storage
-    vi.stubEnv('GEMINI_CLI_HOME', tempDir);
+    // Redirect GEMMA_CLI_HOME to the temp directory to isolate integrity storage
+    vi.stubEnv('GEMMA_CLI_HOME', tempDir);
 
     workspaceDir = path.join(tempDir, 'workspace');
     fs.mkdirSync(workspaceDir);
-    policiesDir = path.join(workspaceDir, '.gemini', 'policies');
+    policiesDir = path.join(workspaceDir, '.gemma', 'policies');
 
     // Enable policies for these tests to verify loading logic
     setDisableWorkspacePolicies(false);
@@ -184,7 +184,7 @@ describe('resolveWorkspacePolicyState', () => {
     }
   });
   it('should not return workspace policies if cwd is the home directory', async () => {
-    const policiesDir = path.join(tempDir, '.gemini', 'policies');
+    const policiesDir = path.join(tempDir, '.gemma', 'policies');
     fs.mkdirSync(policiesDir, { recursive: true });
     fs.writeFileSync(path.join(policiesDir, 'policy.toml'), 'rules = []');
 
@@ -219,7 +219,7 @@ describe('resolveWorkspacePolicyState', () => {
   });
 
   it('should return empty state if cwd is a symlink to the home directory', async () => {
-    const policiesDir = path.join(tempDir, '.gemini', 'policies');
+    const policiesDir = path.join(tempDir, '.gemma', 'policies');
     fs.mkdirSync(policiesDir, { recursive: true });
     fs.writeFileSync(path.join(policiesDir, 'policy.toml'), 'rules = []');
 

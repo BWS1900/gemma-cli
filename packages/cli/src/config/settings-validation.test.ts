@@ -454,10 +454,10 @@ describe('settings-validation', () => {
       if (result.error) {
         const formatted = formatValidationError(
           result.error,
-          '~/.gemini/settings.json',
+          '~/.gemma/settings.json',
         );
 
-        expect(formatted).toContain('~/.gemini/settings.json');
+        expect(formatted).toContain('~/.gemma/settings.json');
         expect(formatted).toContain('model.summarizeToolOutput');
       }
     });

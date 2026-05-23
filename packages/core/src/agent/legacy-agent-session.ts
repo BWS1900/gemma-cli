@@ -11,7 +11,7 @@
 
 import { GeminiEventType } from '../core/turn.js';
 import type { Part } from '@google/genai';
-import type { GeminiClient } from '../core/client.js';
+import type { GemmaClient } from '../core/client.js';
 import type { Config } from '../config/config.js';
 import type { ToolCallRequestInfo } from '../scheduler/types.js';
 import { Scheduler } from '../scheduler/scheduler.js';
@@ -47,7 +47,7 @@ function isAbortLikeError(err: unknown): boolean {
 
 export interface LegacyAgentSessionDeps {
   config: Config;
-  client?: GeminiClient;
+  client?: GemmaClient;
   scheduler?: Scheduler;
   promptId?: string;
   streamId?: string;
@@ -65,7 +65,7 @@ export class LegacyAgentProtocol implements AgentProtocol {
   private _abortController = new AbortController();
   private _nextStreamIdOverride?: string;
 
-  private readonly _client: GeminiClient;
+  private readonly _client: GemmaClient;
   private readonly _scheduler: Scheduler;
   private readonly _config: Config;
   private readonly _promptId: string;
@@ -74,7 +74,7 @@ export class LegacyAgentProtocol implements AgentProtocol {
     this._translationState = createTranslationState(deps.streamId);
     this._nextStreamIdOverride = deps.streamId;
     this._config = deps.config;
-    this._client = deps.client ?? deps.config.getGeminiClient();
+    this._client = deps.client ?? deps.config.getGemmaClient();
     this._promptId = deps.promptId ?? deps.config.promptId ?? '';
     if (deps.scheduler) {
       this._scheduler = deps.scheduler;

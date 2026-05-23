@@ -23,7 +23,7 @@ import {
   coreEvents,
   debugLogger,
   FatalSandboxError,
-  GEMINI_DIR,
+  GEMMA_DIR,
   homedir,
 } from '@google/gemini-cli-core';
 import { ConsolePatcher } from '../ui/utils/ConsolePatcher.js';
@@ -76,8 +76,8 @@ export async function start_sandbox(
       if (!BUILTIN_SEATBELT_PROFILES.includes(profile)) {
         const safeProfile = path.basename(profile);
         const fileName = `sandbox-macos-${safeProfile}.sb`;
-        const userProfileFile = path.join(homedir(), GEMINI_DIR, fileName);
-        const projectProfileFile = path.join(GEMINI_DIR, fileName);
+        const userProfileFile = path.join(homedir(), GEMMA_DIR, fileName);
+        const projectProfileFile = path.join(GEMMA_DIR, fileName);
         profileFile = fs.existsSync(userProfileFile)
           ? userProfileFile
           : projectProfileFile;
@@ -252,7 +252,7 @@ export async function start_sandbox(
     const gcPath = process.argv[1] ? fs.realpathSync(process.argv[1]) : '';
 
     const projectSandboxDockerfile = path.join(
-      GEMINI_DIR,
+      GEMMA_DIR,
       'sandbox.Dockerfile',
     );
     const isCustomProjectSandbox = fs.existsSync(projectSandboxDockerfile);
@@ -279,7 +279,7 @@ export async function start_sandbox(
         // if project folder has sandbox.Dockerfile under project settings folder, use that
         let buildArgs = '';
         const projectSandboxDockerfile = path.join(
-          GEMINI_DIR,
+          GEMMA_DIR,
           'sandbox.Dockerfile',
         );
         if (isCustomProjectSandbox) {
@@ -347,12 +347,12 @@ export async function start_sandbox(
     // note user/home changes inside sandbox and we mount at BOTH paths for consistency
     const userHomeDirOnHost = homedir();
     const userSettingsDirInSandbox = getContainerPath(
-      `/home/node/${GEMINI_DIR}`,
+      `/home/node/${GEMMA_DIR}`,
     );
     if (!fs.existsSync(userHomeDirOnHost)) {
       fs.mkdirSync(userHomeDirOnHost, { recursive: true });
     }
-    const userSettingsDirOnHost = path.join(userHomeDirOnHost, GEMINI_DIR);
+    const userSettingsDirOnHost = path.join(userHomeDirOnHost, GEMMA_DIR);
     if (!fs.existsSync(userSettingsDirOnHost)) {
       fs.mkdirSync(userSettingsDirOnHost, { recursive: true });
     }
@@ -501,7 +501,7 @@ export async function start_sandbox(
     // CLI starts cannot race on the same sequential name.
     const imageName = parseImageName(image);
     const isIntegrationTest =
-      process.env['GEMINI_CLI_INTEGRATION_TEST'] === 'true';
+      process.env['GEMMA_CLI_INTEGRATION_TEST'] === 'true';
     const containerNamePrefix = isIntegrationTest
       ? 'gemini-cli-integration-test'
       : imageName;
@@ -511,17 +511,17 @@ export async function start_sandbox(
     debugLogger.log(`ContainerName: ${containerName}`);
     args.push('--name', containerName, '--hostname', containerName);
 
-    // copy GEMINI_CLI_TEST_VAR for integration tests
-    if (process.env['GEMINI_CLI_TEST_VAR']) {
+    // copy GEMMA_CLI_TEST_VAR for integration tests
+    if (process.env['GEMMA_CLI_TEST_VAR']) {
       args.push(
         '--env',
-        `GEMINI_CLI_TEST_VAR=${process.env['GEMINI_CLI_TEST_VAR']}`,
+        `GEMMA_CLI_TEST_VAR=${process.env['GEMMA_CLI_TEST_VAR']}`,
       );
     }
 
-    // copy GEMINI_API_KEY(s)
-    if (process.env['GEMINI_API_KEY']) {
-      args.push('--env', `GEMINI_API_KEY=${process.env['GEMINI_API_KEY']}`);
+    // copy GEMMA_API_KEY(s)
+    if (process.env['GEMMA_API_KEY']) {
+      args.push('--env', `GEMMA_API_KEY=${process.env['GEMMA_API_KEY']}`);
     }
     if (process.env['GOOGLE_API_KEY']) {
       args.push('--env', `GOOGLE_API_KEY=${process.env['GOOGLE_API_KEY']}`);
@@ -588,8 +588,8 @@ export async function start_sandbox(
 
     // Pass through IDE mode environment variables
     for (const envVar of [
-      'GEMINI_CLI_IDE_SERVER_PORT',
-      'GEMINI_CLI_IDE_WORKSPACE_PATH',
+      'GEMMA_CLI_IDE_SERVER_PORT',
+      'GEMMA_CLI_IDE_WORKSPACE_PATH',
       'TERM_PROGRAM',
     ]) {
       if (process.env[envVar]) {
@@ -606,7 +606,7 @@ export async function start_sandbox(
         ?.toLowerCase()
         .startsWith(workdir.toLowerCase())
     ) {
-      const sandboxVenvPath = path.resolve(GEMINI_DIR, 'sandbox.venv');
+      const sandboxVenvPath = path.resolve(GEMMA_DIR, 'sandbox.venv');
       if (!fs.existsSync(sandboxVenvPath)) {
         fs.mkdirSync(sandboxVenvPath, { recursive: true });
       }
@@ -662,7 +662,7 @@ export async function start_sandbox(
     let userFlag = '';
     const finalEntrypoint = entrypoint(workdir, cliArgs);
 
-    if (process.env['GEMINI_CLI_INTEGRATION_TEST'] === 'true') {
+    if (process.env['GEMMA_CLI_INTEGRATION_TEST'] === 'true') {
       args.push('--user', 'root');
       userFlag = '--user root';
     } else if (await shouldUseCurrentUserInSandbox()) {
@@ -984,7 +984,7 @@ async function start_lxc_sandbox(
     // Build the environment variable arguments for `lxc exec`.
     const envArgs: string[] = [];
     const envVarsToForward: Record<string, string | undefined> = {
-      GEMINI_API_KEY: process.env['GEMINI_API_KEY'],
+      GEMMA_API_KEY: process.env['GEMMA_API_KEY'],
       GOOGLE_API_KEY: process.env['GOOGLE_API_KEY'],
       GOOGLE_GEMINI_BASE_URL: process.env['GOOGLE_GEMINI_BASE_URL'],
       GOOGLE_VERTEX_BASE_URL: process.env['GOOGLE_VERTEX_BASE_URL'],
@@ -995,9 +995,9 @@ async function start_lxc_sandbox(
       GEMINI_MODEL: process.env['GEMINI_MODEL'],
       TERM: process.env['TERM'],
       COLORTERM: process.env['COLORTERM'],
-      GEMINI_CLI_IDE_SERVER_PORT: process.env['GEMINI_CLI_IDE_SERVER_PORT'],
-      GEMINI_CLI_IDE_WORKSPACE_PATH:
-        process.env['GEMINI_CLI_IDE_WORKSPACE_PATH'],
+      GEMMA_CLI_IDE_SERVER_PORT: process.env['GEMMA_CLI_IDE_SERVER_PORT'],
+      GEMMA_CLI_IDE_WORKSPACE_PATH:
+        process.env['GEMMA_CLI_IDE_WORKSPACE_PATH'],
       TERM_PROGRAM: process.env['TERM_PROGRAM'],
     };
     for (const [key, value] of Object.entries(envVarsToForward)) {

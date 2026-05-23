@@ -38,8 +38,8 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   };
 });
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>Spinner</Text>,
+vi.mock('../GemmaRespondingSpinner.js', () => ({
+  GemmaRespondingSpinner: () => <Text>Spinner</Text>,
 }));
 
 const mockHistory: HistoryItem[] = [

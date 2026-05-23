@@ -542,7 +542,7 @@ export class LoopDetectionService {
     analysis?: string;
     confirmedByModel?: string;
   }> {
-    const recentHistory = this.context.geminiClient
+    const recentHistory = this.context.gemmaClient
       .getHistory()
       .slice(-LLM_LOOP_CHECK_HISTORY_COUNT);
 

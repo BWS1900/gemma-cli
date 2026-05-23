@@ -773,7 +773,7 @@ describe('loadCliConfig', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -953,9 +953,9 @@ describe('loadCliConfig', () => {
     });
   });
 
-  it('should add IDE workspace folders from GEMINI_CLI_IDE_WORKSPACE_PATH to include directories', async () => {
+  it('should add IDE workspace folders from GEMMA_CLI_IDE_WORKSPACE_PATH to include directories', async () => {
     vi.stubEnv(
-      'GEMINI_CLI_IDE_WORKSPACE_PATH',
+      'GEMMA_CLI_IDE_WORKSPACE_PATH',
       ['/project/folderA', '/project/folderB'].join(path.delimiter),
     );
     process.argv = ['node', 'script.js'];
@@ -967,7 +967,7 @@ describe('loadCliConfig', () => {
     expect(dirs).toContain('/project/folderB');
   });
 
-  it('should skip inaccessible workspace folders from GEMINI_CLI_IDE_WORKSPACE_PATH', async () => {
+  it('should skip inaccessible workspace folders from GEMMA_CLI_IDE_WORKSPACE_PATH', async () => {
     vi.spyOn(ServerConfig, 'resolveToRealPath').mockImplementation((p) => {
       if (p.toString().includes('restricted')) {
         const err = new Error('EACCES: permission denied');
@@ -977,7 +977,7 @@ describe('loadCliConfig', () => {
       return p.toString();
     });
     vi.stubEnv(
-      'GEMINI_CLI_IDE_WORKSPACE_PATH',
+      'GEMMA_CLI_IDE_WORKSPACE_PATH',
       ['/project/folderA', '/nonexistent/restricted/folder'].join(
         path.delimiter,
       ),
@@ -1497,7 +1497,7 @@ describe('loadCliConfig with allowed-mcp-server-names', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -1651,7 +1651,7 @@ describe('loadCliConfig with admin.mcp.config', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -1946,13 +1946,13 @@ describe('loadCliConfig folderTrust', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
 
     originalVitest = process.env['VITEST'];
-    originalIntegrationTest = process.env['GEMINI_CLI_INTEGRATION_TEST'];
+    originalIntegrationTest = process.env['GEMMA_CLI_INTEGRATION_TEST'];
     delete process.env['VITEST'];
-    delete process.env['GEMINI_CLI_INTEGRATION_TEST'];
+    delete process.env['GEMMA_CLI_INTEGRATION_TEST'];
   });
 
   afterEach(() => {
@@ -1960,7 +1960,7 @@ describe('loadCliConfig folderTrust', () => {
       process.env['VITEST'] = originalVitest;
     }
     if (originalIntegrationTest !== undefined) {
-      process.env['GEMINI_CLI_INTEGRATION_TEST'] = originalIntegrationTest;
+      process.env['GEMMA_CLI_INTEGRATION_TEST'] = originalIntegrationTest;
     }
 
     vi.unstubAllEnvs();
@@ -2010,7 +2010,7 @@ describe('loadCliConfig with includeDirectories', () => {
     vi.mocked(os.homedir).mockReturnValue(
       path.resolve(path.sep, 'mock', 'home', 'user'),
     );
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(process, 'cwd').mockReturnValue(
       path.resolve(path.sep, 'home', 'user', 'project'),
     );
@@ -2064,7 +2064,7 @@ describe('loadCliConfig compressionThreshold', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -2098,7 +2098,7 @@ describe('loadCliConfig useRipgrep', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -2136,7 +2136,7 @@ describe('loadCliConfig directWebFetch', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -2170,7 +2170,7 @@ describe('loadCliConfig context management', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -2208,7 +2208,7 @@ describe('screenReader configuration', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -2262,7 +2262,7 @@ describe('loadCliConfig tool exclusions', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     process.stdin.isTTY = true;
     vi.mocked(isWorkspaceTrusted).mockReturnValue({
       isTrusted: true,
@@ -2456,7 +2456,7 @@ describe('loadCliConfig interactive', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     process.stdin.isTTY = true;
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
@@ -2661,7 +2661,7 @@ describe('loadCliConfig approval mode', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     process.argv = ['node', 'script.js']; // Reset argv for each test
     vi.mocked(isWorkspaceTrusted).mockReturnValue({
       isTrusted: true,
@@ -2951,7 +2951,7 @@ describe('loadCliConfig gemmaModelRouter', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -3031,7 +3031,7 @@ describe('loadCliConfig fileFiltering', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     process.argv = ['node', 'script.js']; // Reset argv for each test
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
@@ -3476,7 +3476,7 @@ describe('Policy Engine Integration in loadCliConfig', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -3559,7 +3559,7 @@ describe('loadCliConfig disableYoloMode', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
     vi.mocked(isWorkspaceTrusted).mockReturnValue({
       isTrusted: true,
@@ -3598,7 +3598,7 @@ describe('loadCliConfig secureModeEnabled', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
     vi.mocked(isWorkspaceTrusted).mockReturnValue({
       isTrusted: true,
@@ -3656,7 +3656,7 @@ describe('loadCliConfig mcpEnabled', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 
@@ -3727,7 +3727,7 @@ describe('loadCliConfig mcpEnabled', () => {
   describe('extension plan settings', () => {
     beforeEach(() => {
       vi.spyOn(Storage.prototype, 'getProjectTempDir').mockReturnValue(
-        '/mock/home/user/.gemini/tmp/test-project',
+        '/mock/home/user/.gemma/tmp/test-project',
       );
     });
 
@@ -3819,7 +3819,7 @@ describe('loadCliConfig mcpEnabled', () => {
           '/mock',
           'home',
           'user',
-          '.gemini',
+          '.gemma',
           'tmp',
           'test-project',
           'test-session',
@@ -3834,7 +3834,7 @@ describe('loadCliConfig acpMode and clientName', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
 

@@ -125,7 +125,7 @@ export function useVoiceMode({
 
     const apiKey =
       config.getContentGeneratorConfig()?.apiKey ||
-      process.env['GEMINI_API_KEY'] ||
+      process.env['GEMMA_API_KEY'] ||
       '';
 
     const startAsync = async () => {
@@ -166,7 +166,7 @@ export function useVoiceMode({
 
       if (!apiKey && voiceBackend === 'gemini-live') {
         setQueueErrorMessage(
-          'Cloud voice mode requires a GEMINI_API_KEY. Please set it in your environment or ~/.gemini/.env.',
+          'Cloud voice mode requires a GEMMA_API_KEY. Please set it in your environment or ~/.gemma/.env.',
         );
         setIsRecording(false);
         isRecordingRef.current = false;

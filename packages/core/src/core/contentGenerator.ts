@@ -75,7 +75,7 @@ export enum AuthType {
  * Checks in order:
  * 1. GOOGLE_GENAI_USE_GCA=true -> LOGIN_WITH_GOOGLE
  * 2. GOOGLE_GENAI_USE_VERTEXAI=true -> USE_VERTEX_AI
- * 3. GEMINI_API_KEY -> USE_GEMINI
+ * 3. GEMMA_API_KEY -> USE_GEMINI
  */
 export function getAuthTypeFromEnv(): AuthType | undefined {
   if (process.env['GOOGLE_GENAI_USE_GCA'] === 'true') {
@@ -87,12 +87,12 @@ export function getAuthTypeFromEnv(): AuthType | undefined {
   if (process.env['GOOGLE_GEMINI_BASE_URL']) {
     return AuthType.GATEWAY;
   }
-  if (process.env['GEMINI_API_KEY']) {
+  if (process.env['GEMMA_API_KEY']) {
     return AuthType.USE_GEMINI;
   }
   if (
     process.env['CLOUD_SHELL'] === 'true' ||
-    process.env['GEMINI_CLI_USE_COMPUTE_ADC'] === 'true'
+    process.env['GEMMA_CLI_USE_COMPUTE_ADC'] === 'true'
   ) {
     return AuthType.COMPUTE_ADC;
   }
@@ -165,7 +165,7 @@ export async function createContentGeneratorConfig(
 
   const geminiApiKey =
     apiKey ||
-    process.env['GEMINI_API_KEY'] ||
+    process.env['GEMMA_API_KEY'] ||
     (await loadApiKey()) ||
     undefined;
   const googleApiKey = process.env['GOOGLE_API_KEY'] || undefined;
@@ -227,7 +227,7 @@ export async function createContentGeneratorConfig(
 
   if (authType === AuthType.GATEWAY) {
     contentGeneratorConfig.apiKey =
-      apiKey || process.env['GEMINI_API_KEY'] || '';
+      apiKey || process.env['GEMMA_API_KEY'] || '';
     contentGeneratorConfig.vertexai = false;
 
     return contentGeneratorConfig;
@@ -260,16 +260,16 @@ export async function createContentGenerator(
       gcConfig.getModel(),
       config.authType === AuthType.USE_GEMINI ||
         config.authType === AuthType.USE_VERTEX_AI ||
-        ((await gcConfig.getGemini31Launched?.()) ?? false),
+        ((await gcConfig.getGemma31Launched?.()) ?? false),
       config.authType === AuthType.USE_GEMINI ||
         config.authType === AuthType.USE_VERTEX_AI ||
-        ((await gcConfig.getGemini31FlashLiteLaunched?.()) ?? false),
+        ((await gcConfig.getGemma31FlashLiteLaunched?.()) ?? false),
       false,
       gcConfig.getHasAccessToPreviewModel?.() ?? true,
       gcConfig,
     );
     const customHeadersEnv =
-      process.env['GEMINI_CLI_CUSTOM_HEADERS'] || undefined;
+      process.env['GEMMA_CLI_CUSTOM_HEADERS'] || undefined;
     const clientName = gcConfig.getClientName();
     const surface = determineSurface();
 
@@ -305,7 +305,7 @@ export async function createContentGenerator(
 
     const customHeadersMap = parseCustomHeaders(customHeadersEnv);
     const apiKeyAuthMechanism =
-      process.env['GEMINI_API_KEY_AUTH_MECHANISM'] || 'x-goog-api-key';
+      process.env['GEMMA_API_KEY_AUTH_MECHANISM'] || 'x-goog-api-key';
     const apiVersionEnv = process.env['GOOGLE_GENAI_API_VERSION'];
 
     const baseHeaders: Record<string, string> = {

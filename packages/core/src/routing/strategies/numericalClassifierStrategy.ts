@@ -169,8 +169,8 @@ export class NumericalClassifierStrategy implements RoutingStrategy {
         await this.getRoutingDecision(score, config);
       const [useGemini3_1, useGemini3_1FlashLite, useCustomToolModel] =
         await Promise.all([
-          config.getGemini31Launched(),
-          config.getGemini31FlashLiteLaunched(),
+          config.getGemma31Launched(),
+          config.getGemma31FlashLiteLaunched(),
           config.getUseCustomToolModel(),
         ]);
       const selectedModel = normalizeModelId(

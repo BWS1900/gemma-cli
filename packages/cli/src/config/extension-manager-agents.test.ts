@@ -47,10 +47,10 @@ describe('ExtensionManager agents loading', () => {
 
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-test-agents-'));
     mockHomedir.mockReturnValue(tempDir);
-    vi.stubEnv('GEMINI_CLI_HOME', tempDir);
+    vi.stubEnv('GEMMA_CLI_HOME', tempDir);
 
     // Create the extensions directory that ExtensionManager expects
-    extensionsDir = path.join(tempDir, '.gemini', EXTENSIONS_DIRECTORY_NAME);
+    extensionsDir = path.join(tempDir, '.gemma', EXTENSIONS_DIRECTORY_NAME);
     fs.mkdirSync(extensionsDir, { recursive: true });
 
     extensionManager = new ExtensionManager({

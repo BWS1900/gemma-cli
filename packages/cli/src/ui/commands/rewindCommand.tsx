@@ -21,7 +21,7 @@ import {
   logRewind,
   RewindEvent,
   type ChatRecordingService,
-  type GeminiClient,
+  type GemmaClient,
   convertSessionToClientHistory,
 } from '@google/gemini-cli-core';
 
@@ -38,7 +38,7 @@ import {
  */
 async function rewindConversation(
   context: CommandContext,
-  client: GeminiClient,
+  client: GemmaClient,
   recordingService: ChatRecordingService,
   messageId: string,
   newText: string,
@@ -104,7 +104,7 @@ export const rewindCommand: SlashCommand = {
         content: 'Config not found',
       };
 
-    const client = agentContext.geminiClient;
+    const client = agentContext.gemmaClient;
     if (!client)
       return {
         type: 'message',

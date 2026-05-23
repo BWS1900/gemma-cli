@@ -20,7 +20,7 @@ const getGoldenPath = (name: string) =>
 
 describe('GeminiCliAgent Integration', () => {
   beforeEach(() => {
-    vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
+    vi.stubEnv('GEMMA_API_KEY', 'test-api-key');
   });
 
   afterEach(() => {

@@ -59,10 +59,10 @@ describe('ClassifierStrategy', () => {
       },
       getModel: vi.fn().mockReturnValue(DEFAULT_GEMINI_MODEL_AUTO),
       getNumericalRoutingEnabled: vi.fn().mockResolvedValue(false),
-      getGemini31Launched: vi.fn().mockResolvedValue(false),
-      getGemini31FlashLiteLaunched: vi.fn().mockResolvedValue(false),
+      getGemma31Launched: vi.fn().mockResolvedValue(false),
+      getGemma31FlashLiteLaunched: vi.fn().mockResolvedValue(false),
       getUseCustomToolModel: vi.fn().mockImplementation(async () => {
-        const launched = await mockConfig.getGemini31Launched();
+        const launched = await mockConfig.getGemma31Launched();
         const authType = mockConfig.getContentGeneratorConfig().authType;
         return launched && authType === AuthType.USE_GEMINI;
       }),
@@ -389,7 +389,7 @@ describe('ClassifierStrategy', () => {
 
   describe('Gemini 3.1 and Custom Tools Routing', () => {
     it('should route to PREVIEW_GEMINI_3_1_MODEL when Gemini 3.1 is launched', async () => {
-      vi.mocked(mockConfig.getGemini31Launched).mockResolvedValue(true);
+      vi.mocked(mockConfig.getGemma31Launched).mockResolvedValue(true);
       vi.mocked(mockConfig.getModel).mockReturnValue(PREVIEW_GEMINI_MODEL_AUTO);
       const mockApiResponse = {
         reasoning: 'Complex task',
@@ -410,7 +410,7 @@ describe('ClassifierStrategy', () => {
     });
 
     it('should route to PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL when Gemini 3.1 is launched and auth is USE_GEMINI', async () => {
-      vi.mocked(mockConfig.getGemini31Launched).mockResolvedValue(true);
+      vi.mocked(mockConfig.getGemma31Launched).mockResolvedValue(true);
       vi.mocked(mockConfig.getModel).mockReturnValue(PREVIEW_GEMINI_MODEL_AUTO);
       vi.mocked(mockConfig.getContentGeneratorConfig).mockReturnValue({
         authType: AuthType.USE_GEMINI,

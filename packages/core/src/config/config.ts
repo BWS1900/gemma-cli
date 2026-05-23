@@ -56,7 +56,7 @@ import {
   ListBackgroundProcessesTool,
   ReadBackgroundOutputTool,
 } from '../tools/shellBackgroundTools.js';
-import { GeminiClient } from '../core/client.js';
+import { GemmaClient } from '../core/client.js';
 import { BaseLlmClient } from '../core/baseLlmClient.js';
 import { LocalLiteRtLmClient } from '../core/localLiteRtLmClient.js';
 import type { HookDefinition, HookEventName } from '../hooks/types.js';
@@ -803,7 +803,7 @@ export class Config implements McpContext, AgentLoopContext {
   private readonly accessibility: AccessibilitySettings;
   private readonly telemetrySettings: TelemetrySettings;
   private readonly usageStatisticsEnabled: boolean;
-  private _geminiClient!: GeminiClient;
+  private _gemmaClient!: GemmaClient;
   private _sandboxManager: SandboxManager;
   private readonly _sandboxPolicyManager: SandboxPolicyManager;
   private baseLlmClient!: BaseLlmClient;
@@ -1416,7 +1416,7 @@ export class Config implements McpContext, AgentLoopContext {
         );
       }
     }
-    this._geminiClient = new GeminiClient(this);
+    this._gemmaClient = new GemmaClient(this);
     this.a2aClientManager = new A2AClientManager(this);
     this.modelRouterService = new ModelRouterService(this);
   }
@@ -1555,7 +1555,7 @@ export class Config implements McpContext, AgentLoopContext {
     this.memoryContextManager = new MemoryContextManager(this);
     await this.memoryContextManager.refresh();
 
-    await this._geminiClient.initialize();
+    await this._gemmaClient.initialize();
     this.initialized = true;
   }
 
@@ -1581,13 +1581,13 @@ export class Config implements McpContext, AgentLoopContext {
       authMethod !== AuthType.USE_GEMINI
     ) {
       // Restore the conversation history to the new client
-      this._geminiClient.stripThoughtsFromHistory();
+      this._gemmaClient.stripThoughtsFromHistory();
     }
 
     // Reset availability status when switching auth (e.g. from limited key to OAuth)
     this.modelAvailabilityService.reset();
 
-    // Clear stale authType to ensure getGemini31LaunchedSync doesn't return stale results
+    // Clear stale authType to ensure getGemma31LaunchedSync doesn't return stale results
     // during the transition.
     if (this.contentGeneratorConfig) {
       this.contentGeneratorConfig.authType = undefined;
@@ -1772,8 +1772,8 @@ export class Config implements McpContext, AgentLoopContext {
    * @deprecated Do not access directly on Config.
    * Use the injected AgentLoopContext instead.
    */
-  get geminiClient(): GeminiClient {
-    return this._geminiClient;
+  get gemmaClient(): GemmaClient {
+    return this._gemmaClient;
   }
 
   private async getSandboxForbiddenPaths(): Promise<string[]> {
@@ -2052,8 +2052,8 @@ export class Config implements McpContext, AgentLoopContext {
 
     const primaryModel = resolveModel(
       model,
-      this.getGemini31LaunchedSync(),
-      this.getGemini31FlashLiteLaunchedSync(),
+      this.getGemma31LaunchedSync(),
+      this.getGemma31FlashLiteLaunchedSync(),
       this.getUseCustomToolModelSync(),
       this.getHasAccessToPreviewModel(),
       this,
@@ -2092,8 +2092,8 @@ export class Config implements McpContext, AgentLoopContext {
     }
     const primaryModel = resolveModel(
       this.getModel(),
-      this.getGemini31LaunchedSync(),
-      this.getGemini31FlashLiteLaunchedSync(),
+      this.getGemma31LaunchedSync(),
+      this.getGemma31FlashLiteLaunchedSync(),
       this.getUseCustomToolModelSync(),
       this.getHasAccessToPreviewModel(),
       this,
@@ -2108,8 +2108,8 @@ export class Config implements McpContext, AgentLoopContext {
     }
     const primaryModel = resolveModel(
       this.getModel(),
-      this.getGemini31LaunchedSync(),
-      this.getGemini31FlashLiteLaunchedSync(),
+      this.getGemma31LaunchedSync(),
+      this.getGemma31FlashLiteLaunchedSync(),
       this.getUseCustomToolModelSync(),
       this.getHasAccessToPreviewModel(),
       this,
@@ -2124,8 +2124,8 @@ export class Config implements McpContext, AgentLoopContext {
     }
     const primaryModel = resolveModel(
       this.getModel(),
-      this.getGemini31LaunchedSync(),
-      this.getGemini31FlashLiteLaunchedSync(),
+      this.getGemma31LaunchedSync(),
+      this.getGemma31FlashLiteLaunchedSync(),
       this.getUseCustomToolModelSync(),
       this.getHasAccessToPreviewModel(),
       this,
@@ -2542,9 +2542,9 @@ export class Config implements McpContext, AgentLoopContext {
    */
   async refreshMcpContext(): Promise<void> {
     await this.memoryContextManager?.refresh();
-    if (this._geminiClient?.isInitialized()) {
-      await this._geminiClient.setTools();
-      this._geminiClient.updateSystemInstruction();
+    if (this._gemmaClient?.isInitialized()) {
+      await this._gemmaClient.setTools();
+      this._gemmaClient.updateSystemInstruction();
     }
   }
 
@@ -2796,9 +2796,9 @@ export class Config implements McpContext, AgentLoopContext {
         currentMode === ApprovalMode.YOLO || mode === ApprovalMode.YOLO;
 
       if (isPlanModeTransition || isYoloModeTransition) {
-        if (this._geminiClient?.isInitialized()) {
-          this._geminiClient.clearCurrentSequenceModel();
-          this._geminiClient.setTools().catch((err) => {
+        if (this._gemmaClient?.isInitialized()) {
+          this._gemmaClient.clearCurrentSequenceModel();
+          this._gemmaClient.setTools().catch((err) => {
             debugLogger.error('Failed to update tools', err);
           });
         }
@@ -2915,9 +2915,9 @@ export class Config implements McpContext, AgentLoopContext {
     return this.telemetrySettings.useCliAuth ?? false;
   }
 
-  /** @deprecated Use geminiClient getter */
-  getGeminiClient(): GeminiClient {
-    return this.geminiClient;
+  /** @deprecated Use gemmaClient getter */
+  getGemmaClient(): GemmaClient {
+    return this.gemmaClient;
   }
 
   /**
@@ -2925,9 +2925,9 @@ export class Config implements McpContext, AgentLoopContext {
    * Whenever the user memory (GEMINI.md files) is updated.
    */
   updateSystemInstructionIfInitialized(): void {
-    const geminiClient = this.geminiClient;
-    if (geminiClient?.isInitialized()) {
-      geminiClient.updateSystemInstruction();
+    const gemmaClient = this.gemmaClient;
+    if (gemmaClient?.isInitialized()) {
+      gemmaClient.updateSystemInstruction();
     }
   }
 
@@ -3250,8 +3250,8 @@ export class Config implements McpContext, AgentLoopContext {
   /**
    * Checks if a given absolute path is allowed for file system operations.
    * A path is allowed if it's within the workspace context, the project's
-   * temporary directory, or is exactly the global personal `~/.gemini/GEMINI.md`
-   * file (the latter is the only file under `~/.gemini/` that is reachable —
+   * temporary directory, or is exactly the global personal `~/.gemma/GEMINI.md`
+   * file (the latter is the only file under `~/.gemma/` that is reachable —
    * settings, credentials, keybindings, etc. remain disallowed).
    *
    * One subtree is *carved back out*: `<projectMemoryDir>/.inbox/` is owned by
@@ -3312,7 +3312,7 @@ export class Config implements McpContext, AgentLoopContext {
     // Surgical allowlist: the global personal GEMINI.md file (and ONLY that
     // file) is reachable so the prompt-driven memory flow can persist
     // cross-project personal preferences. This deliberately does NOT
-    // allowlist the rest of `~/.gemini/`.
+    // allowlist the rest of `~/.gemma/`.
     const globalMemoryFilePath = path.join(
       Storage.getGlobalGeminiDir(),
       getCurrentGeminiMdFilename(),
@@ -3514,25 +3514,25 @@ export class Config implements McpContext, AgentLoopContext {
    * Returns whether Gemini 3.1 Pro has been launched.
    * This method is async and ensures that experiments are loaded before returning the result.
    */
-  async getGemini31Launched(): Promise<boolean> {
+  async getGemma31Launched(): Promise<boolean> {
     await this.ensureExperimentsLoaded();
-    return this.getGemini31LaunchedSync();
+    return this.getGemma31LaunchedSync();
   }
 
   /**
    * Returns whether Gemini 3.1 Flash Lite has been launched.
    * This method is async and ensures that experiments are loaded before returning the result.
    */
-  async getGemini31FlashLiteLaunched(): Promise<boolean> {
+  async getGemma31FlashLiteLaunched(): Promise<boolean> {
     await this.ensureExperimentsLoaded();
-    return this.getGemini31FlashLiteLaunchedSync();
+    return this.getGemma31FlashLiteLaunchedSync();
   }
 
   /**
    * Returns whether the custom tool model should be used.
    */
   async getUseCustomToolModel(): Promise<boolean> {
-    const useGemini3_1 = await this.getGemini31Launched();
+    const useGemini3_1 = await this.getGemma31Launched();
     const authType = this.contentGeneratorConfig?.authType;
     return useGemini3_1 && authType === AuthType.USE_GEMINI;
   }
@@ -3543,7 +3543,7 @@ export class Config implements McpContext, AgentLoopContext {
    * Note: This method should only be called after startup, once experiments have been loaded.
    */
   getUseCustomToolModelSync(): boolean {
-    const useGemini3_1 = this.getGemini31LaunchedSync();
+    const useGemini3_1 = this.getGemma31LaunchedSync();
     const authType = this.contentGeneratorConfig?.authType;
     return useGemini3_1 && authType === AuthType.USE_GEMINI;
   }
@@ -3561,9 +3561,9 @@ export class Config implements McpContext, AgentLoopContext {
    *
    * Note: This method should only be called after startup, once experiments have been loaded.
    * If you need to call this during startup or from an async context, use
-   * getGemini31Launched instead.
+   * getGemma31Launched instead.
    */
-  getGemini31LaunchedSync(): boolean {
+  getGemma31LaunchedSync(): boolean {
     const authType = this.contentGeneratorConfig?.authType;
     if (this.isGemini31LaunchedForAuthType(authType)) {
       return true;
@@ -3594,9 +3594,9 @@ export class Config implements McpContext, AgentLoopContext {
    *
    * Note: This method should only be called after startup, once experiments have been loaded.
    * If you need to call this during startup or from an async context, use
-   * getGemini31FlashLiteLaunched instead.
+   * getGemma31FlashLiteLaunched instead.
    */
-  getGemini31FlashLiteLaunchedSync(): boolean {
+  getGemma31FlashLiteLaunchedSync(): boolean {
     const authType = this.contentGeneratorConfig?.authType;
     if (this.isGemini31LaunchedForAuthType(authType)) {
       return true;
@@ -3841,14 +3841,14 @@ export class Config implements McpContext, AgentLoopContext {
 
   getAgentSessionNoninteractiveEnabled(): boolean {
     return (
-      process.env['GEMINI_CLI_EXP_AGENT'] === 'true' ||
+      process.env['GEMMA_CLI_EXP_AGENT'] === 'true' ||
       this.agentSessionNoninteractiveEnabled
     );
   }
 
   getAgentSessionInteractiveEnabled(): boolean {
     return (
-      process.env['GEMINI_CLI_EXP_AGENT'] === 'true' ||
+      process.env['GEMMA_CLI_EXP_AGENT'] === 'true' ||
       this.agentSessionInteractiveEnabled
     );
   }
@@ -4150,13 +4150,13 @@ export class Config implements McpContext, AgentLoopContext {
 
   private onAgentsRefreshed = async () => {
     // Propagate updates to the active chat session
-    const client = this.geminiClient;
+    const client = this.gemmaClient;
     if (client?.isInitialized()) {
       await client.setTools();
       client.updateSystemInstruction();
     } else {
       debugLogger.debug(
-        '[Config] GeminiClient not initialized; skipping live prompt/tool refresh.',
+        '[Config] GemmaClient not initialized; skipping live prompt/tool refresh.',
       );
     }
   };
@@ -4168,7 +4168,7 @@ export class Config implements McpContext, AgentLoopContext {
     this.logCurrentModeDuration(this.getApprovalMode());
     coreEvents.off(CoreEvent.AgentsRefreshed, this.onAgentsRefreshed);
     this.agentRegistry?.dispose();
-    this._geminiClient?.dispose();
+    this._gemmaClient?.dispose();
     if (this.mcpClientManager) {
       await this.mcpClientManager.stop();
     }

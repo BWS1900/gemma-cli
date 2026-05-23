@@ -464,7 +464,7 @@ describe('memory commands', () => {
     });
 
     it('omits global patches with disallowed targets from the listing', async () => {
-      // Same defense for the global tier: only ~/.gemini/GEMINI.md is allowed.
+      // Same defense for the global tier: only ~/.gemma/GEMINI.md is allowed.
       // memory.md (legacy lowercase), sibling .md files, and settings.json all
       // get filtered out of the listing instead of confusing the user.
       const patchDir = path.join(memoryTempDir, '.inbox', 'global');
@@ -699,7 +699,7 @@ describe('memory commands', () => {
       );
     });
 
-    it('applies a global creation patch to ~/.gemini/GEMINI.md', async () => {
+    it('applies a global creation patch to ~/.gemma/GEMINI.md', async () => {
       const target = path.join(globalMemoryDir, 'GEMINI.md');
       // Sanity check: target does not exist before apply.
       await expect(fs.access(target)).rejects.toThrow();
@@ -726,7 +726,7 @@ describe('memory commands', () => {
       ).rejects.toThrow();
     });
 
-    it('applies a global update patch to ~/.gemini/GEMINI.md', async () => {
+    it('applies a global update patch to ~/.gemma/GEMINI.md', async () => {
       const target = path.join(globalMemoryDir, 'GEMINI.md');
       await fs.writeFile(target, '- prefer X\n');
 
@@ -910,7 +910,7 @@ describe('memory commands', () => {
       await expect(fs.access(path.join(patchDir, 'b.patch'))).rejects.toThrow();
     });
 
-    it('rejects global patches that target anything other than ~/.gemini/GEMINI.md', async () => {
+    it('rejects global patches that target anything other than ~/.gemma/GEMINI.md', async () => {
       const patchDir = path.join(memoryTempDir, '.inbox', 'global');
       await fs.mkdir(patchDir, { recursive: true });
 
@@ -923,7 +923,7 @@ describe('memory commands', () => {
         ),
       );
 
-      // Sibling .md files in ~/.gemini/ are also not allowed.
+      // Sibling .md files in ~/.gemma/ are also not allowed.
       await fs.writeFile(
         path.join(patchDir, 'sibling.patch'),
         buildCreationPatch(
@@ -1062,7 +1062,7 @@ describe('memory commands', () => {
       const result = await moveInboxSkill(moveConfig, 'my-skill', 'global');
 
       expect(result.success).toBe(true);
-      expect(result.message).toBe('Moved "my-skill" to ~/.gemini/skills.');
+      expect(result.message).toBe('Moved "my-skill" to ~/.gemma/skills.');
 
       // Verify the skill was copied to global
       const targetSkill = await fs.readFile(
@@ -1083,7 +1083,7 @@ describe('memory commands', () => {
       const result = await moveInboxSkill(moveConfig, 'my-skill', 'project');
 
       expect(result.success).toBe(true);
-      expect(result.message).toBe('Moved "my-skill" to .gemini/skills.');
+      expect(result.message).toBe('Moved "my-skill" to .gemma/skills.');
 
       // Verify the skill was copied to project
       const targetSkill = await fs.readFile(

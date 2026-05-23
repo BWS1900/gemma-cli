@@ -88,7 +88,7 @@ describe('PromptProvider', () => {
       getApprovalMode: vi.fn(),
       isTrackerEnabled: vi.fn().mockReturnValue(false),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(true),
-      getGemini31LaunchedSync: vi.fn().mockReturnValue(true),
+      getGemma31LaunchedSync: vi.fn().mockReturnValue(true),
     } as unknown as Config;
   });
 
@@ -352,7 +352,7 @@ describe('PromptProvider', () => {
         ]),
       });
       vi.mocked(mockConfig.getHasAccessToPreviewModel).mockReturnValue(true);
-      vi.mocked(mockConfig.getGemini31LaunchedSync).mockReturnValue(true);
+      vi.mocked(mockConfig.getGemma31LaunchedSync).mockReturnValue(true);
     });
 
     it('should include active topic context when narration is enabled', () => {

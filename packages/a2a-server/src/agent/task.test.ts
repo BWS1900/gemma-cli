@@ -444,7 +444,7 @@ describe('Task', () => {
   describe('currentPromptId and promptCount', () => {
     it('should correctly initialize and update promptId and promptCount', async () => {
       const mockConfig = createMockConfig();
-      mockConfig.getGeminiClient = vi.fn().mockReturnValue({
+      mockConfig.getGemmaClient = vi.fn().mockReturnValue({
         sendMessageStream: vi.fn().mockReturnValue((async function* () {})()),
       });
       mockConfig.getSessionId = () => 'test-session-id';

@@ -13,7 +13,7 @@ import path from 'node:path';
  * ACP client-based implementation of FileSystemService
  */
 export class AcpFileSystemService implements FileSystemService {
-  private readonly geminiDir = path.join(os.homedir(), '.gemini');
+  private readonly geminiDir = path.join(os.homedir(), '.gemma');
 
   constructor(
     private readonly connection: acp.AgentSideConnection,

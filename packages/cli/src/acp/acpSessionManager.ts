@@ -124,9 +124,9 @@ export class AcpSessionManager {
     startupProfiler.flush(config);
     startAutoMemoryIfEnabled(config);
 
-    const geminiClient = config.getGeminiClient();
+    const gemmaClient = config.getGemmaClient();
 
-    const chat = await geminiClient.startChat();
+    const chat = await gemmaClient.startChat();
 
     const session = new Session(
       sessionId,
@@ -179,16 +179,16 @@ export class AcpSessionManager {
 
     const clientHistory = convertSessionToClientHistory(sessionData.messages);
 
-    const geminiClient = config.getGeminiClient();
-    await geminiClient.initialize();
-    await geminiClient.resumeChat(clientHistory, {
+    const gemmaClient = config.getGemmaClient();
+    await gemmaClient.initialize();
+    await gemmaClient.resumeChat(clientHistory, {
       conversation: sessionData,
       filePath: sessionPath,
     });
 
     const session = new Session(
       sessionId,
-      geminiClient.getChat(),
+      gemmaClient.getChat(),
       config,
       this.connection,
       this.settings,

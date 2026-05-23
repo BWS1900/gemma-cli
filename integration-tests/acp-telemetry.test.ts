@@ -67,8 +67,8 @@ describe('ACP telemetry', () => {
         stdio: ['pipe', 'pipe', 'inherit'],
         env: {
           ...process.env,
-          GEMINI_API_KEY: 'fake-key',
-          GEMINI_CLI_HOME: rig.homeDir!,
+          GEMMA_API_KEY: 'fake-key',
+          GEMMA_CLI_HOME: rig.homeDir!,
           GEMINI_TELEMETRY_ENABLED: 'true',
           GEMINI_TELEMETRY_TRACES_ENABLED: 'true',
           GEMINI_TELEMETRY_TARGET: 'local',

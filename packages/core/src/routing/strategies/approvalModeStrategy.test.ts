@@ -42,11 +42,11 @@ describe('ApprovalModeStrategy', () => {
       getApprovalMode: vi.fn().mockReturnValue(ApprovalMode.DEFAULT),
       getApprovedPlanPath: vi.fn().mockReturnValue(undefined),
       getPlanModeRoutingEnabled: vi.fn().mockResolvedValue(true),
-      getGemini31Launched: vi.fn().mockResolvedValue(false),
-      getGemini31FlashLiteLaunched: vi.fn().mockResolvedValue(false),
+      getGemma31Launched: vi.fn().mockResolvedValue(false),
+      getGemma31FlashLiteLaunched: vi.fn().mockResolvedValue(false),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(true),
       getUseCustomToolModel: vi.fn().mockImplementation(async () => {
-        const launched = await mockConfig.getGemini31Launched();
+        const launched = await mockConfig.getGemma31Launched();
         const authType = mockConfig.getContentGeneratorConfig?.()?.authType;
         return launched && authType === AuthType.USE_GEMINI;
       }),
@@ -226,7 +226,7 @@ describe('ApprovalModeStrategy', () => {
 
   it('should route to Preview Flash model when an approved plan exists and Gemini 3.1 is launched', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(GEMINI_MODEL_ALIAS_AUTO);
-    vi.mocked(mockConfig.getGemini31Launched).mockResolvedValue(true);
+    vi.mocked(mockConfig.getGemma31Launched).mockResolvedValue(true);
 
     // Exit plan mode with approved plan
     vi.mocked(mockConfig.getApprovalMode).mockReturnValue(ApprovalMode.DEFAULT);

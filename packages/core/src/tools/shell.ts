@@ -1021,7 +1021,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
           this.context.config,
           { model: 'summarizer-shell' },
           llmContent,
-          this.context.geminiClient,
+          this.context.gemmaClient,
           signal,
         );
         return {

@@ -23,7 +23,7 @@ import {
   PROJECT_MEMORY_INDEX_FILENAME,
 } from '../tools/memoryTool.js';
 import {
-  GEMINI_DIR,
+  GEMMA_DIR,
   toAbsolutePath,
   homedir as pathsHomedir,
 } from './paths.js';
@@ -115,7 +115,7 @@ describe('memoryDiscovery', () => {
   describe('getGlobalMemoryPaths', () => {
     it('should find global memory file if it exists', async () => {
       const globalMemoryFile = await createTestFile(
-        path.join(homedir, GEMINI_DIR, DEFAULT_CONTEXT_FILENAME),
+        path.join(homedir, GEMMA_DIR, DEFAULT_CONTEXT_FILENAME),
         'Global memory content',
       );
 
@@ -321,7 +321,7 @@ describe('memoryDiscovery', () => {
         const memoryTool = await import('../tools/memoryTool.js');
         const memoryDiscovery = await import('./memoryDiscovery.js');
         vi.mocked(paths.homedir).mockReturnValue('/home/tester');
-        memoryTool.setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
+        memoryTool.setGeminiMdFilename(['GEMINI.md', 'gemma.md']);
 
         const result = await memoryDiscovery.getEnvironmentMemoryPaths(
           ['/case-root'],
@@ -330,7 +330,7 @@ describe('memoryDiscovery', () => {
 
         expect(result).toEqual([
           paths.toAbsolutePath('/case-root/GEMINI.md'),
-          paths.toAbsolutePath('/case-root/gemini.md'),
+          paths.toAbsolutePath('/case-root/gemma.md'),
         ]);
       } finally {
         platformSpy.mockRestore();
@@ -399,7 +399,7 @@ describe('memoryDiscovery', () => {
   describe('file identity deduplication', () => {
     it('should deduplicate files that point to the same inode (same physical file)', async () => {
       const geminiFile = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+        path.join(projectRoot, 'gemma.md'),
         'Project root memory',
       );
 
@@ -444,7 +444,7 @@ describe('memoryDiscovery', () => {
 
     it('should handle case where files have different inodes (different files)', async () => {
       const geminiFileLower = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+        path.join(projectRoot, 'gemma.md'),
         'Lowercase file content',
       );
       const geminiFileUpper = await createTestFile(
@@ -469,7 +469,7 @@ describe('memoryDiscovery', () => {
 
     it("should handle files that cannot be stat'd (missing files)", async () => {
       const geminiFile = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+        path.join(projectRoot, 'gemma.md'),
         'Valid file content',
       );
       const missingFile = path.join(projectRoot, 'missing.md');
@@ -485,7 +485,7 @@ describe('memoryDiscovery', () => {
 
     it('should deduplicate multiple paths pointing to same file (3+ duplicates)', async () => {
       const geminiFile = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+        path.join(projectRoot, 'gemma.md'),
         'Project root memory',
       );
 
@@ -619,7 +619,7 @@ describe('memoryDiscovery', () => {
       const targetFile = path.join(subDir, 'target.txt');
 
       const geminiFile = await createTestFile(
-        path.join(subDir, 'gemini.md'),
+        path.join(subDir, 'gemma.md'),
         'JIT memory content',
       );
 
@@ -643,7 +643,7 @@ describe('memoryDiscovery', () => {
       const stats2 = await fsPromises.lstat(geminiFileLink);
       expect(stats1.ino).toBe(stats2.ino);
 
-      setGeminiMdFilename(['gemini.md', 'GEMINI.md']);
+      setGeminiMdFilename(['gemma.md', 'GEMINI.md']);
 
       const result = await loadJitSubdirectoryMemory(
         targetFile,

@@ -7,7 +7,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Content } from '@google/genai';
 import type { Config } from '../config/config.js';
-import type { GeminiClient } from '../core/client.js';
+import type { GemmaClient } from '../core/client.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
 import {
   GeminiEventType,
@@ -792,14 +792,14 @@ describe('LoopDetectionService', () => {
 describe('LoopDetectionService LLM Checks', () => {
   let service: LoopDetectionService;
   let mockConfig: Config;
-  let mockGeminiClient: GeminiClient;
+  let mockGemmaClient: GemmaClient;
   let mockBaseLlmClient: BaseLlmClient;
   let abortController: AbortController;
 
   beforeEach(() => {
-    mockGeminiClient = {
+    mockGemmaClient = {
       getHistory: vi.fn().mockReturnValue([]),
-    } as unknown as GeminiClient;
+    } as unknown as GemmaClient;
 
     mockBaseLlmClient = {
       generateJson: vi.fn(),
@@ -812,9 +812,9 @@ describe('LoopDetectionService LLM Checks', () => {
       get config() {
         return this;
       },
-      getGeminiClient: () => mockGeminiClient,
-      get geminiClient() {
-        return mockGeminiClient;
+      getGemmaClient: () => mockGemmaClient,
+      get gemmaClient() {
+        return mockGemmaClient;
       },
       getBaseLlmClient: () => mockBaseLlmClient,
       getDisableLoopDetection: () => false,
@@ -965,7 +965,7 @@ describe('LoopDetectionService LLM Checks', () => {
         parts: [{ text: 'Some follow up text' }],
       },
     ];
-    vi.mocked(mockGeminiClient.getHistory).mockReturnValue(functionCallHistory);
+    vi.mocked(mockGemmaClient.getHistory).mockReturnValue(functionCallHistory);
 
     mockBaseLlmClient.generateJson = vi
       .fn()
@@ -1124,7 +1124,7 @@ describe('LoopDetectionService LLM Checks', () => {
   it('should not include user prompt in contents when not provided', async () => {
     service.reset('test-prompt-id');
 
-    vi.mocked(mockGeminiClient.getHistory).mockReturnValue([
+    vi.mocked(mockGemmaClient.getHistory).mockReturnValue([
       {
         role: 'model',
         parts: [{ text: 'Some response' }],

@@ -54,7 +54,7 @@ describe('GeminiAgent - RPC Dispatcher', () => {
       getContentGeneratorConfig: vi.fn(),
       getActiveModel: vi.fn().mockReturnValue('gemini-pro'),
       getModel: vi.fn().mockReturnValue('gemini-pro'),
-      getGeminiClient: vi.fn().mockReturnValue({
+      getGemmaClient: vi.fn().mockReturnValue({
         startChat: vi.fn().mockResolvedValue({}),
       }),
       getMessageBus: vi.fn().mockReturnValue({
@@ -64,7 +64,7 @@ describe('GeminiAgent - RPC Dispatcher', () => {
       }),
       getApprovalMode: vi.fn().mockReturnValue('default'),
       isPlanEnabled: vi.fn().mockReturnValue(true),
-      getGemini31LaunchedSync: vi.fn().mockReturnValue(false),
+      getGemma31LaunchedSync: vi.fn().mockReturnValue(false),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(false),
       getCheckpointingEnabled: vi.fn().mockReturnValue(false),
       getDisableAlwaysAllow: vi.fn().mockReturnValue(false),

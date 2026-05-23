@@ -34,7 +34,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const os = await import('node:os');
   return {
     ...actual,
-    GEMINI_DIR: '.gemini',
+    GEMMA_DIR: '.gemma',
     debugLogger: {
       error: vi.fn(),
     },
@@ -51,8 +51,8 @@ describe('loadSettings', () => {
     os.tmpdir(),
     `gemini-workspace-${mocks.suffix}`,
   );
-  const mockGeminiHomeDir = path.join(mockHomeDir, '.gemini');
-  const mockGeminiWorkspaceDir = path.join(mockWorkspaceDir, '.gemini');
+  const mockGeminiHomeDir = path.join(mockHomeDir, '.gemma');
+  const mockGeminiWorkspaceDir = path.join(mockWorkspaceDir, '.gemma');
 
   beforeEach(() => {
     vi.clearAllMocks();

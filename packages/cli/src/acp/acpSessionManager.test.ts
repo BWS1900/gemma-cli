@@ -62,7 +62,7 @@ describe('AcpSessionManager', () => {
       getContentGeneratorConfig: vi.fn(),
       getActiveModel: vi.fn().mockReturnValue('gemini-pro'),
       getModel: vi.fn().mockReturnValue('gemini-pro'),
-      getGeminiClient: vi.fn().mockReturnValue({
+      getGemmaClient: vi.fn().mockReturnValue({
         startChat: vi.fn().mockResolvedValue({}),
       }),
       getMessageBus: vi.fn().mockReturnValue({
@@ -72,7 +72,7 @@ describe('AcpSessionManager', () => {
       }),
       getApprovalMode: vi.fn().mockReturnValue('default'),
       isPlanEnabled: vi.fn().mockReturnValue(true),
-      getGemini31LaunchedSync: vi.fn().mockReturnValue(false),
+      getGemma31LaunchedSync: vi.fn().mockReturnValue(false),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(false),
       getCheckpointingEnabled: vi.fn().mockReturnValue(false),
       getDisableAlwaysAllow: vi.fn().mockReturnValue(false),
@@ -149,7 +149,7 @@ describe('AcpSessionManager', () => {
     expect(response.sessionId).toBe('test-session-id');
     expect(loadCliConfig).toHaveBeenCalled();
     expect(mockConfig.initialize).toHaveBeenCalled();
-    expect(mockConfig.getGeminiClient).toHaveBeenCalled();
+    expect(mockConfig.getGemmaClient).toHaveBeenCalled();
 
     // Verify deferred call (sendAvailableCommands)
     await vi.runAllTimersAsync();
@@ -197,7 +197,7 @@ describe('AcpSessionManager', () => {
       apiKey: 'test-key',
     });
     mockConfig.getHasAccessToPreviewModel = vi.fn().mockReturnValue(true);
-    mockConfig.getGemini31LaunchedSync = vi.fn().mockReturnValue(true);
+    mockConfig.getGemma31LaunchedSync = vi.fn().mockReturnValue(true);
 
     const response = await manager.newSession(
       {
@@ -222,8 +222,8 @@ describe('AcpSessionManager', () => {
       apiKey: 'test-key',
     });
     mockConfig.getHasAccessToPreviewModel = vi.fn().mockReturnValue(true);
-    mockConfig.getGemini31LaunchedSync = vi.fn().mockReturnValue(true);
-    mockConfig.getGemini31FlashLiteLaunchedSync = vi.fn().mockReturnValue(true);
+    mockConfig.getGemma31LaunchedSync = vi.fn().mockReturnValue(true);
+    mockConfig.getGemma31FlashLiteLaunchedSync = vi.fn().mockReturnValue(true);
 
     const response = await manager.newSession(
       {

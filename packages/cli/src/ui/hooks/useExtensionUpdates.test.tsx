@@ -11,7 +11,7 @@ import * as path from 'node:path';
 import { createExtension } from '../../test-utils/createExtension.js';
 import { useExtensionUpdates } from './useExtensionUpdates.js';
 import {
-  GEMINI_DIR,
+  GEMMA_DIR,
   loadAgentsFromDirectory,
   loadSkillsFromDir,
 } from '@google/gemini-cli-core';
@@ -76,7 +76,7 @@ describe('useExtensionUpdates', () => {
       path.join(tempHomeDir, 'gemini-cli-test-workspace-'),
     );
     vi.spyOn(process, 'cwd').mockReturnValue(tempWorkspaceDir);
-    userExtensionsDir = path.join(tempHomeDir, GEMINI_DIR, 'extensions');
+    userExtensionsDir = path.join(tempHomeDir, GEMMA_DIR, 'extensions');
     fs.mkdirSync(userExtensionsDir, { recursive: true });
     vi.mocked(checkForAllExtensionUpdates).mockReset();
     vi.mocked(updateExtension).mockReset();

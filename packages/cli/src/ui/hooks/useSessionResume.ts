@@ -23,7 +23,7 @@ interface UseSessionResumeParams {
   config: Config;
   historyManager: UseHistoryManagerReturn;
   refreshStatic: () => void;
-  isGeminiClientInitialized: boolean;
+  isGemmaClientInitialized: boolean;
   setQuittingMessages: (messages: null) => void;
   resumedSessionData?: ResumedSessionData;
   isAuthenticating: boolean;
@@ -38,7 +38,7 @@ export function useSessionResume({
   config,
   historyManager,
   refreshStatic,
-  isGeminiClientInitialized,
+  isGemmaClientInitialized,
   setQuittingMessages,
   resumedSessionData,
   isAuthenticating,
@@ -63,7 +63,7 @@ export function useSessionResume({
       resumedData: ResumedSessionData,
     ) => {
       // Wait for the client.
-      if (!isGeminiClientInitialized) {
+      if (!isGemmaClientInitialized) {
         return;
       }
 
@@ -89,7 +89,7 @@ export function useSessionResume({
         }
 
         // Give the history to the Gemini client.
-        await config.getGeminiClient()?.resumeChat(clientHistory, resumedData);
+        await config.getGemmaClient()?.resumeChat(clientHistory, resumedData);
       } catch (error) {
         coreEvents.emitFeedback(
           'error',
@@ -100,7 +100,7 @@ export function useSessionResume({
         setIsResuming(false);
       }
     },
-    [config, isGeminiClientInitialized, setQuittingMessages],
+    [config, isGemmaClientInitialized, setQuittingMessages],
   );
 
   // Handle interactive resume from the command line (-r/--resume without -p/--prompt-interactive).
@@ -110,7 +110,7 @@ export function useSessionResume({
     if (
       resumedSessionData &&
       !isAuthenticating &&
-      isGeminiClientInitialized &&
+      isGemmaClientInitialized &&
       !hasLoadedResumedSession.current
     ) {
       hasLoadedResumedSession.current = true;
@@ -126,7 +126,7 @@ export function useSessionResume({
   }, [
     resumedSessionData,
     isAuthenticating,
-    isGeminiClientInitialized,
+    isGemmaClientInitialized,
     loadHistoryForResume,
   ]);
 

@@ -28,7 +28,7 @@ const TOLERANCE_PERCENT = 10;
 
 // Fake API key for tests using fake responses
 const TEST_ENV = {
-  GEMINI_API_KEY: 'fake-memory-test-key',
+  GEMMA_API_KEY: 'fake-memory-test-key',
   GEMINI_MEMORY_MONITOR_INTERVAL: '100',
 };
 
@@ -278,7 +278,7 @@ describe('Memory Usage Tests', () => {
           // Ensure the history file is linked
           const targetChatsDir = join(
             rig.homeDir!,
-            '.gemini',
+            '.gemma',
             'tmp',
             getProjectHash(rig.testDir!),
             'chats',
@@ -325,7 +325,7 @@ describe('Memory Usage Tests', () => {
           // Ensure the history file is linked
           const targetChatsDir = join(
             rig.homeDir!,
-            '.gemini',
+            '.gemma',
             'tmp',
             getProjectHash(rig.testDir!),
             'chats',

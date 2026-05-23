@@ -86,7 +86,7 @@ describe.skipIf(!chromeAvailable)('browser-policy', () => {
       });
 
       // Manually trust the folder to avoid the dialog and enable option 3
-      const geminiDir = join(rig.homeDir!, '.gemini');
+      const geminiDir = join(rig.homeDir!, '.gemma');
       mkdirSync(geminiDir, { recursive: true });
 
       // Write to trustedFolders.json
@@ -121,7 +121,7 @@ priority = 200
 
       // Update settings.json in both project and home directories to point to the policy file
       for (const baseDir of [rig.testDir!, rig.homeDir!]) {
-        const settingsPath = join(baseDir, '.gemini', 'settings.json');
+        const settingsPath = join(baseDir, '.gemma', 'settings.json');
         if (existsSync(settingsPath)) {
           const settings = JSON.parse(readFileSync(settingsPath, 'utf-8'));
           settings.policyPaths = [policyFile];
@@ -136,7 +136,7 @@ priority = 200
       const run = await rig.runInteractive({
         approvalMode: 'default',
         env: {
-          GEMINI_CLI_INTEGRATION_TEST: 'true',
+          GEMMA_CLI_INTEGRATION_TEST: 'true',
         },
       });
 
@@ -229,7 +229,7 @@ priority = 200
 
     const stdout = await rig.runCommand(['Open https://example.com'], {
       env: {
-        GEMINI_API_KEY: 'fake-key',
+        GEMMA_API_KEY: 'fake-key',
         GEMINI_TELEMETRY_DISABLED: 'true',
         DEV: 'true',
       },

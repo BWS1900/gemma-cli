@@ -105,7 +105,7 @@ export function getAutoModelDescription(
       : 'gemini-3-pro'
     : 'gemini-2.5-pro';
   const flashModel = hasAccessToPreview ? 'gemini-3-flash' : 'gemini-2.5-flash';
-  return `Let Gemini CLI decide the best model for the task: ${proModel}, ${flashModel}`;
+  return `Let Gemma CLI decide the best model for the task: ${proModel}, ${flashModel}`;
 }
 
 /**

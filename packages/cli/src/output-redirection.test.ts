@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { initializeOutputListenersAndFlush } from './gemini.js';
+import { initializeOutputListenersAndFlush } from './gemma.js';
 import { coreEvents, CoreEvent, type Config } from '@google/gemini-cli-core';
 
 // Mock core dependencies

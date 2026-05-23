@@ -64,7 +64,7 @@ describe('Core System Prompt Substitution', () => {
       isTrackerEnabled: vi.fn().mockReturnValue(false),
       isModelSteeringEnabled: vi.fn().mockReturnValue(false),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(true),
-      getGemini31LaunchedSync: vi.fn().mockReturnValue(true),
+      getGemma31LaunchedSync: vi.fn().mockReturnValue(true),
     } as unknown as Config;
   });
 

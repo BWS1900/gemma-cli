@@ -16,8 +16,8 @@ import { reportError } from '../utils/errorReporting.js';
 import {
   InvalidStreamError,
   StreamEventType,
-  type GeminiChat,
-} from './geminiChat.js';
+  type GemmaChat,
+} from './gemmaChat.js';
 
 const mockSendMessageStream = vi.fn();
 const mockGetHistory = vi.fn();
@@ -73,7 +73,7 @@ describe('Turn', () => {
         },
       },
     };
-    turn = new Turn(mockChatInstance as unknown as GeminiChat, 'prompt-id-1');
+    turn = new Turn(mockChatInstance as unknown as GemmaChat, 'prompt-id-1');
     mockGetHistory.mockReturnValue([]);
     mockSendMessageStream.mockResolvedValue((async function* () {})());
   });

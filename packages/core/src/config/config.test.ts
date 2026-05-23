@@ -46,7 +46,7 @@ import {
   type ContentGeneratorConfig,
   type ContentGenerator,
 } from '../core/contentGenerator.js';
-import { GeminiClient } from '../core/client.js';
+import { GemmaClient } from '../core/client.js';
 import { GitService } from '../services/gitService.js';
 import { ShellTool } from '../tools/shell.js';
 import { AgentTool } from '../agents/agent-tool.js';
@@ -154,7 +154,7 @@ vi.mock('../tools/memoryTool', async (importOriginal) => {
 vi.mock('../core/contentGenerator.js');
 
 vi.mock('../core/client.js', () => ({
-  GeminiClient: vi.fn().mockImplementation(() => ({
+  GemmaClient: vi.fn().mockImplementation(() => ({
     initialize: vi.fn().mockResolvedValue(undefined),
     stripThoughtsFromHistory: vi.fn(),
     isInitialized: vi.fn().mockReturnValue(false),
@@ -681,7 +681,7 @@ describe('Server Config (config.ts)', () => {
       });
     });
 
-    describe('getGemini31LaunchedSync', () => {
+    describe('getGemma31LaunchedSync', () => {
       it.each([AuthType.USE_GEMINI, AuthType.USE_VERTEX_AI, AuthType.GATEWAY])(
         'should return true for %s',
         async (authType) => {
@@ -690,7 +690,7 @@ describe('Server Config (config.ts)', () => {
             authType,
           });
           await config.refreshAuth(authType);
-          expect(config.getGemini31LaunchedSync()).toBe(true);
+          expect(config.getGemma31LaunchedSync()).toBe(true);
         },
       );
 
@@ -712,11 +712,11 @@ describe('Server Config (config.ts)', () => {
         });
 
         await config.refreshAuth(AuthType.LOGIN_WITH_GOOGLE);
-        expect(config.getGemini31LaunchedSync()).toBe(true);
+        expect(config.getGemma31LaunchedSync()).toBe(true);
       });
     });
 
-    describe('getGemini31FlashLiteLaunchedSync', () => {
+    describe('getGemma31FlashLiteLaunchedSync', () => {
       it.each([AuthType.USE_GEMINI, AuthType.USE_VERTEX_AI, AuthType.GATEWAY])(
         'should return true for %s',
         async (authType) => {
@@ -725,7 +725,7 @@ describe('Server Config (config.ts)', () => {
             authType,
           });
           await config.refreshAuth(authType);
-          expect(config.getGemini31FlashLiteLaunchedSync()).toBe(true);
+          expect(config.getGemma31FlashLiteLaunchedSync()).toBe(true);
         },
       );
     });
@@ -860,7 +860,7 @@ describe('Server Config (config.ts)', () => {
       );
       // Verify that contentGeneratorConfig is updated
       expect(config.getContentGeneratorConfig()).toEqual(mockContentConfig);
-      expect(GeminiClient).toHaveBeenCalledWith(config);
+      expect(GemmaClient).toHaveBeenCalledWith(config);
     });
 
     it('should clear fallback overrides when refreshing auth', async () => {
@@ -930,7 +930,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.gemmaClient.stripThoughtsFromHistory,
       ).toHaveBeenCalledWith();
     });
 
@@ -950,7 +950,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.gemmaClient.stripThoughtsFromHistory,
       ).toHaveBeenCalledWith();
     });
 
@@ -970,7 +970,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.gemmaClient.stripThoughtsFromHistory,
       ).not.toHaveBeenCalledWith();
     });
 
@@ -3636,9 +3636,9 @@ describe('Config JIT Initialization', () => {
 
   describe('memory path access', () => {
     it('should NOT add the global ~/.gemini directory to the workspace', async () => {
-      // Memory does not broaden the workspace to include the global ~/.gemini/
+      // Memory does not broaden the workspace to include the global ~/.gemma/
       // directory. Cross-project personal preferences are routed to
-      // ~/.gemini/GEMINI.md via the surgical isPathAllowed allowlist instead.
+      // ~/.gemma/GEMINI.md via the surgical isPathAllowed allowlist instead.
       const params: ConfigParameters = {
         sessionId: 'test-session',
         targetDir: '/tmp/test',
@@ -3654,9 +3654,9 @@ describe('Config JIT Initialization', () => {
       expect(directories).not.toContain(Storage.getGlobalGeminiDir());
     });
 
-    it('should allow isPathAllowed to write the global ~/.gemini/GEMINI.md file', async () => {
+    it('should allow isPathAllowed to write the global ~/.gemma/GEMINI.md file', async () => {
       // Surgical allowlist: the prompt routes cross-project personal
-      // preferences to ~/.gemini/GEMINI.md, so the agent must be able to edit
+      // preferences to ~/.gemma/GEMINI.md, so the agent must be able to edit
       // that exact file via edit/write_file.
       const params: ConfigParameters = {
         sessionId: 'test-session',
@@ -3676,8 +3676,8 @@ describe('Config JIT Initialization', () => {
       expect(config.isPathAllowed(globalGeminiMdPath)).toBe(true);
     });
 
-    it('should NOT allow isPathAllowed to write other files under ~/.gemini/ (least privilege)', async () => {
-      // The allowlist is surgical: only ~/.gemini/GEMINI.md is reachable.
+    it('should NOT allow isPathAllowed to write other files under ~/.gemma/ (least privilege)', async () => {
+      // The allowlist is surgical: only ~/.gemma/GEMINI.md is reachable.
       // settings.json, keybindings.json, credentials, etc. remain disallowed.
       const params: ConfigParameters = {
         sessionId: 'test-session',
